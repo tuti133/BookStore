@@ -1,0 +1,11 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - BookStoreApp",
+      "request": "launch",
+      "mainClass": "ptit.htpt.bookstore.BookStoreApp",
+      "projectName": "bookstore"
+    }
+  ]
+}
