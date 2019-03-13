@@ -1,7 +1,11 @@
 spring:
   datasource:
-    url: ...
-    username: ...
-    password: ...
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
+    url: jdbc:sqlserver://JARVIS\MSSQLSERVER:1433;databaseName=BookStore
+    username: sa
+    password: 123456
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServer2008Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
