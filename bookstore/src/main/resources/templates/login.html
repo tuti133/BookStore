@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+Username: <input id="username"><br>
+<br>
+
+Password: <input id="password" type="password"><br><br>
+<input type="button" value="Login" onclick="login()">
+</body>
+<script>
+    function login() {
+        const username = $('#username').val().trim();
+        const password = $('#password').val().trim()
+        if (username == '') {
+            return;
+        }
+        if (password == '') {
+            return;
+        }
+
+        $.ajax({
+            url: "/api/login",
+            method: "POST",
+            contentType: "application/json; charset:utf-8",
+            data: JSON.stringify({
+                username: username,
+                password: password
+
+            }),
+            success: function (data) {
+                if (data.errorCode == 0) {
+                    alert("success")
+                    if (data.msg == 'ADMIN') {
+
+                    } else if (data.msg == 'EMPLOYEE') {
+
+                    } else {
+
+                    }
+                } else {
+                    alert(data.msg);
+                }
+            },
+            error: function (err) {
+                alert("Fail");
+
+            }
+        })
+    }
+</script>
+</html>

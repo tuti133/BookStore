@@ -25,14 +25,11 @@ public class Buy {
     @Column(name = "ship_address")
     private String shipAddress;
 
-    @NotNull
     @Column(name = "payment_method")
     private String paymentMethod;
 
-    @NotNull
     private String status;
 
-    @NotNull
     private String note;
 
     @NotNull

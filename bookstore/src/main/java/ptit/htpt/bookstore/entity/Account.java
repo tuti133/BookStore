@@ -23,30 +23,22 @@ public class Account {
     @NotNull
     private String password;
 
-    @NotNull
     @Column(name = "first_name")
     private String firstName;
 
-    @NotNull
     @Column(name = "last_name")
     private String lastName;
 
-    @NotNull
-    @Column(unique = true)
     private String email;
 
-    @NotNull
-    @Column(unique = true)
     private String phone;
 
     @NotNull
-    private String role;
+    private String authority;
 
-    @NotNull
     @Column(name = "created_date")
     private Date createdDate;
 
-    @NotNull
     @Column(name = "created_by")
     private Long createdBy;
 }

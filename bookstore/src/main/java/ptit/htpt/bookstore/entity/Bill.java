@@ -34,6 +34,6 @@ public class Bill implements Serializable {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "staff_id")
-    private Staff staff;
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 }
