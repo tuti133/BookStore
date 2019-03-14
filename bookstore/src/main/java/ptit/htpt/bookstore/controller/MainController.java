@@ -13,6 +13,22 @@ public class MainController {
 
     @GetMapping("/login")
     public String login(){
-        return  "login";
+        return  "customer/login";
     }
+
+    @GetMapping("/register")
+    public String register(){
+        return  "customer/register";
+    }
+
+    @GetMapping("/admin")
+    public String admin(){
+        return  "admin/admin";
+    }
+
+    @GetMapping("/create-employee")
+    public String createAccount(){
+        return  "admin/create-employee";
+    }
+
 }
