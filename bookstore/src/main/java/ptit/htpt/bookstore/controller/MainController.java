@@ -36,6 +36,11 @@ public class MainController {
         return  "admin/create-employee";
     }
 
+    @GetMapping("/403")
+    public String accessDenied(){
+        return "common/403";
+    }
+
     @GetMapping("/init-account")
     public String initAccount(){
         accountService.initAccount();

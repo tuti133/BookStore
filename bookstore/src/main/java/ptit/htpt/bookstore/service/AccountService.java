@@ -94,6 +94,7 @@ public class AccountService {
     }
 
     public void initAccount() {
+        Account saved = null;
         Authority adminAuth = authorityRepository.save(new Authority(AuthoritiesConstants.ADMIN));
         Authority employeeAuth = authorityRepository.save(new Authority(AuthoritiesConstants.EMPLOYEE));
         Authority customerAuth = authorityRepository.save(new Authority(AuthoritiesConstants.CUSTOMER));
@@ -116,7 +117,11 @@ public class AccountService {
         HashSet<Authority> auth2 = new HashSet<>();
         auth2.add(employeeAuth);
         employee.setAuthorities(auth2);
-        accountRepository.save(employee);
+        saved = accountRepository.save(employee);
+        Employee emp = new Employee();
+        emp.setAccount(saved);
+        employeeRepository.save(emp);
+
 
         Account customer = new Account();
         customer.setUsername("customer");
@@ -125,6 +130,9 @@ public class AccountService {
         HashSet<Authority> auth3 = new HashSet<>();
         auth3.add(customerAuth);
         customer.setAuthorities(auth3);
-        accountRepository.save(customer);
+        saved = accountRepository.save(customer);
+        Customer cus = new Customer();
+        cus.setAccount(saved);
+        customerRepository.save(cus);
     }
 }

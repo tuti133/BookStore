@@ -36,20 +36,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-        web.ignoring().antMatchers(HttpMethod.POST);
-        web.ignoring().antMatchers("/**");
-
-
-    }
-
-    @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.POST, "/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/employee/**").hasRole("EMPLOYEE")
                 .and()
+
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/register")
@@ -61,6 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login?logout=true")
                 .invalidateHttpSession(true)
                 .permitAll()
+                .and()
+                .exceptionHandling().accessDeniedPage("/403")
                 .and()
                 .csrf()
                 .disable();
