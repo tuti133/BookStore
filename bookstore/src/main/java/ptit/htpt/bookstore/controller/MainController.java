@@ -1,10 +1,15 @@
 package ptit.htpt.bookstore.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import ptit.htpt.bookstore.service.AccountService;
+import ptit.htpt.bookstore.util.SecurityUtils;
 
 @Controller
 public class MainController {
+    @Autowired
+    private AccountService accountService;
 
     @GetMapping("/")
     public String index(){
@@ -13,7 +18,7 @@ public class MainController {
 
     @GetMapping("/login")
     public String login(){
-        return  "customer/login";
+        return  "login";
     }
 
     @GetMapping("/register")
@@ -29,6 +34,12 @@ public class MainController {
     @GetMapping("/create-employee")
     public String createAccount(){
         return  "admin/create-employee";
+    }
+
+    @GetMapping("/init-account")
+    public String initAccount(){
+        accountService.initAccount();
+        return "index";
     }
 
 }
