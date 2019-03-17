@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import ptit.htpt.bookstore.service.AccountService;
 import ptit.htpt.bookstore.util.SecurityUtils;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class MainController {
@@ -46,5 +48,9 @@ public class MainController {
         accountService.initAccount();
         return "index";
     }
-
+    @GetMapping("/admin/books")
+    public String getMethodName() {
+        return "admin/bookList";
+    }
+    
 }
