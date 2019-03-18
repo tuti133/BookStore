@@ -2,7 +2,6 @@ package ptit.htpt.bookstore.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ptit.htpt.bookstore.dto.CreateEmployeeDto;
 import ptit.htpt.bookstore.dto.LoginDto;
 import ptit.htpt.bookstore.dto.ResponseDto;
 import ptit.htpt.bookstore.dto.RegisterDto;
@@ -22,10 +21,5 @@ public class AccountResource {
     @PostMapping("register")
     public ResponseDto register(@RequestBody RegisterDto registerDto){
         return accountService.register(registerDto);
-    }
-
-    @PostMapping("create-employee")
-    public ResponseDto createEmployee(@RequestBody CreateEmployeeDto createEmployeeDto){
-        return accountService.createEmployee(createEmployeeDto);
     }
 }

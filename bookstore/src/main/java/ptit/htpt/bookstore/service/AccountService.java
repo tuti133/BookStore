@@ -4,20 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ptit.htpt.bookstore.constant.AreaConstants;
 import ptit.htpt.bookstore.constant.AuthoritiesConstants;
 import ptit.htpt.bookstore.constant.Message;
-import ptit.htpt.bookstore.dto.CreateEmployeeDto;
+import ptit.htpt.bookstore.dto.EmployeeAccountDto;
 import ptit.htpt.bookstore.dto.LoginDto;
 import ptit.htpt.bookstore.dto.ResponseDto;
 import ptit.htpt.bookstore.dto.RegisterDto;
-import ptit.htpt.bookstore.entity.Account;
-import ptit.htpt.bookstore.entity.Authority;
-import ptit.htpt.bookstore.entity.Customer;
-import ptit.htpt.bookstore.entity.Employee;
-import ptit.htpt.bookstore.repository.AccountRepository;
-import ptit.htpt.bookstore.repository.AuthorityRepository;
-import ptit.htpt.bookstore.repository.CustomerRepository;
-import ptit.htpt.bookstore.repository.EmployeeRepository;
+import ptit.htpt.bookstore.entity.*;
+import ptit.htpt.bookstore.repository.*;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -38,6 +33,9 @@ public class AccountService {
 
     @Autowired
     private AuthorityRepository authorityRepository;
+
+    @Autowired
+    private BookStoreRepository bookStoreRepository;
 
     public ResponseDto login(LoginDto login) {
         Account account = accountRepository.findByUsernameAndPassword(login.getUsername(), passwordEncoder.encode(login.getPassword()));
@@ -68,23 +66,28 @@ public class AccountService {
     }
 
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseDto createEmployee(CreateEmployeeDto dto) {
-        Account account = accountRepository.findByUsername(dto.getUsername());
-        if (account != null) return new ResponseDto("1", Message.ACCOUNT_EXIST, null);
+    public ResponseDto saveEmployee(EmployeeAccountDto dto) {
+        Account account = new Account();
+        Employee emp = new Employee();
 
-        account = new Account();
+        if (dto.getAccountId() != null){
+            account.setId(dto.getAccountId());
+            emp.setId(dto.getEmployeeId());
+        } else {
+            if (accountRepository.findByUsername(dto.getUsername()) != null){
+                return new ResponseDto("1", Message.ACCOUNT_EXIST, null);
+            }
+        }
+
         account.setPassword(passwordEncoder.encode(dto.getPassword()));
         account.setUsername(dto.getUsername());
         HashSet<Authority> authorities = new HashSet<>();
         authorities.add(authorityRepository.findByName(dto.getAuthority()));
         account.setAuthorities(authorities);
-        account.setCreatedDate(new Date());
         account.setFirstName(dto.getFirstName());
         account.setLastName(dto.getLastName());
 
-        Account employee = accountRepository.save(account);
-        Employee emp = new Employee();
-        emp.setAccount(employee);
+        emp.setAccount(accountRepository.save(account));
         emp.setSalary(dto.getSalary());
         emp.setBookStore(dto.getBookStore());
         emp.setWorkShift(dto.getWorkShift());
@@ -93,15 +96,42 @@ public class AccountService {
         return new ResponseDto("0", Message.ACCOUNT_CREATED, null);
     }
 
-    public void initAccount() {
-        Account saved = null;
-        Authority adminAuth = authorityRepository.save(new Authority(AuthoritiesConstants.ADMIN));
-        Authority employeeAuth = authorityRepository.save(new Authority(AuthoritiesConstants.EMPLOYEE));
-        Authority customerAuth = authorityRepository.save(new Authority(AuthoritiesConstants.CUSTOMER));
+    public void initData() {
+        BookStore bookStore = new BookStore();
+        bookStore.setArea(AreaConstants.HANOI);
+        bookStore.setAddress("K10 Nguyen Trai, Ha Dong, Ha Noi");
+        bookStore.setName("Ha Noi");
+        bookStoreRepository.save(bookStore);
+
+        bookStore = new BookStore();
+        bookStore.setArea(AreaConstants.HCM);
+        bookStore.setAddress("11 Nguyen Dinh Chieu, Quan 1, TP Ho Chi Minh");
+        bookStore.setName("TP. HCM");
+        bookStoreRepository.save(bookStore);
+
+        bookStore = new BookStore();
+        bookStore.setArea(AreaConstants.DN);
+        bookStore.setAddress("566 Nui Thanh, Hoa Cuong Nam, Hai Chau, Da Nang");
+        bookStore.setName("Da Nang");
+        bookStoreRepository.save(bookStore);
+
+        Authority adminAuth;
+        Authority employeeAuth;
+        Authority customerAuth;
+        if (authorityRepository.findByName(AuthoritiesConstants.ADMIN ) != null){
+            adminAuth = authorityRepository.findByName(AuthoritiesConstants.ADMIN );
+            employeeAuth = authorityRepository.findByName(AuthoritiesConstants.EMPLOYEE );
+            customerAuth = authorityRepository.findByName(AuthoritiesConstants.CUSTOMER );
+        } else {
+            adminAuth = authorityRepository.save(new Authority(AuthoritiesConstants.ADMIN));
+            employeeAuth = authorityRepository.save(new Authority(AuthoritiesConstants.EMPLOYEE));
+            customerAuth = authorityRepository.save(new Authority(AuthoritiesConstants.CUSTOMER));
+        }
+
 
         Account admin = new Account();
         admin.setUsername("admin");
-        admin.setPassword(passwordEncoder.encode("123456"));
+        admin.setPassword(passwordEncoder.encode("admin"));
         HashSet<Authority> auth1 = new HashSet<>();
         auth1.add(adminAuth);
         auth1.add(employeeAuth);
@@ -117,11 +147,13 @@ public class AccountService {
         HashSet<Authority> auth2 = new HashSet<>();
         auth2.add(employeeAuth);
         employee.setAuthorities(auth2);
-        saved = accountRepository.save(employee);
-        Employee emp = new Employee();
-        emp.setAccount(saved);
-        employeeRepository.save(emp);
 
+        Employee em = new Employee();
+        em.setAccount(accountRepository.save(employee));
+        em.setWorkShift(1L);
+        em.setBookStore(bookStoreRepository.findByArea(AreaConstants.HANOI));
+        em.setSalary(10000000L);
+        employeeRepository.save(em);
 
         Account customer = new Account();
         customer.setUsername("customer");
@@ -130,9 +162,11 @@ public class AccountService {
         HashSet<Authority> auth3 = new HashSet<>();
         auth3.add(customerAuth);
         customer.setAuthorities(auth3);
-        saved = accountRepository.save(customer);
+
         Customer cus = new Customer();
-        cus.setAccount(saved);
+        cus.setAccount(accountRepository.save(customer));
         customerRepository.save(cus);
+
     }
+
 }

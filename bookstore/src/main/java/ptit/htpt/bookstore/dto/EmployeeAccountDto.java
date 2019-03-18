@@ -8,7 +8,10 @@ import ptit.htpt.bookstore.entity.BookStore;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateEmployeeDto {
+public class EmployeeAccountDto {
+    private Long accountId;
+    private Long employeeId;
+    private String id;
     private String username;
     private String password;
     private String firstName;

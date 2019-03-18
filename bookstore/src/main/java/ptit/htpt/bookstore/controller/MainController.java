@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import ptit.htpt.bookstore.service.AccountService;
-import ptit.htpt.bookstore.util.SecurityUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -43,9 +41,9 @@ public class MainController {
         return "common/403";
     }
 
-    @GetMapping("/init-account")
-    public String initAccount(){
-        accountService.initAccount();
+    @GetMapping("/init-data")
+    public String initData(){
+        accountService.initData();
         return "index";
     }
     @GetMapping("/admin/books")
