@@ -36,18 +36,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/").permitAll().antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/employee/**").hasRole("EMPLOYEE").and()
+                .antMatchers("/employee/**").hasRole("EMPLOYEE")
+                .antMatchers("/order").hasRole("CUSTOMER")
+                .antMatchers("/profile", "/history").authenticated()
+                .and()
 
-                .formLogin().loginPage("/login").defaultSuccessUrl("/register").failureUrl("/login?error=true")
+
+                .formLogin().loginPage("/login").defaultSuccessUrl("/").failureUrl("/login?error=true")
                 .permitAll().and()
 
-                .logout().logoutSuccessUrl("/login?logout=true").invalidateHttpSession(true).permitAll().and()
+                .logout().logoutSuccessUrl("/").invalidateHttpSession(true).permitAll().and()
                 .exceptionHandling().accessDeniedPage("/403").and().csrf().disable();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
-        web.ignoring().antMatchers("/admin/books");
+//        web.ignoring().antMatchers("/admin/books");
     }
 }

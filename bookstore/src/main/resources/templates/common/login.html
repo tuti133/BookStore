@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}"
+      xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="libs/bootstrap.min.css">
+    <title>Đăng nhập</title>
 </head>
 <body>
-<div class="container">
+<div layout:fragment="content" class="container">
     <div class="row" style="padding-top: 30px;">
         <div class="col-md-4 col-md-offset-4">
             <form name='f' action="login" method='POST'>
@@ -23,7 +24,5 @@
         </div>
     </div>
 </div>
-<script src="libs/jquery.min.js"></script>
-<script src="libs/bootstrap.min.js"></script>
 </body>
 </html>

@@ -7,13 +7,18 @@ import ptit.htpt.bookstore.dto.ResponseDto;
 import ptit.htpt.bookstore.service.AccountService;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin/")
 public class AdminResource {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping("save-employee")
-    public ResponseDto saveEmployee(@RequestBody EmployeeAccountDto employeeAccountDto){
-        return accountService.saveEmployee(employeeAccountDto);
+    @PostMapping("create-employee")
+    public ResponseDto createEmployee(@RequestBody EmployeeAccountDto employeeAccountDto){
+        return accountService.createEmployee(employeeAccountDto);
+    }
+
+    @PostMapping("update-employee")
+    public ResponseDto updateEmployee(@RequestBody EmployeeAccountDto employeeAccountDto){
+        return accountService.updateEmployee(employeeAccountDto);
     }
 }

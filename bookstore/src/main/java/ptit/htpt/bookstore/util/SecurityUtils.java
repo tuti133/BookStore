@@ -12,17 +12,15 @@ import java.util.Optional;
 @Component
 public final class SecurityUtils {
 
-    @Autowired
     private static AccountRepository accountRepository;
 
-    private SecurityUtils(){
-
+    private SecurityUtils(AccountRepository repo){
+        accountRepository = repo;
     }
 
     public static Account getCurrentUser(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return accountRepository.findByUsername(username);
-
     }
 
     public static boolean isCurrentUserInRole(String authority) {

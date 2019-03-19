@@ -14,7 +14,7 @@ public class BookStoreResource {
     @Autowired
     BookStoreService bookStoreService;
 
-    @GetMapping("/get-all-store")
+    @GetMapping("get-all-store")
     public ResponseDto getAllStore(){
         return bookStoreService.getAllStore();
     }

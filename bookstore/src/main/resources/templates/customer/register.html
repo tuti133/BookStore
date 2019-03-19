@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}"
+      xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title>Đăng ký</title>
     <link rel="stylesheet" href="libs/bootstrap.min.css">
     <style>
     </style>
 </head>
 <body>
-<div class="container">
+<div layout:fragment="content" class="container">
     <div class="row" style="padding-top: 30px;">
         <div class="col-md-4 col-md-offset-4">
                 <div class="form-group">
@@ -35,40 +37,37 @@
         </div>
     </div>
 </div>
-
-
-<script src="libs/jquery.min.js"></script>
-<script src="libs/bootstrap.min.js"></script>
 </body>
-<script>
-    function register() {
-        const username = $("#username").val();
-        const password = $("#password").val();
-        const confirm = $("#confirm").val();
-        const firstName = $("#firstName").val();
-        const lastName = $("#lastName").val();
-        if (password != confirm) {
-            alert("Confirm password not match!");
-        } else {
-            $.ajax({
-                url: "/api/register",
-                method: "POST",
-                contentType: "application/json; charset:utf-8",
-                data: JSON.stringify({
-                    username: username,
-                    password: password,
-                    firstName: firstName,
-                    lastName: lastName
-                }),
-                success: function (data) {
-                    console.log(data)
-                    alert(data);
-                },
-                error: function (err) {
-                    alert(err);
-                }
-            })
+<th:block layout:fragment="scripts">
+    <script>
+        function register() {
+            const username = $("#username").val();
+            const password = $("#password").val();
+            const confirm = $("#confirm").val();
+            const firstName = $("#firstName").val();
+            const lastName = $("#lastName").val();
+            if (password != confirm) {
+                alert("Confirm password not match!");
+            } else {
+                $.ajax({
+                    url: "/api/account/register",
+                    method: "POST",
+                    contentType: "application/json; charset:utf-8",
+                    data: JSON.stringify({
+                        username: username,
+                        password: password,
+                        firstName: firstName,
+                        lastName: lastName
+                    }),
+                    success: function (data) {
+                        alert(data.message);
+                        if (data.errorCode == 0){
+                            window.location.href = "login";
+                        }
+                    }
+                })
+            }
         }
-    }
-</script>
+    </script>
+</th:block>
 </html>

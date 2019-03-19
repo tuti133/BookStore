@@ -7,9 +7,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterDto {
+public class CustomerAccountDto {
+    private Long accountId;
+    private Long customerId;
     private String username;
     private String password;
+    private Boolean activated;
     private String firstName;
     private String lastName;
+    private String email;
+    private String phone;
+    private String creditNumber;
+    private String address;
 }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+    <md-toolbar class="md-warn" th:fragment="navbar">
+        <div class="md-toolbar-tools" layout-align="center center" layout="row">
+            <div flex layout="row" layout-align="center center">
+                <img style="width: 42px; height: 42px; object-fit: cover" src="images/white.png">
+                &nbsp;<h3>
+                <a href="/">Book Store</a>
+            </h3>
+            </div>
+            <div flex></div>
+            <div class="input-group" flex="50">
+                <input id="search" type="text" class="form-control" name="search" placeholder="Nhập từ khóa...">
+                <span class="input-group-addon" style="cursor: pointer">
+                    <i class="material-icons" style="font-size: 18px;">
+                        search
+                    </i>
+                </span>
+            </div>
+            <div flex>
+                <md-menu layout="row" layout-align="end center">
+                    <md-button ng-click="$mdMenu.open($event)" style="outline: 1px dashed"
+                               ng-disabled="cartList.length == 0">
+                        <md-icon class="material-icons">shopping_cart</md-icon>
+                        <span ng-if="cartList.length != 0" class="badge">{{cartList.length}}</span>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button href="/order" class="md-warn">
+                                <span>Thanh Toán</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-repeat="i in cartList">
+                            <md-button>
+                                <span>{{i}}</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-warn" ng-click="clearList()">
+                                <span>Xóa Hết</span>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+
+            <div layout="row" layout-align="end center" flex>
+                <div>
+                    <md-menu layout="row" layout-align="end center">
+
+                        <md-button ng-click="$mdMenu.open($event)" style="outline: 1px dashed">
+                            <md-icon class="material-icons">menu</md-icon>
+                            <span sec:authorize="!isAuthenticated()">Tài khoản</span>
+                            <span sec:authorize="isAuthenticated()">Quản lý</span>
+                        </md-button>
+
+                        <md-menu-content sec:authorize="!isAuthenticated()">
+                            <md-menu-item>
+                                <md-button href="login">
+                                    <span>Đăng nhập</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button href="register">
+                                    <span>Đăng ký</span>
+                                </md-button>
+                            </md-menu-item>
+
+                        </md-menu-content>
+
+                        <md-menu-content sec:authorize="isAuthenticated()">
+                            <md-menu-item sec:authorize="hasRole('ADMIN')">
+                                <md-button href="admin/employee">
+                                    <span>Nhân viên</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item sec:authorize="hasRole('ADMIN')">
+                                <md-button href="admin/books">
+                                    <span>Sách</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item sec:authorize="hasRole('EMPLOYEE')">
+                                <md-button href="employee/sale">
+                                    <span>Bán hàng</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item sec:authorize="!hasAnyRole('EMPLOYEE', 'ADMIN')">
+                                <md-button href="profile">
+                                    <span>Cá nhân</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button href="history">
+                                    <span>Lịch sử</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button href="password">
+                                    <span>Đổi mật khẩu</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button class="md-warn" href="logout">
+                                    <span>Đăng xuất</span>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
+            </div>
+        </div>
+    </md-toolbar>
+</html>

@@ -5,50 +5,69 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import ptit.htpt.bookstore.service.AccountService;
 
-
 @Controller
 public class MainController {
     @Autowired
     private AccountService accountService;
 
     @GetMapping("/")
-    public String index(){
+    public String index() {
         return "index";
     }
 
     @GetMapping("/login")
-    public String login(){
-        return  "login";
+    public String login() {
+        return "common/login";
     }
 
     @GetMapping("/register")
-    public String register(){
-        return  "customer/register";
+    public String register() {
+        return "customer/register";
     }
 
     @GetMapping("/admin")
-    public String admin(){
-        return  "admin/admin";
+    public String admin() {
+        return "admin/dashboard";
     }
 
-    @GetMapping("/create-employee")
-    public String createAccount(){
-        return  "admin/create-employee";
+    @GetMapping("/admin/employee")
+    public String createAccount() {
+        return "admin/employee";
     }
 
     @GetMapping("/403")
-    public String accessDenied(){
+    public String accessDenied() {
         return "common/403";
     }
 
-    @GetMapping("/init-data")
-    public String initData(){
-        accountService.initData();
-        return "index";
-    }
     @GetMapping("/admin/books")
     public String getMethodName() {
         return "admin/bookList";
     }
-    
+
+    @GetMapping("/employee/sale")
+    public String sale() {
+        return "/employee/sale";
+    }
+
+    @GetMapping("profile")
+    public String profile(){
+        return "common/profile";
+    }
+
+    @GetMapping("history")
+    public String history(){
+        return "customer/history";
+    }
+
+    @GetMapping("order")
+    public String order(){
+        return "customer/order";
+    }
+
+    @GetMapping("/init-data")
+    public String initData() {
+        accountService.initData();
+        return "index";
+    }
 }

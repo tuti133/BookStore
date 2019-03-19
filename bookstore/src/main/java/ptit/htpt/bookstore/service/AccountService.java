@@ -1,18 +1,17 @@
 package ptit.htpt.bookstore.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ptit.htpt.bookstore.constant.AreaConstants;
 import ptit.htpt.bookstore.constant.AuthoritiesConstants;
 import ptit.htpt.bookstore.constant.Message;
 import ptit.htpt.bookstore.dto.EmployeeAccountDto;
-import ptit.htpt.bookstore.dto.LoginDto;
 import ptit.htpt.bookstore.dto.ResponseDto;
-import ptit.htpt.bookstore.dto.RegisterDto;
+import ptit.htpt.bookstore.dto.CustomerAccountDto;
 import ptit.htpt.bookstore.entity.*;
 import ptit.htpt.bookstore.repository.*;
+import ptit.htpt.bookstore.util.SecurityUtils;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -36,65 +35,6 @@ public class AccountService {
 
     @Autowired
     private BookStoreRepository bookStoreRepository;
-
-    public ResponseDto login(LoginDto login) {
-        Account account = accountRepository.findByUsernameAndPassword(login.getUsername(), passwordEncoder.encode(login.getPassword()));
-        if (account == null) return new ResponseDto("1", Message.LOGIN_FAIL, null);
-        return new ResponseDto("0", Message.LOGIN_SUCCESS, null);
-    }
-
-    public ResponseDto register(RegisterDto dto) {
-        Account account = accountRepository.findByUsername(dto.getUsername());
-        if (account != null) return new ResponseDto("1", Message.ACCOUNT_EXIST, null);
-
-        account = new Account();
-        account.setUsername(dto.getUsername());
-        account.setPassword(passwordEncoder.encode(dto.getPassword()));
-        HashSet<Authority> authorities = new HashSet<>();
-        authorities.add(authorityRepository.findByName(AuthoritiesConstants.CUSTOMER));
-        account.setAuthorities(authorities);
-        account.setFirstName(dto.getFirstName());
-        account.setLastName(dto.getLastName());
-        account.setCreatedDate(new Date());
-        account.setActivated(true);
-
-        accountRepository.save(account);
-        Customer cus = new Customer();
-        cus.setAccount(account);
-        customerRepository.save(cus);
-        return new ResponseDto("0", Message.ACCOUNT_CREATED, null);
-    }
-
-    @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseDto saveEmployee(EmployeeAccountDto dto) {
-        Account account = new Account();
-        Employee emp = new Employee();
-
-        if (dto.getAccountId() != null){
-            account.setId(dto.getAccountId());
-            emp.setId(dto.getEmployeeId());
-        } else {
-            if (accountRepository.findByUsername(dto.getUsername()) != null){
-                return new ResponseDto("1", Message.ACCOUNT_EXIST, null);
-            }
-        }
-
-        account.setPassword(passwordEncoder.encode(dto.getPassword()));
-        account.setUsername(dto.getUsername());
-        HashSet<Authority> authorities = new HashSet<>();
-        authorities.add(authorityRepository.findByName(dto.getAuthority()));
-        account.setAuthorities(authorities);
-        account.setFirstName(dto.getFirstName());
-        account.setLastName(dto.getLastName());
-
-        emp.setAccount(accountRepository.save(account));
-        emp.setSalary(dto.getSalary());
-        emp.setBookStore(dto.getBookStore());
-        emp.setWorkShift(dto.getWorkShift());
-        employeeRepository.save(emp);
-
-        return new ResponseDto("0", Message.ACCOUNT_CREATED, null);
-    }
 
     public void initData() {
         BookStore bookStore = new BookStore();
@@ -166,7 +106,72 @@ public class AccountService {
         Customer cus = new Customer();
         cus.setAccount(accountRepository.save(customer));
         customerRepository.save(cus);
-
     }
 
+    public ResponseDto createCustomer(CustomerAccountDto dto) {
+        Account account = accountRepository.findByUsername(dto.getUsername());
+        if (account != null) return new ResponseDto("1", Message.ACCOUNT_EXIST, null);
+
+        account = new Account();
+        account.setUsername(dto.getUsername());
+        account.setPassword(passwordEncoder.encode(dto.getPassword()));
+        account.setActivated(true);
+        account.setFirstName(dto.getFirstName());
+        account.setLastName(dto.getLastName());
+        account.setCreatedDate(new Date());
+        HashSet<Authority> authorities = new HashSet<>();
+        authorities.add(authorityRepository.findByName(AuthoritiesConstants.CUSTOMER));
+        account.setAuthorities(authorities);
+
+        Customer customer = new Customer();
+        customer.setAccount(accountRepository.save(account));
+        customerRepository.save(customer);
+        return new ResponseDto("0", Message.ACCOUNT_CREATED, null);
+    }
+
+    public ResponseDto updateCustomer(CustomerAccountDto dto){
+        Account account = accountRepository.findById(dto.getAccountId()).get();
+        account.setFirstName(dto.getFirstName());
+        account.setLastName(dto.getLastName());
+        account.setPhone(dto.getPhone());
+        account.setEmail(dto.getEmail());
+        accountRepository.save(account);
+        Customer customer = customerRepository.findByAccount(account);
+        customer.setAddress(dto.getAddress());
+        customer.setCreditNumber(dto.getCreditNumber());
+        customerRepository.save(customer);
+        return new ResponseDto("0", Message.ACCOUNT_UPDATED, null);
+    }
+
+    public ResponseDto createEmployee(EmployeeAccountDto dto) {
+        return new ResponseDto("0", "Success", null);
+    }
+
+    public ResponseDto updateEmployee(EmployeeAccountDto dto){
+        return new ResponseDto("0", "Success", null);
+    }
+
+    public ResponseDto changePassword(Account account) {
+        return null;
+    }
+
+    public Account getCustomer(Long id) {
+        return accountRepository.findById(id).get();
+    }
+
+    public CustomerAccountDto getCurrentAccount() {
+        Account account = SecurityUtils.getCurrentUser();
+        Customer customer = customerRepository.findByAccount(account);
+        CustomerAccountDto result = new CustomerAccountDto();
+        result.setAccountId(account.getId());
+        result.setCustomerId(customer.getId());
+        result.setFirstName(account.getFirstName());
+        result.setLastName(account.getLastName());
+        result.setEmail(account.getEmail());
+        result.setPhone(account.getPhone());
+        result.setAddress(customer.getAddress());
+        result.setCreditNumber(customer.getCreditNumber());
+        result.setActivated(account.getActivated());
+        return result;
+    }
 }
