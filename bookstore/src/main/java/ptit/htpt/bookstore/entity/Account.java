@@ -39,8 +39,12 @@ public class Account implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
+    private String gender;
+
+    @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String phone;
 
     @ManyToMany
@@ -52,7 +56,7 @@ public class Account implements Serializable {
     private Set<Authority> authorities;
 
     @Column(name = "created_date")
-    private Date createdDate;
+    private Long createdDate;
 
     @Column(name = "created_by")
     private Long createdBy;

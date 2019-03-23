@@ -39,4 +39,6 @@ public class Book implements Serializable {
     @NotNull
     @Column(name = "published_year")
     private Long publishedYear;
+
+    private Long favorite = 0L;
 }

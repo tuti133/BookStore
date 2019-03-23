@@ -22,5 +22,5 @@ public class EmployeeAccountDto {
     private String phone;
     private Long salary;
     private Long workShift;
-    private BookStore bookStore;
+    private Long bookStoreId;
 }

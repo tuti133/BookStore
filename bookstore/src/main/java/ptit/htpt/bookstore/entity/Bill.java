@@ -26,7 +26,7 @@ public class Bill implements Serializable {
 
     @NotNull
     @Column(name = "created_date")
-    private Date createdDate;
+    private Long createdDate;
 
     @NotNull
     @Column(name = "total_money")

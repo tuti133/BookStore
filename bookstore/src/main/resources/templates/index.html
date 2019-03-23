@@ -3,21 +3,24 @@
       xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="libs/bootstrap.min.css">
-    <link rel="stylesheet" href="libs/angular/angular-material.min.css">
-    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="/libs/bootstrap.min.css">
+    <link rel="stylesheet" href="/libs/angular/angular-material.min.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/libs/md-data-table/md-data-table.min.css">
 
-    <script src="libs/jquery.min.js"></script>
-    <script src="libs/bootstrap.min.js"></script>
-    <script src="libs/angular/angular.min.js"></script>
-    <script src="libs/angular/angular-animate.min.js"></script>
-    <script src="libs/angular/angular-aria.min.js"></script>
-    <script src="libs/angular/angular-messages.min.js"></script>
-    <script src="libs/angular/angular-material.min.js"></script>
+    <script src="/libs/jquery.min.js"></script>
+    <script src="/libs/bootstrap.min.js"></script>
+    <script src="/libs/angular/angular.min.js"></script>
+    <script src="/libs/angular/angular-animate.min.js"></script>
+    <script src="/libs/angular/angular-aria.min.js"></script>
+    <script src="/libs/angular/angular-messages.min.js"></script>
+    <script src="/libs/angular/angular-material.min.js"></script>
+    <script src="/libs/md-data-table/md-data-table.min.js"></script>
+
 
     <title>Trang chủ</title>
 </head>
-<body ng-app="BookStoreApp" ng-controller="AppController" layout="column" ng-cloak>
+<body ng-app="BookStoreApp" ng-controller="AppController as vm" layout="column" ng-cloak>
 <div th:replace="layout/navbar :: navbar"></div>
 <div layout:fragment="content" layout="column" flex>
     <md-content layout="row" flex layout-wrap>
@@ -46,8 +49,8 @@
     </md-content>
 </div>
 
-<script src="js/app.module.js"></script>
-<script src="js/app.controller.js"></script>
+<script src="/js/app.module.js"></script>
+<script src="/js/app.controller.js"></script>
 
 
 <th:block layout:fragment="scripts">

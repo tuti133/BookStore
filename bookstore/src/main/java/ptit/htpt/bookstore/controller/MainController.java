@@ -3,12 +3,12 @@ package ptit.htpt.bookstore.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import ptit.htpt.bookstore.service.AccountService;
+import ptit.htpt.bookstore.service.InitialService;
 
 @Controller
 public class MainController {
     @Autowired
-    private AccountService accountService;
+    private InitialService initialService;
 
     @GetMapping("/")
     public String index() {
@@ -67,7 +67,7 @@ public class MainController {
 
     @GetMapping("/init-data")
     public String initData() {
-        accountService.initData();
+        initialService.initData();
         return "index";
     }
 }

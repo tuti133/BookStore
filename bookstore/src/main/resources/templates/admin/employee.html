@@ -6,21 +6,68 @@
     <meta charset="UTF-8">
     <title>Quản lý nhân viên</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../libs/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../libs/angular/angular-material.min.css">
 </head>
-<body ng-app="BookStoreApp" ng-controller="EmployeeManagementController">
-    <p>{{abc}}</p>
+<div layout:fragment="content" ng-controller="EmployeeManagementController as vm">
 
-</body>
-<script src="../libs/jquery.min.js"></script>
-<script src="../libs/bootstrap.min.js"></script>
-<script src="../libs/angular/angular.min.js"></script>
-<script src="../libs/angular/angular-animate.min.js"></script>
-<script src="../libs/angular/angular-aria.min.js"></script>
-<script src="../libs/angular/angular-messages.min.js"></script>
-<script src="../libs/angular/angular-material.min.js"></script>
-<script src="../js/app.module.js"></script>
-<script src="../js/admin/employee-management.controller.js"></script>
+    <md-toolbar class="md-table-toolbar md-default" layout="row">
+        <div class="md-toolbar-tools">
+            <span>Quản lý nhân viên</span>
+        </div>
+        <div>
+            <md-button class="md-raised md-warn" ng-click="vm.showAdvanced($event)" style="color: rgb(255,255,255);">Thêm</md-button>
+        </div>
+    </md-toolbar>
+
+    <md-table-container>
+        <table md-table md-row-select multiple ng-model="vm.selected" md-progress="promise">
+            <thead md-head md-order="query.order" md-on-reorder="getDesserts">
+            <tr md-row>
+                <th md-column><span>Id</span></th>
+                <th md-column><span>Tên đăng nhập</span></th>
+                <th md-column>Họ Tên</th>
+                <th md-column>Email</th>
+                <th md-column>SĐT</th>
+                <th md-column>Lương</th>
+                <th md-column>Ca làm việc</th>
+                <th md-column>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row md-select="dessert" md-select-id="name" md-auto-select ng-repeat="dessert in desserts.data">
+                <td md-cell>
+
+                </td>
+                <td md-cell>
+
+                </td>
+                <td md-cell>
+
+                </td>
+                <td md-cell>
+
+                </td>
+                <td md-cell>
+
+                </td>
+                <td md-cell>
+
+                </td>
+                <td md-cell>
+
+                </td>
+                <td md-cell>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <md-table-pagination md-limit="query.limit" md-limit-options="[5, 10, 15]" md-page="query.page" md-total="{{desserts.count}}" md-on-paginate="getDesserts" md-page-select></md-table-pagination>
+</div>
+
+<th:block layout:fragment="scripts">
+    <script src="/js/admin/employee-management.controller.js"></script>
+</th:block>
+
 </html>

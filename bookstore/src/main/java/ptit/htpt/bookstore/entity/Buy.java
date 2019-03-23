@@ -19,7 +19,7 @@ public class Buy {
 
     @NotNull
     @Column(name = "created_date")
-    private Date createdDate;
+    private Long createdDate;
 
     @NotNull
     @Column(name = "ship_address")
@@ -37,7 +37,7 @@ public class Buy {
     private Long totalMoney;
 
     @NotNull
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "book_store_id")
     private BookStore bookStore;
 
