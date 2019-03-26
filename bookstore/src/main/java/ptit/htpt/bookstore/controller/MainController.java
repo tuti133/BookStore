@@ -20,19 +20,9 @@ public class MainController {
         return "common/login";
     }
 
-    @GetMapping("/register")
-    public String register() {
-        return "customer/register";
-    }
-
-    @GetMapping("/admin")
-    public String admin() {
-        return "admin/dashboard";
-    }
-
-    @GetMapping("/admin/employee")
-    public String createAccount() {
-        return "admin/employee";
+    @GetMapping("/password")
+    public String password(){
+        return "common/password";
     }
 
     @GetMapping("/403")
@@ -40,29 +30,9 @@ public class MainController {
         return "common/403";
     }
 
-    @GetMapping("/admin/books")
-    public String getMethodName() {
-        return "admin/bookList";
-    }
-
-    @GetMapping("/employee/sale")
-    public String sale() {
-        return "/employee/sale";
-    }
-
     @GetMapping("profile")
     public String profile(){
         return "common/profile";
-    }
-
-    @GetMapping("history")
-    public String history(){
-        return "customer/history";
-    }
-
-    @GetMapping("order")
-    public String order(){
-        return "customer/order";
     }
 
     @GetMapping("/init-data")
@@ -70,4 +40,53 @@ public class MainController {
         initialService.initData();
         return "index";
     }
+
+    //--------------------------ADMIN------------------------------
+    @GetMapping("/admin/dashboard")
+    public String dashboard() {
+        return "admin/dashboard";
+    }
+
+    @GetMapping("/admin/account")
+    public String manageAccount() {
+        return "admin/account";
+    }
+
+    @GetMapping("/admin/category")
+    public String manageCategory() {
+        return "admin/category";
+    }
+
+    @GetMapping("/admin/book")
+    public String manageBook() {
+        return "/admin/book";
+    }
+
+    @GetMapping("/admin/bill")
+    public String manageBill() {
+        return "/admin/bill";
+    }
+
+    //------------------------EMPLOYEE-----------------------------
+    @GetMapping("/employee/sale")
+    public String sale() {
+        return "/employee/sale";
+    }
+
+    //------------------------CUSTOMER-----------------------------
+    @GetMapping("/history")
+    public String history(){
+        return "customer/history";
+    }
+
+    @GetMapping("/order")
+    public String order(){
+        return "customer/order";
+    }
+
+    @GetMapping("/register")
+    public String register() {
+        return "customer/register";
+    }
+
 }

@@ -2,12 +2,10 @@ package ptit.htpt.bookstore.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ptit.htpt.bookstore.dto.ChangePasswordDto;
-import ptit.htpt.bookstore.dto.EmployeeAccountDto;
-import ptit.htpt.bookstore.dto.ResponseDto;
-import ptit.htpt.bookstore.dto.CustomerAccountDto;
+import ptit.htpt.bookstore.dto.*;
 import ptit.htpt.bookstore.entity.Account;
 import ptit.htpt.bookstore.service.AccountService;
+import ptit.htpt.bookstore.util.SecurityUtils;
 
 @RestController
 @RequestMapping("/api/account/")
@@ -15,32 +13,30 @@ public class AccountResource {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("current-customer")
+    @GetMapping("current")
     public ResponseDto getCurrentAccount() {
-        CustomerAccountDto response = accountService.getCurrentCustomer();
-        return new ResponseDto("0", "Success", response);
+        if (SecurityUtils.getCurrentUser() == null) return new ResponseDto("1", "403", null);
+        return accountService.getAccount(SecurityUtils.getCurrentUser().getId());
     }
 
-    @GetMapping("customer")
-    public ResponseDto getCustomer(@RequestParam Long id) {
-        CustomerAccountDto response = accountService.getCustomer(id);
-        return new ResponseDto("0", "Success", response);
+    @GetMapping("get")
+    public ResponseDto getAccount(@RequestParam Long id) {
+        return accountService.getAccount(id);
     }
 
-    @GetMapping("employee")
-    public ResponseDto getEmployee(@RequestParam Long id) {
-        EmployeeAccountDto response = accountService.getEmployee(id);
-        return new ResponseDto("0", "Success", response);
+    @GetMapping("getAll")
+    public ResponseDto getAllAccount() {
+        return accountService.getAllAccount();
     }
 
-    @PostMapping("register")
-    public ResponseDto createCustomer(@RequestBody CustomerAccountDto customerAccountDto) {
-        return accountService.createCustomer(customerAccountDto);
+    @PostMapping("create")
+    public ResponseDto create(@RequestBody AccountDto accountDto) {
+        return accountService.createAccount(accountDto);
     }
 
     @PostMapping("update")
-    public ResponseDto updateCustomer(@RequestBody CustomerAccountDto customerAccountDto) {
-        return accountService.updateCustomer(customerAccountDto);
+    public ResponseDto update(@RequestBody AccountDto accountDto) {
+        return accountService.updateAccount(accountDto);
     }
 
     @PostMapping("change-password")

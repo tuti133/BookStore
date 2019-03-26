@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Bảng điều khiển</title>
 </head>
 <body>
+<div layout:fragment="content" ng-controller="DashboardController as vm">
+    <div layout="row" flex>
+        <md-sidenav
+                style="width: 250px;"
+                class="md-sidenav-left"
+                md-component-id="left"
+                md-is-locked-open="$mdMedia('gt-md')"
+                md-whiteframe="2">
 
+            <md-toolbar class="md-warn">
+                <a href="/admin/dashboard" style="color: rgb(250,250,250); text-decoration: none">
+                    <h1 class="md-toolbar-tools">Bảng điều khiển</h1>
+                </a>
+            </md-toolbar>
+            <md-content flex style="background: antiquewhite">
+                <div layout="column">
+                    <md-list flex style="padding: 0;">
+                        <div ng-repeat="function in vm.adminFunctions">
+                            <md-list-item href="{{function.url}}">
+                                <md-icon class="material-icons">{{function.icon}}</md-icon>
+                                <p>{{function.name}}</p>
+                            </md-list-item>
+                            <md-divider></md-divider>
+                        </div>
+                    </md-list>
+                </div>
+            </md-content>
+        </md-sidenav>
+
+        <div layout:fragment="admin-content" layout="column" flex>
+
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+
+</th:block>
 </body>
 </html>

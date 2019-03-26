@@ -24,7 +24,7 @@
 <div th:replace="layout/navbar :: navbar"></div>
 <div layout:fragment="content" layout="column" flex>
     <md-content layout="row" flex layout-wrap>
-        <div ng-repeat="i in [0,1,2,3,4,5,6,7,8,9,10]" flex="20">
+        <div id="home" ng-repeat="i in [0,1,2,3,4,5,6,7,8,9,10]" flex="20">
             <md-card>
                 <img style="height: 150px; object-fit: cover"
                      ng-src="https://picsum.photos/200/300/?image={{$index}}"
@@ -48,10 +48,34 @@
         </div>
     </md-content>
 </div>
-
+<!--Module-->
 <script src="/js/app.module.js"></script>
-<script src="/js/app.controller.js"></script>
 
+<!--Service-->
+<script src="/js/admin/account.service.js"></script>
+<script src="/js/service/alert.service.js"></script>
+<script src="/js/service/book-store.service.js"></script>
+
+<!--Controller-->
+<script src="/js/app.controller.js"></script>
+<script src="/js/admin/dashboard.controller.js"></script>
+<script src="/js/admin/account.controller.js"></script>
+<script src="/js/admin/book.controller.js"></script>
+<script src="/js/admin/bill.controller.js"></script>
+<script src="/js/admin/category.controller.js"></script>
+
+
+<script src="/js/customer/register.controller.js"></script>
+
+
+<script src="/js/common/profile.controller.js"></script>
+
+<script>
+    let link = window.location.href;
+    if (link.indexOf("admin") != -1 || link.indexOf("employee") != -1 || link.indexOf("login") != -1 || link.indexOf("register") != -1){
+        $("#navbar").remove();
+    }
+</script>
 
 <th:block layout:fragment="scripts">
 </th:block>

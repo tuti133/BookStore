@@ -1,6 +1,7 @@
 package ptit.htpt.bookstore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,11 +26,10 @@ public class Account implements Serializable {
     @Column(unique = true)
     private String username;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
     private String password;
 
-    @JsonIgnore
     @NotNull
     private Boolean activated;
 

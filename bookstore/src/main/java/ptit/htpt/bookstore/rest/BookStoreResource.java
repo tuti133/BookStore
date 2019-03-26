@@ -8,13 +8,13 @@ import ptit.htpt.bookstore.dto.ResponseDto;
 import ptit.htpt.bookstore.service.BookStoreService;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/bookStore/")
 public class BookStoreResource {
 
     @Autowired
     BookStoreService bookStoreService;
 
-    @GetMapping("get-all-store")
+    @GetMapping("getAll")
     public ResponseDto getAllStore(){
         return bookStoreService.getAllStore();
     }

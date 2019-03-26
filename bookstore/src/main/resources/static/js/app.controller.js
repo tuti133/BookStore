@@ -5,22 +5,39 @@
     AppController.$inject = ['$scope'];
 
     function AppController($scope) {
-        $scope.cartList = [];
-        $scope.storage = localStorage.getItem("cartList");
-        $scope.price = 100000;
-        if ($scope.storage != null){
-            $scope.cartList = $scope.storage.split(",").map(function (e) {
+        let vm = this;
+        vm.cartList = [];
+        vm.storage = localStorage.getItem("cartList");
+        vm.price = 100000;
+        if (vm.storage != null) {
+            vm.cartList = vm.storage.split(",").map(function (e) {
                 return parseInt(e);
             });
         }
-        $scope.addToCart = function (item) {
-            $scope.cartList.push(item);
-            localStorage.setItem("cartList", $scope.cartList);
+        vm.addToCart = function (item) {
+            vm.cartList.push(item);
+            localStorage.setItem("cartList", vm.cartList);
         }
 
-        $scope.clearList = function () {
+        vm.clearList = function () {
             localStorage.clear();
-            $scope.cartList = [];
+            vm.cartList = [];
         }
+
+        vm.account = {};
+        vm.username = "Menu"
+        $.ajax({
+            url: "/api/account/current",
+            type: "GET",
+            success: function (res) {
+                if (res.data != null)
+                    vm.account = res.data.account;
+                if (vm.account.firstName != null) {
+                    vm.username = vm.account.firstName + " " + vm.account.lastName;
+                } else {
+                    vm.username = vm.account.username;
+                }
+            }
+        })
     }
 })();

@@ -21,7 +21,7 @@
     -webkit-font-smoothing: antialiased;
 }
 
-md-card{
+#home md-card{
     cursor: pointer;
     transform: translateY(0);
     transition: all 0.4s ease-in-out;
@@ -45,10 +45,21 @@ md-card{
 }
 
 
-md-card:hover {
+#home md-card:hover {
     cursor: pointer;
     transform: translateY(-5px);
     box-shadow: 0 0 10px #333;
     cursor: pointer;
     position: relative;
+}
+
+md-toast.md-error-theme .md-toast-content {
+    /* background-color: #323232; */
+    background-color: #c55252;
+}
+
+md-toast.md-success-theme .md-toast-content {
+    /* background-color: rgb(63, 81, 181); */
+    background-color: #4CAF50;
+    /* background-color: #323232; */
 }

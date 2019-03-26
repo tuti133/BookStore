@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/dashboard}"
+      xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý tài khoản</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<div layout:fragment="admin-content" ng-controller="AccountController as vm">
+
+    <md-toolbar style="background-color: rgb(250,250,250);" class="md-table-toolbar md-default" layout="row"
+                layout-align="center center">
+        <div class="md-toolbar-tools">
+            <span>Quản lý tài khoản</span>
+        </div>
+        <div>
+            <md-button class="md-raised md-warn" ng-click="vm.createAccount($event)" style="color: rgb(255,255,255);">
+                Tạo
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content flex layout="column">
+        <md-card flex layout="column">
+            <md-table-container flex>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column><span>Id</span></th>
+                        <th md-column><span>Tên đăng nhập</span></th>
+                        <th md-column>Họ Tên</th>
+                        <th md-column>Email</th>
+                        <th md-column>SĐT</th>
+                        <th md-column>Quyền</th>
+                        <th md-column>Trạng thái</th>
+                        <th md-column></th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row ng-repeat="dto in vm.accountDtos">
+                        <td md-cell>
+                            {{dto.account.id}}
+                        </td>
+                        <td md-cell>
+                            {{dto.account.username}}
+                        </td>
+                        <td md-cell>
+                            {{dto.account.firstName}} {{dto.account.lastName}}
+                        </td>
+                        <td md-cell>
+                            {{dto.account.email}}
+                        </td>
+                        <td md-cell>
+                            {{dto.account.phone}}
+                        </td>
+                        <td md-cell>
+                            {{dto.role}}
+                        </td>
+                        <td md-cell>
+                            <label class="label label-danger" ng-show="!dto.account.activated">
+                                Khóa
+                            </label>
+                            <label class="label label-success" ng-show="dto.account.activated">
+                                Kích hoạt
+                            </label>
+                        </td>
+                        <td md-cell>
+                            <md-button class="md-raised" ng-click="vm.editAccount(dto)">Sửa</md-button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </md-card>
+    </md-content>
+</div>
+
+<th:block layout:fragment="scripts">
+</th:block>
+
+</html>

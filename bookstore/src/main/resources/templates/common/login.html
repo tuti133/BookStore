@@ -7,22 +7,48 @@
     <title>Đăng nhập</title>
 </head>
 <body>
-<div layout:fragment="content" class="container">
-    <div class="row" style="padding-top: 30px;">
-        <div class="col-md-4 col-md-offset-4">
-            <form name='f' action="login" method='POST'>
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" autofocus required>
+<div layout:fragment="content">
+    <div layout="row" layout-align="center center" flex style="background-color: #ddd" class="repeated-item">
+        <md-card style="width: 300px;">
+            <md-toolbar class="md-warn">
+                <div class="md-toolbar-tools">
+                    <h2>Đăng nhập</h2>
                 </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
-                </div>
-                <button class="btn btn-default" type="submit">Login</button>
-            </form>
-        </div>
+            </md-toolbar>
+            <md-card-content>
+                <form name="loginForm" action="login" method="POST">
+
+                    <md-input-container class="md-block">
+                        <label>Tên đăng nhập</label>
+                        <input id="username" type="text" required md-no-asterisk name="username">
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Mật khẩu</label>
+                        <input id="password" type="password" required md-no-asterisk name="password">
+                    </md-input-container>
+
+                    <div layout="row">
+                        <md-checkbox id="rememberMe" class="md-warn" name="rememberMe">
+                            Ghi nhớ
+                        </md-checkbox>
+                    </div>
+                    <div layout="row" style="padding-bottom: 20px">
+                         <a href="/">Trang chủ</a>
+                        <span flex></span>
+                        <a href="/register">Đăng ký</a>
+                    </div>
+                    <div th:if="${param.error}" class="alert alert-danger">
+                        <strong>Sai thông tin đăng nhập!</strong>
+                    </div>
+                    <md-button style="width: 100%; margin: 0" type="submit" flex class="md-raised md-warn">Xác nhận</md-button>
+
+                </form>
+            </md-card-content>
+
+        </md-card>
     </div>
 </div>
+<th:block layout:fragment="scripts">
+</th:block>
 </body>
 </html>
