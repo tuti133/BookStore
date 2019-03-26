@@ -1,4 +1,9 @@
 package ptit.htpt.bookstore.repository;
 
-public interface BillBookRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import ptit.htpt.bookstore.entity.BillBook;
+
+@Repository
+public interface BillBookRepository extends JpaRepository<BillBook, Long> {
 }

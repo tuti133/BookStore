@@ -33,7 +33,10 @@ public class Bill implements Serializable {
     private Long totalMoney;
 
     @NotNull
+    @Column(name = "employee_id")
+    private Long employeeId;
+
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", insertable = false, updatable = false)
     private Employee employee;
 }

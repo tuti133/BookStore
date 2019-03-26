@@ -20,13 +20,17 @@ public class BillBook implements Serializable {
     @NotNull
     private Long quantity;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "bill_id")
+    @JoinColumn(name = "bill_id", insertable = false, updatable = false)
     private Bill bill;
 
-    @NotNull
+    @Column(name = "bill_id")
+    private Long billId;
+
     @ManyToOne
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "book_id", insertable = false, updatable = false)
     private Book book;
+
+    @Column(name = "book_id")
+    private Long bookId;
 }

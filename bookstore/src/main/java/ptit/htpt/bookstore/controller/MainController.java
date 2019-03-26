@@ -1,8 +1,14 @@
 package ptit.htpt.bookstore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import ptit.htpt.bookstore.dto.EmployeeAccountDto;
+import ptit.htpt.bookstore.service.AccountService;
+import ptit.htpt.bookstore.service.BookService;
 import ptit.htpt.bookstore.service.InitialService;
 
 @Controller
@@ -10,8 +16,15 @@ public class MainController {
     @Autowired
     private InitialService initialService;
 
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private BookService bookService;
+
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("user", "toantm");
         return "index";
     }
 
@@ -69,18 +82,21 @@ public class MainController {
 
     //------------------------EMPLOYEE-----------------------------
     @GetMapping("/employee/sale")
-    public String sale() {
+    public String sale(Model model) {
+        EmployeeAccountDto dto = accountService.getCurrentEmployee();
+        model.addAttribute("user", dto.getFirstName() + " " + dto.getLastName());
+        model.addAttribute("sachList", bookService.getAll());
         return "/employee/sale";
     }
 
-    //------------------------CUSTOMER-----------------------------
-    @GetMapping("/history")
-    public String history(){
+
+    @GetMapping("history")
+    public String history() {
         return "customer/history";
     }
 
     @GetMapping("/order")
-    public String order(){
+    public String order() {
         return "customer/order";
     }
 

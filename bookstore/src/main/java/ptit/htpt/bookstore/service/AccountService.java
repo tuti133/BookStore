@@ -215,4 +215,56 @@ public class AccountService {
         }
         return new ResponseDto("0", "Success", results);
     }
+
+    public EmployeeAccountDto getEmployee(Long id) {
+        Account account = accountRepository.findById(id).get();
+        Employee employee = employeeRepository.findByAccount(account);
+        EmployeeAccountDto result = new EmployeeAccountDto();
+        result.setAccountId(account.getId());
+        result.setEmployeeId(employee.getId());
+        result.setUsername(account.getUsername());
+        result.setActivated(account.getActivated());
+        result.setFirstName(account.getFirstName());
+        result.setLastName(account.getLastName());
+        result.setEmail(account.getEmail());
+        result.setPhone(account.getPhone());
+        result.setSalary(employee.getSalary());
+        result.setWorkShift(employee.getWorkShift());
+        result.setBookStoreId(employee.getBookStore().getId());
+        return result;
+    }
+
+    public EmployeeAccountDto getCurrentEmployee() {
+        Account account = SecurityUtils.getCurrentUser();
+        Employee employee = employeeRepository.findByAccount(account);
+        EmployeeAccountDto result = new EmployeeAccountDto();
+        result.setAccountId(account.getId());
+        result.setEmployeeId(employee.getId());
+        result.setUsername(account.getUsername());
+        result.setActivated(account.getActivated());
+        result.setFirstName(account.getFirstName());
+        result.setLastName(account.getLastName());
+        result.setEmail(account.getEmail());
+        result.setPhone(account.getPhone());
+        result.setSalary(employee.getSalary());
+        result.setWorkShift(employee.getWorkShift());
+        result.setBookStoreId(employee.getBookStore().getId());
+        return result;
+    }
+
+    public CustomerAccountDto getCurrentCustomer() {
+        Account account = SecurityUtils.getCurrentUser();
+        Customer customer = customerRepository.findByAccount(account);
+        CustomerAccountDto result = new CustomerAccountDto();
+        result.setAccountId(account.getId());
+        result.setCustomerId(customer.getId());
+        result.setFirstName(account.getFirstName());
+        result.setLastName(account.getLastName());
+        result.setEmail(account.getEmail());
+        result.setPhone(account.getPhone());
+        result.setAddress(customer.getAddress());
+        result.setCreditNumber(customer.getCreditNumber());
+        result.setActivated(account.getActivated());
+        return result;
+    }
 }
