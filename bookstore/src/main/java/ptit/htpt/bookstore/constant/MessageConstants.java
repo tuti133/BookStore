@@ -11,4 +11,7 @@ public interface MessageConstants {
     String INCORRECT_OLD_PASS = "Old password is incorrect!";
     String PASSWORD_CHANGED = "Password has been changed!";
     String ERROR = "Something went wrong!";
+    String CATEGORY_EXIST = "Category is already exist!";
+    String CATEGORY_CREATED = "Category has been created successfully!";
+    String CATEGORY_UPDATED = "Category has been updated successfully!";
 }

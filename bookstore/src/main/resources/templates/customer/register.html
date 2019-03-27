@@ -63,7 +63,11 @@
                             <input ng-model="vm.accountDto.account.phone" name="phone" type="text" md-maxlength="50" required>
                         </md-input-container>
                     </div>
-
+                    <div layout="row" style="padding-bottom: 20px">
+                        <a href="/">Trang chủ</a>
+                        <span flex></span>
+                        <a href="/login">Đăng nhập</a>
+                    </div>
                     <md-button ng-click="vm.register()" ng-disabled="registerForm.$invalid || vm.isSaving" style="width: 100%; margin: 0" type="submit" flex class="md-raised md-warn">Xác nhận</md-button>
 
                 </form>

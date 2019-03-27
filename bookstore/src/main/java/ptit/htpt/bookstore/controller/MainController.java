@@ -6,10 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import ptit.htpt.bookstore.constant.AuthoritiesConstants;
 import ptit.htpt.bookstore.dto.EmployeeAccountDto;
+import ptit.htpt.bookstore.entity.Account;
 import ptit.htpt.bookstore.service.AccountService;
 import ptit.htpt.bookstore.service.BookService;
 import ptit.htpt.bookstore.service.InitialService;
+import ptit.htpt.bookstore.util.SecurityUtils;
 
 @Controller
 public class MainController {
@@ -23,9 +26,16 @@ public class MainController {
     private BookService bookService;
 
     @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("user", "toantm");
-        return "index";
+    public String index() {
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            return "redirect:/admin/dashboard";
+        } else {
+            if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.EMPLOYEE)) {
+                return "redirect:/employee/sale";
+            } else {
+                return "index";
+            }
+        }
     }
 
     @GetMapping("/login")
@@ -34,7 +44,7 @@ public class MainController {
     }
 
     @GetMapping("/password")
-    public String password(){
+    public String password() {
         return "common/password";
     }
 
@@ -44,7 +54,7 @@ public class MainController {
     }
 
     @GetMapping("profile")
-    public String profile(){
+    public String profile() {
         return "common/profile";
     }
 

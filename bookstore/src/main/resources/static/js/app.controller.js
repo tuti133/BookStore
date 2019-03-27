@@ -33,7 +33,7 @@
                 if (res.data != null)
                     vm.account = res.data.account;
                 if (vm.account.firstName != null) {
-                    vm.username = vm.account.firstName + " " + vm.account.lastName;
+                    vm.username = vm.account.firstName;
                 } else {
                     vm.username = vm.account.username;
                 }

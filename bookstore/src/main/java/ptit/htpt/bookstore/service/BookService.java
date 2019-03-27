@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.multipart.MultipartFile;
 import ptit.htpt.bookstore.dto.CreateBookDto;
 import ptit.htpt.bookstore.dto.ResponseDto;
 import ptit.htpt.bookstore.entity.Book;
@@ -37,26 +38,32 @@ public class BookService {
     return fileName.substring(fileName.lastIndexOf('.'));
   }
 
-  public ResponseDto save(CreateBookDto createBookDto) {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmsszz");
-    String fileName = sdf.format(new Date()) + getExtensionFile(createBookDto.getImage().getOriginalFilename());
-    try {
-      Files.createDirectories(Paths.get("/image"));
-      Files.copy(createBookDto.getImage().getInputStream(), Paths.get("/image", fileName));
-    } catch (IOException e) {
-      e.printStackTrace();
-      return new ResponseDto("1", e.getMessage(), null);
+  public ResponseDto save(Book book, MultipartFile image) {
+    Book result = new Book();
+    if (book.getId() != null){
+      result = bookRepository.findById(book.getId()).get();
     }
-    createBookDto.getImage();
-    Book book = new Book();
-    book.setImageUrl(Paths.get("/image", fileName).toString());
-    book.setAuthor(createBookDto.getAuthor());
-    book.setName(createBookDto.getName());
-    book.setDescription(createBookDto.getDescription());
-    book.setPrice(createBookDto.getPrice());
-    book.setPublishedYear(createBookDto.getPublishedYear());
-    book.setPublisher(createBookDto.getPublisher());
-    bookRepository.save(book);
-    return new ResponseDto("0", "success", null);
+
+    if (image != null){
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmsszz");
+      String fileName = sdf.format(new Date()) + getExtensionFile(image.getOriginalFilename());
+      result.setImageUrl(Paths.get("/image", fileName).toString());
+      try {
+        Files.createDirectories(Paths.get("/image"));
+        Files.copy(image.getInputStream(), Paths.get("/image", fileName));
+      } catch (IOException e) {
+        e.printStackTrace();
+        return new ResponseDto("1", e.getMessage(), null);
+      }
+    }
+
+    result.setAuthor(book.getAuthor());
+    result.setName(book.getName());
+    result.setDescription(book.getDescription());
+    result.setPrice(book.getPrice());
+    result.setPublishedYear(book.getPublishedYear());
+    result.setPublisher(book.getPublisher());
+    result.setCategory(book.getCategory());
+    return new ResponseDto("0", "Book saved successfully", bookRepository.save(result));
   }
 }

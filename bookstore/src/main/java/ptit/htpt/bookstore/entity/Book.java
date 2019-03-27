@@ -41,4 +41,8 @@ public class Book implements Serializable {
     private Long publishedYear;
 
     private Long favorite = 0L;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

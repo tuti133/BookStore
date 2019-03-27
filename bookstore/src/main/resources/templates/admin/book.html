@@ -8,7 +8,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <div layout:fragment="admin-content" ng-controller="BookController as vm">
-    <p>BookController</p>
+    <md-toolbar style="background-color: rgb(250,250,250);" class="md-table-toolbar md-default" layout="row"
+                layout-align="center center">
+        <div class="md-toolbar-tools">
+            <span>Quản lý sách</span>
+        </div>
+        <div>
+            <md-button class="md-raised md-warn" ng-click="vm.saveBook(vm.newBook)" style="color: rgb(255,255,255);">
+                Tạo
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content flex layout="column">
+        <md-card flex layout="column">
+            <md-table-container flex>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column><span>Id</span></th>
+                        <th md-column><span>Tên</span></th>
+                        <th md-column>Tác giả</th>
+                        <th md-column>Giá</th>
+                        <th md-column>Nhà xuất bản</th>
+                        <th md-column>Năm xuất bản</th>
+                        <th md-column>Like</th>
+                        <th md-column>Image</th>
+                        <th md-column></th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row ng-repeat="dto in vm.books">
+                        <td md-cell>
+                            {{dto.id}}
+                        </td>
+                        <td md-cell>
+                            {{dto.name}}
+                        </td>
+                        <td md-cell>
+                            {{dto.author}}
+                        </td>
+                        <td md-cell>
+                            {{dto.price}}
+                        </td>
+                        <td md-cell>
+                            {{dto.publisher}}
+                        </td>
+                        <td md-cell>
+                            {{dto.publishedYear}}
+                        </td>
+                        <td md-cell>
+                            {{dto.favorite}}
+                        </td>
+                        <td md-cell>
+                            {{dto.imageUrl}}
+                        </td>
+                        <td md-cell>
+                            <md-button class="md-raised" ng-click="vm.saveBook(dto)">Sửa</md-button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </md-card>
+    </md-content>
 </div>
 
 <th:block layout:fragment="scripts">

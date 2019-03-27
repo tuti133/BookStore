@@ -42,6 +42,8 @@
                 .then(function (response) {
                     AlertService.success(response.message, 2000);
                     loadAccount();
+                }, function (err) {
+                    
                 });
 
         }
@@ -90,6 +92,8 @@
                 .then(function (response) {
                     AlertService.success(response.message, 2000);
                     vm.accountDtos.push(response.data);
+                }, function (err) {
+                    
                 });
         };
 

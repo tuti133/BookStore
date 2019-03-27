@@ -1,0 +1,72 @@
+<md-dialog aria-label="UserDialog">
+    <form ng-cloak name="createBookForm" enctype="multipart/form-data">
+        <md-toolbar class="md-warn">
+            <div class="md-toolbar-tools">
+                <h2>Tạo hoặc cập nhật sách</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.cancel()">
+                    <md-icon class="material-icons" aria-label="Close dialog">clear</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content layout-padding>
+            <md-content md-no-momentum>
+                <div layout-gt-xs="row" ng-if="vm.accountDto.account.id == null">
+                    <md-input-container flex class="md-icon-float md-block" flex-gt-xs>
+                        <label>Tên</label>
+                        <input ng-model="vm.bookDto.name" md-autofocus name="name" type="text" required>
+                    </md-input-container>
+                    <md-input-container class="md-icon-float md-block" flex-gt-xs>
+                        <label>Tác giả</label>
+                        <input ng-model="vm.bookDto.author" name="author" type="text" required>
+                    </md-input-container>
+                </div>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-icon-float md-block" flex-gt-xs>
+                        <label>Giá</label>
+                        <input ng-model="vm.bookDto.price" name="price" type="number" required>
+                    </md-input-container>
+                    <md-input-container class="md-icon-float md-block" flex-gt-xs>
+                        <label>Nhà xuất bản</label>
+                        <input ng-model="vm.bookDto.publisher" name="publisher" type="text" required>
+                    </md-input-container>
+                </div>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-icon-float md-block" flex-gt-xs>
+                        <label>Năm xuất bản</label>
+                        <input ng-model="vm.bookDto.publishedYear" type="number" name="publishedYear" required>
+                    </md-input-container>
+
+                    <md-input-container class="md-icon-float md-block" flex-gt-xs>
+                        <label>Danh mục</label>
+                        <md-select ng-model="vm.bookDto.category" name="category" required>
+                            <md-option ng-value="category" ng-repeat="category in vm.categories"
+                                       ng-selected="{{vm.bookDto.category.id == category.id}}">{{category.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-icon-float md-block" flex-gt-xs>
+                        <label>Mô tả</label>
+                        <textarea ng-model="vm.bookDto.description" rows="3"></textarea>
+                    </md-input-container>
+                </div>
+                <div layout-gt-xs="row">
+                    <label>Hình minh họa: </label>
+                    <input id="image" type="file" accept="image/x-png,image/gif,image/jpeg" required>
+                </div>
+            </md-content>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button ng-click="vm.cancel()">
+                Hủy
+            </md-button>
+            <md-button ng-click="vm.save()" ng-disabled="createBookForm.$invalid || vm.isSaving"
+                       class="md-raised md-warn">
+                Lưu
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
