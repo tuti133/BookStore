@@ -49,8 +49,8 @@ public class BookService {
       String fileName = sdf.format(new Date()) + getExtensionFile(image.getOriginalFilename());
       result.setImageUrl(Paths.get("/image", fileName).toString());
       try {
-        Files.createDirectories(Paths.get("/image"));
-        Files.copy(image.getInputStream(), Paths.get("/image", fileName));
+        Files.createDirectories(Paths.get("image"));
+        Files.copy(image.getInputStream(), Paths.get("image", fileName));
       } catch (IOException e) {
         e.printStackTrace();
         return new ResponseDto("1", e.getMessage(), null);
