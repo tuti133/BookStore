@@ -27,6 +27,6 @@ public class BuyBook implements Serializable {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "book_id")
-    private Book book;
+    @JoinColumn(name = "book_quantity_id")
+    private BookQuantity bookQuantity;
 }

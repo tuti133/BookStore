@@ -38,11 +38,6 @@ public class Buy {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "book_store_id")
-    private BookStore bookStore;
-
-    @NotNull
-    @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
