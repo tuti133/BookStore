@@ -14,56 +14,77 @@ import org.springframework.web.multipart.MultipartFile;
 import ptit.htpt.bookstore.dto.CreateBookDto;
 import ptit.htpt.bookstore.dto.ResponseDto;
 import ptit.htpt.bookstore.entity.Book;
+import ptit.htpt.bookstore.entity.BookQuantity;
+import ptit.htpt.bookstore.entity.BookStore;
+import ptit.htpt.bookstore.repository.BookQuantityRepository;
 import ptit.htpt.bookstore.repository.BookRepository;
+import ptit.htpt.bookstore.repository.BookStoreRepository;
 
 @Service
 public class BookService {
-  @Autowired
-  private BookRepository bookRepository;
+    @Autowired
+    private BookRepository bookRepository;
 
-  public List<Book> getAll() {
-    return bookRepository.findAll();
-  }
+    @Autowired
+    private BookQuantityRepository bookQuantityRepository;
 
-  public Book findById(long id) {
-    return bookRepository.findById(id).orElse(null);
-  }
+    @Autowired
+    private BookStoreRepository bookStoreRepository;
 
-  public ResponseDto update(Book book) {
-    bookRepository.save(book);
-    return new ResponseDto("0", "success", null);
-  }
-
-  private String getExtensionFile(String fileName) {
-    return fileName.substring(fileName.lastIndexOf('.'));
-  }
-
-  public ResponseDto save(Book book, MultipartFile image) {
-    Book result = new Book();
-    if (book.getId() != null){
-      result = bookRepository.findById(book.getId()).get();
+    public List<Book> getAll() {
+        return bookRepository.findAll();
     }
 
-    if (image != null){
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmsszz");
-      String fileName = sdf.format(new Date()) + getExtensionFile(image.getOriginalFilename());
-      result.setImageUrl(Paths.get("/image", fileName).toString());
-      try {
-        Files.createDirectories(Paths.get("image"));
-        Files.copy(image.getInputStream(), Paths.get("image", fileName));
-      } catch (IOException e) {
-        e.printStackTrace();
-        return new ResponseDto("1", e.getMessage(), null);
-      }
+    public Book findById(long id) {
+        return bookRepository.findById(id).orElse(null);
     }
 
-    result.setAuthor(book.getAuthor());
-    result.setName(book.getName());
-    result.setDescription(book.getDescription());
-    result.setPrice(book.getPrice());
-    result.setPublishedYear(book.getPublishedYear());
-    result.setPublisher(book.getPublisher());
-    result.setCategory(book.getCategory());
-    return new ResponseDto("0", "Book saved successfully", bookRepository.save(result));
-  }
+    private String getExtensionFile(String fileName) {
+        return fileName.substring(fileName.lastIndexOf('.'));
+    }
+
+    public ResponseDto save(Book book, MultipartFile image) {
+        Book entity = new Book();
+        if (book.getId() != null) {
+            entity = bookRepository.findById(book.getId()).get();
+        }
+
+        if (image != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmsszz");
+            String fileName = sdf.format(new Date()) + getExtensionFile(image.getOriginalFilename());
+            entity.setImageUrl(Paths.get("/image", fileName).toString());
+            try {
+                Files.createDirectories(Paths.get("image"));
+                Files.copy(image.getInputStream(), Paths.get("image", fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new ResponseDto("1", e.getMessage(), null);
+            }
+        }
+
+        entity.setAuthor(book.getAuthor());
+        entity.setName(book.getName());
+        entity.setDescription(book.getDescription());
+        entity.setPrice(book.getPrice());
+        entity.setPublishedYear(book.getPublishedYear());
+        entity.setPublisher(book.getPublisher());
+        entity.setCategory(book.getCategory());
+
+
+        Book result = bookRepository.save(entity);
+
+        // init book quantity for all store
+        if (book.getId() == null) {
+            List<BookStore> listBs = bookStoreRepository.findAll();
+            for (BookStore bs : listBs) {
+                BookQuantity bq = new BookQuantity();
+                bq.setBook(result);
+                bq.setBookStore(bs);
+                bq.setQuantity(0L);
+                bookQuantityRepository.save(bq);
+            }
+        }
+
+        return new ResponseDto("0", "Book saved successfully", result);
+    }
 }

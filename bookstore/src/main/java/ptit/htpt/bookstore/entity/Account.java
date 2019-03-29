@@ -33,10 +33,10 @@ public class Account implements Serializable {
     @NotNull
     private Boolean activated;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", columnDefinition = "nvarchar(50)")
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", columnDefinition = "nvarchar(50)")
     private String lastName;
 
     private String gender;

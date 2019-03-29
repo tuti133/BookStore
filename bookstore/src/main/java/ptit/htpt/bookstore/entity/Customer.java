@@ -17,6 +17,7 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "nvarchar(500)")
     private String address;
 
     @Column(name = "credit_number")

@@ -44,9 +44,11 @@
                 vm.isSaving = true;
                 console.log(vm.accountDto);
                 AccountService.create(vm.accountDto).done(function (response) {
-                    console.log(response);
-                    AlertService.success(response.message, 2000);
-                    setInterval(function(){ location.href = "/login"; }, 2000);
+                    if (response.errorCode == 0){
+                        AlertService.success(response.message, 2000);
+                        setInterval(function(){ location.href = "/login"; }, 2000);
+                    }
+                    else AlertService.error(response.message, 2000);
                 });
             }
         }

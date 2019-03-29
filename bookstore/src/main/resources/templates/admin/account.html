@@ -31,6 +31,7 @@
                         <th md-column>Họ Tên</th>
                         <th md-column>Email</th>
                         <th md-column>SĐT</th>
+                        <th md-column>Ngày tạo</th>
                         <th md-column>Quyền</th>
                         <th md-column>Trạng thái</th>
                         <th md-column></th>
@@ -54,7 +55,19 @@
                             {{dto.account.phone}}
                         </td>
                         <td md-cell>
-                            {{dto.role}}
+                            {{dto.account.createdDate | date: "dd/MM/yy"}}
+                        </td>
+                        <td md-cell>
+                            <span ></span>
+                            <label class="label label-info" ng-if="dto.role == 'ROLE_ADMIN'">
+                                Admin
+                            </label>
+                            <label class="label label-info" ng-if="dto.role == 'ROLE_EMPLOYEE'">
+                                Employee
+                            </label>
+                            <label class="label label-info" ng-if="dto.role == 'ROLE_CUSTOMER'">
+                                Customer
+                            </label>
                         </td>
                         <td md-cell>
                             <label class="label label-danger" ng-show="!dto.account.activated">

@@ -24,7 +24,17 @@ public class CategoryService {
 
     public ResponseDto update(Category category) {
         Category check = categoryRepository.findByName(category.getName());
-        if (check != null && !check.getName().equals(category.getName())) return new ResponseDto("1", MessageConstants.CATEGORY_EXIST, null);
+        if (check != null && check.getId() != category.getId())
+            return new ResponseDto("1", MessageConstants.CATEGORY_EXIST, null);
         return new ResponseDto("0", MessageConstants.CATEGORY_UPDATED, categoryRepository.save(category));
+    }
+
+    public ResponseDto delete(Category category) {
+        try {
+            categoryRepository.delete(category);
+        } catch (Exception e) {
+            return new ResponseDto("1", MessageConstants.CATEGORY_DELETE_FAIL, e);
+        }
+        return new ResponseDto("0", MessageConstants.CATEGORY_DELETED, null);
     }
 }

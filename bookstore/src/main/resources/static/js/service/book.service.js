@@ -4,13 +4,14 @@
         .module('BookStoreApp')
         .factory('BookService', BookService);
 
-    BookService.$inject = [];
+    BookService.$inject = ["$rootScope"];
 
-    function BookService() {
+    function BookService($rootScope) {
         let service = {
             get: get,
             getAll: getAll,
-            save: save
+            save: save,
+            addToCart: addToCart
         }
 
         return service;
@@ -41,6 +42,10 @@
                 },
                 data: dto,
             })
+        }
+
+        function addToCart(book) {
+            $rootScope.$broadcast('ADD_TO_CART', book);
         }
     }
 })();

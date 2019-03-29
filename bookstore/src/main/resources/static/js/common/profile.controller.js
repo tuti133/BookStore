@@ -2,9 +2,9 @@
     'use strict'
     angular.module("BookStoreApp")
         .controller("ProfileController", ProfileController)
-    ProfileController.$inject = ["$scope", "$mdDialog"];
+    ProfileController.$inject = ["$scope", "$mdDialog", "AlertService"];
 
-    function ProfileController($scope, $mdDialog) {
+    function ProfileController($scope, $mdDialog, AlertService) {
         let vm = this;
         vm.account = {};
         vm.employee = {};
@@ -18,7 +18,6 @@
                 url: "/api/account/current",
                 method: "GET",
                 success: function (response) {
-                    console.log(response);
                     vm.role = response.data.role;
                     vm.account = response.data.account;
                     vm.customer = response.data.customer;
@@ -39,9 +38,14 @@
                     employee: vm.employee,
                     customer: vm.customer
                 }),
-                success: function (data) {
-                    console.log(data);
-                    location.reload();
+                success: function (response) {
+                    if (response.errorCode == 0){
+                        AlertService.success(response.message, 2000, "bottom right");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    }
+                    else AlertService.error(response.message, 2000, "bottom right");
                 }
             })
         }

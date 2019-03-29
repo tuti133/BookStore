@@ -58,20 +58,16 @@ public class InitialService {
 
     void initCategory() {
         Category c1 = new Category(CategoryConstants.COMIC);
-        Category c2 = new Category(CategoryConstants.EDUCATION);
-        Category c3 = new Category(CategoryConstants.LONG_STORY);
-        Category c4 = new Category(CategoryConstants.LOVE_STORY);
-        Category c5 = new Category(CategoryConstants.SHORT_STORY);
-        Category c6 = new Category(CategoryConstants.SKILL);
-        Category c7 = new Category(CategoryConstants.TECHNOLOGY);
+        Category c2 = new Category(CategoryConstants.SPORT);
+        Category c3 = new Category(CategoryConstants.SKILL);
+        Category c4 = new Category(CategoryConstants.LANGUAGE);
+        Category c5 = new Category(CategoryConstants.TECHNOLOGY);
 
         categoryRepository.save(c1);
         categoryRepository.save(c2);
         categoryRepository.save(c3);
         categoryRepository.save(c4);
         categoryRepository.save(c5);
-        categoryRepository.save(c6);
-        categoryRepository.save(c7);
     }
 
     void initAccount() {
@@ -81,6 +77,8 @@ public class InitialService {
 
         Account admin = new Account();
         admin.setUsername("admin");
+        admin.setFirstName("Admin");
+        admin.setLastName("Admin");
         admin.setPassword(passwordEncoder.encode("admin"));
         admin.setGender(GenderConstants.MALE);
         HashSet<Authority> auth1 = new HashSet<>();
@@ -95,6 +93,8 @@ public class InitialService {
 
         Account employee = new Account();
         employee.setUsername("employee");
+        employee.setFirstName("Employee");
+        employee.setLastName("Employee");
         employee.setPassword(passwordEncoder.encode("employee"));
         employee.setGender(GenderConstants.FEMALE);
         employee.setActivated(true);
@@ -113,6 +113,8 @@ public class InitialService {
 
         Account customer = new Account();
         customer.setUsername("customer");
+        customer.setFirstName("Customer");
+        customer.setLastName("Customer");
         customer.setActivated(true);
         customer.setPassword(passwordEncoder.encode("customer"));
         customer.setGender(GenderConstants.OTHER);

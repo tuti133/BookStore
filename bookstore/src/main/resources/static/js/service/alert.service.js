@@ -7,21 +7,16 @@
     AlertService.$inject = ["$mdToast"];
 
     function AlertService($mdToast) {
-        let position = "top right";
         let service = {
-            setPosition: setPosition,
             success: success,
             error: error,
         }
 
         return service;
 
-        function setPosition(pos) {
-            position = pos;
-        }
+        function success(message, delay, pos) {
+            let position = pos == null ? "top right" : pos;
 
-
-        function success(message, delay) {
             let toast = $mdToast.simple()
                 .textContent(message)
                 .toastClass("text-center")
@@ -32,7 +27,8 @@
             });
         }
 
-        function error(message, delay) {
+        function error(message, delay, pos) {
+            let position = pos == null ? "top right" : pos;
             let toast = $mdToast.simple()
                 .textContent(message)
                 .toastClass("text-center")

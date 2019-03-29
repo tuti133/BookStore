@@ -24,28 +24,31 @@
 <div th:replace="layout/navbar :: navbar"></div>
 <div layout:fragment="content" layout="column" flex>
     <md-content layout="row" flex layout-wrap>
-        <div id="home" ng-repeat="i in [0,1,2,3,4,5,6,7,8,9,10]" flex="20">
-            <md-card>
-                <img style="height: 150px; object-fit: cover"
-                     ng-src="https://picsum.photos/200/300/?image={{$index}}"
-                     class="md-card-image" alt="Washed Out">
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">Sách {{i}}</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-content>
-                    <p>
-                        The titles of Washed Out's breakthrough song and the first single from Paracosm share the...
-                    </p>
-                </md-card-content>
-                <md-card-actions layout="row" layout-align="end center">
-                    <md-button ng-click="addToCart(i)" class="md-warn" aria-label="Use Android" flex>
-                        <h4>{{price | currency:'$':0 }}</h4>
-                    </md-button>
-                </md-card-actions>
-            </md-card>
+        <div flex="10"></div>
+        <div flex layout="row" layout-wrap>
+            <div id="home" ng-repeat="book in vm.books" flex="20">
+                <a ng-href="/book/{{book.id}}" style="margin: 0; padding: 0; text-decoration: none">
+                    <md-card>
+                        <img style="height: 200px; object-fit: cover"
+                             ng-src="{{book.imageUrl}}"
+                             class="md-card-image" alt="Washed Out">
+
+                        <md-card-content class="text-center">
+                        <span style="font-size: 10pt; font-weight: 600;">
+                            <span title="{{book.name}}">{{book.name | limitTo: 20}}</span>
+                            <span ng-if="book.name.length > 20">...</span>
+                        </span>
+                        </md-card-content>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-warn" aria-label="book" flex>
+                                <p><h4>{{book.price | currency:'':0 }} VND</h4></p>
+                            </md-button>
+                        </md-card-actions>
+                    </md-card>
+                </a>
+            </div>
         </div>
+        <div flex="10"></div>
     </md-content>
 </div>
 <!--Module-->
@@ -65,6 +68,9 @@
 <script src="/js/admin/book.controller.js"></script>
 <script src="/js/admin/bill.controller.js"></script>
 <script src="/js/admin/category.controller.js"></script>
+<script src="/js/admin/book-quantity.controller.js"></script>
+
+<script src="/js/book/book-detail.controller.js"></script>
 
 
 <script src="/js/customer/register.controller.js"></script>
@@ -74,7 +80,7 @@
 
 <script>
     let link = window.location.href;
-    if (link.indexOf("admin") != -1 || link.indexOf("employee") != -1 || link.indexOf("login") != -1 || link.indexOf("register") != -1){
+    if (link.indexOf("admin") != -1 || link.indexOf("employee") != -1 || link.indexOf("login") != -1 || link.indexOf("register") != -1) {
         $("#navbar").remove();
     }
 </script>

@@ -10,7 +10,8 @@
         let service = {
             getAll: getAll,
             create: create,
-            update: update
+            update: update,
+            deleteCategory: deleteCategory
         }
 
         return service;
@@ -34,6 +35,15 @@
         function update(dto) {
             return $.ajax({
                 url: "/api/category/update",
+                method: "POST",
+                contentType: "application/json; charset:utf-8",
+                data: JSON.stringify(dto),
+            })
+        }
+
+        function deleteCategory(dto) {
+            return $.ajax({
+                url: "/api/category/delete",
                 method: "POST",
                 contentType: "application/json; charset:utf-8",
                 data: JSON.stringify(dto),

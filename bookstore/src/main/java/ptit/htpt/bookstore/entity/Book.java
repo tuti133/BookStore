@@ -20,20 +20,24 @@ public class Book implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(columnDefinition = "nvarchar(100)")
     private String name;
 
     @NotNull
+    @Column(columnDefinition = "nvarchar(100)")
     private String author;
 
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(columnDefinition = "nvarchar(999)")
     private String description;
 
     @NotNull
     private Long price;
 
     @NotNull
+    @Column(columnDefinition = "nvarchar(100)")
     private String publisher;
 
     @NotNull

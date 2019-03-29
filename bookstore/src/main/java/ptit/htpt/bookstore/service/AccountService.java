@@ -44,12 +44,11 @@ public class AccountService {
     }
 
     private String validateUpdateAccount(Account account) {
-        Account current = accountRepository.findById(account.getId()).get();
         Account check;
         check = accountRepository.findByEmail(account.getEmail());
-        if (check != null && !check.getEmail().equals(current.getEmail())) return MessageConstants.EMAIL_EXIST;
+        if (check != null && check.getId() != account.getId()) return MessageConstants.EMAIL_EXIST;
         check = accountRepository.findByPhone(account.getPhone());
-        if (check != null && !check.getPhone().equals(current.getPhone())) return MessageConstants.PHONE_EXIST;
+        if (check != null && check.getId() != account.getId()) return MessageConstants.PHONE_EXIST;
         return null;
     }
 

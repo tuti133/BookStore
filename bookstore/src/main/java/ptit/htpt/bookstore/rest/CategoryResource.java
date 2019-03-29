@@ -27,4 +27,9 @@ public class CategoryResource {
         return categoryService.update(category);
     }
 
+    @PostMapping("delete")
+    public ResponseDto delete(@RequestBody Category category){
+        return categoryService.delete(category);
+    }
+
 }

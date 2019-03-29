@@ -8,8 +8,88 @@
     <title>Đặt hàng</title>
 </head>
 <body>
-<div layout:fragment="content" class="container">
-
+<div layout:fragment="content" class="container" ng-controller="OrderController as vm">
+    <md-content flex layout="column">
+        <div ng-repeat="item in vm.cartList" layout="row">
+            <md-card layout="row" style="height: auto; width: 100%" layout-padding>
+                <img style="width: 70px; height: 100px; object-fit: cover" ng-src="{{item.book.imageUrl}}">
+                <div>
+                    <p>{{item.book.name}}</p>
+                    <div class="form-group" style="width: 70px">
+                        <input class="form-control" type="number" ng-model="item.quantity">
+                    </div>
+                </div>
+            </md-card>
+        </div>
+    </md-content>
+    <div layout="column">
+        <div class="form-group">
+            <label>Địa chỉ nhận hàng:</label>
+            <textarea ng-model="vm.createBuyDto.shipAddress" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Ghi chú</label>
+            <textarea ng-model="vm.createBuyDto.note" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="text-center">
+            <md-button ng-click="vm.order()" class="md-raised md-warn">
+                Xác nhận thanh toán
+            </md-button>
+        </div>
+    </div>
 </div>
 </body>
+
+<th:block layout:fragment="scripts">
+    <script>
+        (function () {
+            'use strict'
+            angular.module("BookStoreApp")
+                .controller("OrderController", OrderController)
+            OrderController.$inject = ["AlertService"];
+
+            function OrderController(AlertService) {
+                let vm = this;
+                vm.order = order;
+
+                vm.createBuyDto = {
+                    shipAddress: null,
+                    note: null,
+                    totalMoney: null,
+                    customerId: null,
+                    buyBookDtoList: null
+                }
+
+
+                vm.cartList = [];
+                let storage = localStorage.getItem("cartList");
+                if (storage != null) {
+                    vm.cartList = JSON.parse(storage);
+                }
+
+                function order() {
+                    console.log(vm.createBuyDto);
+                    console.log(vm.cartList);
+                    vm.createBuyDto.buyBookDtoList = vm.cartList;
+                    let totalMoney = 0;
+                    vm.cartList.forEach(item => {
+                        totalMoney += item.quantity * item.book.price;
+                    })
+                    vm.createBuyDto.totalMoney = totalMoney;
+                    $.ajax({
+                        url: "/api/buy",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(vm.createBuyDto),
+                        success: function () {
+                            AlertService.success("Đặt hàng thành công!", 2000);
+                            localStorage.clear();
+                        }
+                    })
+                }
+            }
+        })();
+    </script>
+</th:block>
+
 </html>

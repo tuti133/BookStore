@@ -21,9 +21,9 @@
             <div flex>
                 <md-menu layout="row" layout-align="end center" sec:authorize="!hasAnyRole('EMPLOYEE', 'ADMIN')">
                     <md-button ng-click="$mdMenu.open($event)" style="outline: 1px dashed"
-                               ng-disabled="cartList.length == 0">
+                               ng-disabled="vm.cartList.length == 0">
                         <md-icon class="material-icons">shopping_cart</md-icon>
-                        <span ng-if="cartList.length != 0" class="badge">{{cartList.length}}</span>
+                        <span ng-if="vm.cartList.length != 0" class="badge">{{vm.cartList.length}}</span>
                     </md-button>
                     <md-menu-content width="4">
                         <md-menu-item>
@@ -31,13 +31,13 @@
                                 <span>Thanh Toán</span>
                             </md-button>
                         </md-menu-item>
-                        <md-menu-item ng-repeat="i in cartList">
-                            <md-button>
-                                <span>{{i}}</span>
+                        <md-menu-item ng-repeat="i in vm.cartList track by i.bookId">
+                            <md-button layout="row">
+                                <span>{{i.quantity}} x <img style="height: 40px; width: 30px; object-fit: cover; margin: 5px; border: 2px dashed #ddd" ng-src="{{i.book.imageUrl}}"> {{i.book.name}}</span>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button class="md-warn" ng-click="clearList()">
+                            <md-button class="md-warn" ng-click="vm.clearList()">
                                 <span>Xóa Hết</span>
                             </md-button>
                         </md-menu-item>
@@ -57,12 +57,12 @@
 
                         <md-menu-content sec:authorize="!isAuthenticated()">
                             <md-menu-item>
-                                <md-button href="login">
+                                <md-button href="/login">
                                     <span>Đăng nhập</span>
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
-                                <md-button href="register">
+                                <md-button href="/register">
                                     <span>Đăng ký</span>
                                 </md-button>
                             </md-menu-item>

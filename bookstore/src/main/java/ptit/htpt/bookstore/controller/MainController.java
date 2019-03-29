@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import ptit.htpt.bookstore.constant.AuthoritiesConstants;
 import ptit.htpt.bookstore.dto.EmployeeAccountDto;
 import ptit.htpt.bookstore.entity.Account;
@@ -85,6 +86,11 @@ public class MainController {
         return "/admin/book";
     }
 
+    @GetMapping("/admin/book-quantity")
+    public String manageBookQuantity() {
+        return "/admin/book-quantity";
+    }
+
     @GetMapping("/admin/bill")
     public String manageBill() {
         return "/admin/bill";
@@ -113,6 +119,11 @@ public class MainController {
     @GetMapping("/register")
     public String register() {
         return "customer/register";
+    }
+
+    @GetMapping("/book/{id}")
+    public String bookDetail(@PathVariable Long id) {
+        return "/book/book-detail";
     }
 
 }

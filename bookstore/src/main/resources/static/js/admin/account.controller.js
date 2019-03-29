@@ -12,6 +12,9 @@
         function loadAccount() {
             AccountService.getAll().done(function (e) {
                 vm.accountDtos = e.data;
+                vm.accountDtos.forEach(dto => {
+                    dto.account.createdDate = new Date(dto.account.createdDate);
+                })
             })
 
             BookStoreService.getAll().done(function (e) {
@@ -32,7 +35,9 @@
                 fullscreen: true,
                 resolve: {
                     accountDto: function () {
-                        return JSON.parse(JSON.stringify(dto));
+                        let update = JSON.parse(JSON.stringify(dto));
+                        update.account.createdDate = new Date(update.account.createdDate).getTime();
+                        return update;
                     },
                     bookStores: function () {
                         return vm.bookStores
@@ -40,8 +45,11 @@
                 }
             })
                 .then(function (response) {
-                    AlertService.success(response.message, 2000);
-                    loadAccount();
+                    if (response.errorCode == 0){
+                        AlertService.success(response.message, 2000);
+                        loadAccount();
+                    }
+                    else AlertService.error(response.message, 2000);
                 }, function (err) {
                     
                 });
@@ -90,8 +98,12 @@
                 }
             })
                 .then(function (response) {
-                    AlertService.success(response.message, 2000);
-                    vm.accountDtos.push(response.data);
+                    if (response.errorCode == 0){
+                        AlertService.success(response.message, 2000);
+                        vm.accountDtos.push(response.data);
+                    }
+                    else AlertService.error(response.message, 2000);
+
                 }, function (err) {
                     
                 });

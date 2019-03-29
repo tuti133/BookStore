@@ -22,7 +22,7 @@ public class Buy {
     private Long createdDate;
 
     @NotNull
-    @Column(name = "ship_address")
+    @Column(name = "ship_address", columnDefinition = "nvarchar(500)")
     private String shipAddress;
 
     @Column(name = "payment_method")
@@ -30,6 +30,7 @@ public class Buy {
 
     private String status;
 
+    @Column(columnDefinition = "nvarchar(500)")
     private String note;
 
     @NotNull

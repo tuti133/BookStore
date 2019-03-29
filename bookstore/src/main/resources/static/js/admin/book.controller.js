@@ -17,7 +17,10 @@
             publisher: null,
             publishedYear: null,
             favorite: 0,
-            category: null,
+            category: {
+                id: 3,
+                name: "SKILL"
+            }
         }
 
         function loadData() {
@@ -42,8 +45,11 @@
                     }
                 }
             }).then(function (response) {
-                AlertService.success(response.message, 2000);
-                loadData();
+                if (response.errorCode == 0){
+                    AlertService.success(response.message, 2000);
+                    loadData();
+                }
+                else AlertService.error(response.message, 2000);
             }, function (err) {
 
             });

@@ -9,6 +9,8 @@ import ptit.htpt.bookstore.entity.*;
 import ptit.htpt.bookstore.repository.BookQuantityRepository;
 import ptit.htpt.bookstore.repository.BuyBookRepository;
 import ptit.htpt.bookstore.repository.BuyRepository;
+import ptit.htpt.bookstore.repository.CustomerRepository;
+import ptit.htpt.bookstore.util.SecurityUtils;
 
 import javax.transaction.Transactional;
 import java.text.DateFormat;
@@ -24,6 +26,9 @@ public class BuyService {
     @Autowired
     private BookQuantityRepository bookQuantityRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     @Transactional
     public ResponseDto buy(CreateBuyDto dto) {
         Buy buy = new Buy();
@@ -34,8 +39,7 @@ public class BuyService {
         buy.setStatus("1");
         buy.setTotalMoney(dto.getTotalMoney());
         buy.setStatus("1");
-        Customer customer = new Customer();
-        customer.setId(dto.getCustomerId());
+        Customer customer = customerRepository.findByAccount(SecurityUtils.getCurrentUser());
         buy.setCustomer(customer);
         buy = buyRepository.save(buy);
         for (BuyBookDto buyBookDto : dto.getBuyBookDtoList()) {

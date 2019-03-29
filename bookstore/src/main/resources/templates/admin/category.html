@@ -8,7 +8,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <div layout:fragment="admin-content" ng-controller="CategoryController as vm">
-    <p>CategoryController</p>
+    <md-toolbar style="background-color: rgb(250,250,250);" class="md-table-toolbar md-default" layout="row"
+                layout-align="center center">
+        <div class="md-toolbar-tools">
+            <span>Quản lý danh mục</span>
+        </div>
+        <div>
+            <md-button class="md-raised md-warn" ng-click="vm.create()" style="color: rgb(255,255,255);">
+                Tạo
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content flex layout="column">
+        <md-card flex layout="column">
+        <md-table-container flex>
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-column><span>Id</span></th>
+                    <th md-column><span>Tên danh mục</span></th>
+                    <th md-column></th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="category in vm.categories">
+                    <td md-cell>
+                        {{category.id}}
+                    </td>
+                    <td md-cell width="70%">
+                        {{category.name}}
+                    </td>
+                    <td md-cell>
+                        <md-button class="md-raised" ng-click="vm.edit(category)">Sửa</md-button>
+                        <md-button class="md-raised md-accent" ng-click="vm.deleteCat(category)">Xóa</md-button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        </md-card>
+    </md-content>
 </div>
 
 <th:block layout:fragment="scripts">

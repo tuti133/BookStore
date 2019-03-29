@@ -17,6 +17,7 @@ public class BookStore {
     private Long id;
 
     @NotNull
+    @Column(columnDefinition = "nvarchar(100)")
     private String name;
 
     @NotNull
