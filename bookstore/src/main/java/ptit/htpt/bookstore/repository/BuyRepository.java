@@ -10,4 +10,8 @@ import java.util.List;
 @Repository
 public interface BuyRepository extends JpaRepository<Buy, Long> {
     List<Buy> findAllByCustomer(Customer customer);
+
+    List<Buy> getByCreatedDateGreaterThanEqualAndCreatedDateLessThanAndStatus(Long from, Long to, String status);
+
+    List<Buy> findByStatus(String status);
 }

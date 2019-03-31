@@ -26,17 +26,28 @@ public class BuyResource {
     }
 
     @GetMapping("buy/getAll")
-    public ResponseDto getAll(){
+    public ResponseDto getAll() {
         return buyService.getAll();
     }
 
+    @PostMapping("buy/update/{id}")
+    public ResponseDto updateStatus(@PathVariable("id") Long id, @RequestParam String status) {
+        return buyService.updateStatus(id, status);
+    }
+
+    @GetMapping("buy/getByType")
+    //type= 0 getall
+    public ResponseDto getByType(@RequestParam("type") String type) {
+        return buyService.getByType(type);
+    }
+
     @GetMapping("buy/getByCustomer")
-    public ResponseDto getByCustomer(@RequestParam Long customerId){
+    public ResponseDto getByCustomer(@RequestParam Long customerId) {
         return buyService.getByCustomer(customerId);
     }
 
     @GetMapping("buy/getByCurrentUser")
-    public ResponseDto getByCurrentUser(){
+    public ResponseDto getByCurrentUser() {
         Account account = SecurityUtils.getCurrentUser();
         Customer customer = customerRepository.findByAccount(account);
         return getByCustomer(customer.getId());
