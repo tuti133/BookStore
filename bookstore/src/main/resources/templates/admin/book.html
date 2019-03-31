@@ -45,7 +45,7 @@
                             {{dto.id}}
                         </td>
                         <td md-cell>
-                            <img style="height: 60px; width: 50px; object-fit: cover; margin: 10px; border: 2px dashed #ddd" ng-src="{{dto.imageUrl}}">
+                            <img style="height: 60px; width: 50px; object-fit: cover; margin: 10px; border: 2px dashed #ddd" ng-src="{{dto.imageUrl != null ? dto.imageUrl : '/images/no-image.png'}}">
                         </td>
                         <td md-cell>
                             {{dto.name}}

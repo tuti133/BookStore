@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import ptit.htpt.bookstore.constant.AuthoritiesConstants;
 import ptit.htpt.bookstore.dto.EmployeeAccountDto;
 import ptit.htpt.bookstore.entity.Account;
+import ptit.htpt.bookstore.repository.BuyRepository;
 import ptit.htpt.bookstore.service.AccountService;
 import ptit.htpt.bookstore.service.BookService;
 import ptit.htpt.bookstore.service.InitialService;
@@ -25,6 +26,9 @@ public class MainController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private BuyRepository buyRepository;
 
     @GetMapping("/")
     public String index() {
@@ -109,6 +113,14 @@ public class MainController {
     @GetMapping("history")
     public String history() {
         return "customer/history";
+    }
+
+    @GetMapping("/order/success/{id}")
+    public String orderSuccess(@PathVariable Long id) {
+        if(buyRepository.findById(id).isPresent() == false){
+            return "/common/404";
+        }
+        return "common/order-success";
     }
 
     @GetMapping("/order")

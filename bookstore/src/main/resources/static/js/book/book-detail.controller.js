@@ -8,9 +8,8 @@
         let vm = this;
         let url = window.location.href
         let arr = url.split("/");
-        let bookId = arr[arr.length-1];
+        let bookId = arr[arr.length - 1];
         vm.book = null;
-        vm.add = add;
 
         vm.cartItem = {
             bookId: bookId,
@@ -19,24 +18,48 @@
             book: null,
         }
 
+        vm.changeStore = changeStore;
 
-        function add(){
-            console.log(vm.cartItem);
+        function changeStore() {
+            $.ajax({
+                url: "/api/bookQuantity/getOneByStore",
+                type: "GET",
+                data: {
+                    bookId: bookId,
+                    storeId: vm.cartItem.storeId
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response.errorCode == 0) {
+                        vm.amount = response.data.quantity;
+                    }
+                }
+            })
+        }
+
+        vm.add = add;
+
+        function add() {
             BookService.addToCart(JSON.parse(JSON.stringify(vm.cartItem)));
         }
 
-        $.ajax({
-            type: "GET",
-            url: "/api/books/" + bookId,
-            success: function (e) {
-                vm.book = e;
-                vm.cartItem.book = e;
-            }
-        })
+        loadData();
 
-        BookStoreService.getAll().done(stores => {
-            vm.stores = stores.data;
-        })
+        function loadData() {
+            $.ajax({
+                type: "GET",
+                url: "/api/books/" + bookId,
+                success: function (e) {
+                    vm.book = e;
+                    vm.cartItem.book = e;
+                }
+            })
+
+            BookStoreService.getAll().done(stores => {
+                vm.stores = stores.data;
+            })
+        }
+
 
     }
 })();

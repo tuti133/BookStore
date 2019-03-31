@@ -26,11 +26,11 @@
     <md-content layout="row" flex layout-wrap>
         <div flex="10"></div>
         <div flex layout="row" layout-wrap>
-            <div id="home" ng-repeat="book in vm.books" flex="20">
+            <div id="home" ng-repeat="book in vm.books | filter: vm.search" flex="20">
                 <a ng-href="/book/{{book.id}}" style="margin: 0; padding: 0; text-decoration: none">
                     <md-card>
                         <img style="height: 200px; object-fit: cover"
-                             ng-src="{{book.imageUrl}}"
+                             ng-src="{{book.imageUrl != null ? book.imageUrl : '/images/no-image.png'}}"
                              class="md-card-image" alt="Washed Out">
 
                         <md-card-content class="text-center">
@@ -41,7 +41,7 @@
                         </md-card-content>
                         <md-card-actions layout="row" layout-align="end center">
                             <md-button class="md-warn" aria-label="book" flex>
-                                <p><h4>{{book.price | currency:'':0 }} VND</h4></p>
+                                <p><h4>{{book.price | currency:'':0 }} ₫</h4></p>
                             </md-button>
                         </md-card-actions>
                     </md-card>

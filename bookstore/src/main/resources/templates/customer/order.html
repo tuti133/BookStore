@@ -8,33 +8,57 @@
     <title>Đặt hàng</title>
 </head>
 <body>
-<div layout:fragment="content" class="container" ng-controller="OrderController as vm">
-    <md-content flex layout="column">
-        <div ng-repeat="item in vm.cartList" layout="row">
-            <md-card layout="row" style="height: auto; width: 100%" layout-padding>
-                <img style="width: 70px; height: 100px; object-fit: cover" ng-src="{{item.book.imageUrl}}">
-                <div>
-                    <p>{{item.book.name}}</p>
-                    <div class="form-group" style="width: 70px">
-                        <input class="form-control" type="number" ng-model="item.quantity">
+<div layout:fragment="content" ng-controller="OrderController as vm">
+    <div layout="row" flex ng-show="vm.cartList.length > 0">
+        <md-content flex layout="column">
+            <div ng-repeat="item in vm.cartList" layout="row">
+                <md-card layout="row" style="height: auto; width: 100%" layout-padding>
+                    <img style="width: 100px; height: 120px; object-fit: cover" ng-src="{{item.book.imageUrl != null ? item.book.imageUrl : '/images/no-image.png'}}">
+                    <div>
+                        <h4>{{item.book.name}}</h4>
+                        <p><b>{{item.book.price | currency: '' : 0}} ₫</b></p>
+                        <p>Tác giả: {{item.book.author}}</p>
                     </div>
-                </div>
+                    <div layout="row" flex layout-align="end">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <input ng-change="vm.calculate()" style="width: 70px" class="form-control" type="number" ng-model="item.quantity">
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" ng-model="item.storeId">
+                                    <option ng-repeat="store in vm.stores" ng-value="store.id">{{store.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+        </md-content>
+        <md-content layout="column" flex="30" layout-padding>
+            <md-card style="background-color: antiquewhite" class="text-center">
+                <h3 style="margin-top: 10px">Tổng trị giá đơn hàng:</h3>
+                <p style="margin-top: 10px"><em>(Chưa bao gồm phí ship)</em></p>
+                <h3 style="margin-top: 10px; color: indigo"><b>{{vm.totalMoney | currency: '' : 0}} ₫</b></h3>
             </md-card>
-        </div>
-    </md-content>
-    <div layout="column">
-        <div class="form-group">
-            <label>Địa chỉ nhận hàng:</label>
-            <textarea ng-model="vm.createBuyDto.shipAddress" class="form-control" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-            <label>Ghi chú</label>
-            <textarea ng-model="vm.createBuyDto.note" class="form-control" rows="3"></textarea>
-        </div>
-        <div class="text-center">
-            <md-button ng-click="vm.order()" class="md-raised md-warn">
-                Xác nhận thanh toán
-            </md-button>
+            <div class="form-group">
+                <label>Địa chỉ nhận hàng:</label>
+                <textarea ng-model="vm.createBuyDto.shipAddress" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Ghi chú</label>
+                <textarea ng-model="vm.createBuyDto.note" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="text-center">
+                <md-button ng-click="vm.order()" class="md-raised md-warn">
+                    Xác nhận thanh toán
+                </md-button>
+            </div>
+        </md-content>
+    </div>
+    <div layout="column" flex layout-align="center center" ng-show="vm.cartList.length == 0">
+        <div class="alert alert-warning">
+            <strong>Giỏ hàng của bạn đang trống</strong>
+            <p>Bấm vào <a href="/">đây</a> để xem danh sách sản phẩm.</p>
         </div>
     </div>
 </div>
@@ -46,11 +70,16 @@
             'use strict'
             angular.module("BookStoreApp")
                 .controller("OrderController", OrderController)
-            OrderController.$inject = ["AlertService"];
+            OrderController.$inject = ["AlertService", "BookStoreService"];
 
-            function OrderController(AlertService) {
+            function OrderController(AlertService, BookStoreService) {
                 let vm = this;
                 vm.order = order;
+                vm.stores = [];
+                vm.totalMoney = 0;
+                BookStoreService.getAll().done(stores => {
+                    vm.stores = stores.data;
+                })
 
                 vm.createBuyDto = {
                     shipAddress: null,
@@ -60,30 +89,41 @@
                     buyBookDtoList: null
                 }
 
+                vm.calculate = calculate;
+                function calculate(){
+                    vm.totalMoney = 0;
+                    vm.cartList.forEach(item => {
+                        vm.totalMoney += item.quantity * item.book.price;
+                    })
+                }
+
 
                 vm.cartList = [];
                 let storage = localStorage.getItem("cartList");
                 if (storage != null) {
                     vm.cartList = JSON.parse(storage);
+                    calculate();
                 }
 
                 function order() {
-                    console.log(vm.createBuyDto);
-                    console.log(vm.cartList);
                     vm.createBuyDto.buyBookDtoList = vm.cartList;
-                    let totalMoney = 0;
-                    vm.cartList.forEach(item => {
-                        totalMoney += item.quantity * item.book.price;
-                    })
-                    vm.createBuyDto.totalMoney = totalMoney;
+                    vm.createBuyDto.totalMoney = vm.totalMoney;
+                    console.log(vm.createBuyDto);
+                    if (vm.createBuyDto.shipAddress == null){
+                        AlertService.error("Bạn phải nhập địa chỉ nhận hàng", 2000);
+                        return;
+                    }
                     $.ajax({
                         url: "/api/buy",
                         type: "POST",
                         contentType: "application/json",
                         data: JSON.stringify(vm.createBuyDto),
-                        success: function () {
+                        success: function (response) {
                             AlertService.success("Đặt hàng thành công!", 2000);
                             localStorage.clear();
+                            setTimeout(function () {
+                                location.href = "/order/success/" + response.data.id;
+                            }, 2000)
                         }
                     })
                 }

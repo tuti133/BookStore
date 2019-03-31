@@ -10,32 +10,53 @@
 <div layout:fragment="content" ng-controller="BookDetailController as vm">
     <div layout="row" flex>
         <div flex layout="row" layout-align="center center">
-            <img style="padding: 10px; border: 2px dashed #eee" ng-src="{{vm.book.imageUrl}}">
+            <img style="padding: 10px; border: 2px dashed #eee" ng-src="{{vm.book.imageUrl != null ? vm.book.imageUrl : '/images/no-image.png'}}">
         </div>
         <md-divider></md-divider>
-        <div flex="60" layout="column">
+        <div flex="60" layout="column" layout-padding>
             <div>
+                <label>Mô tả:</label>
                 <p class="well">
                     {{vm.book.description}}
                 </p>
             </div>
-            <div flex>
-                <div layout="row">
+            <md-divider></md-divider>
+            <div flex layout="column">
+                <div>
+                    <h3><p>{{vm.book.price | currency: '' : 0}} ₫</p></h3>
+                </div>
+                <md-divider></md-divider>
+                <div layout="row" style="padding-top: 20px">
+
                     <md-input-container>
                         <label>Số lượng</label>
-                        <input ng-model="vm.cartItem.quantity" min="1" ng-init="vm.cartItem.quantity = 1" type="number">
+                        <input ng-model="vm.cartItem.quantity" min="1" ng-init="vm.cartItem.quantity = 1" type="number"
+                               required>
                     </md-input-container>
                     <md-input-container>
                         <label>Khu vực</label>
-                        <md-select ng-model="vm.cartItem.storeId">
+                        <md-select ng-model="vm.cartItem.storeId" ng-change="vm.changeStore()" Còn {{vm.amount}} sản
+                                   phẩm>
                             <md-option ng-value="store.id" ng-repeat="store in vm.stores" ng-selected="$index == 0">
                                 {{store.name}}
                             </md-option>
                         </md-select>
                     </md-input-container>
+                    <md-input-container>
+                        <input placeholder="{{vm.amount == null ? 'Đang cập nhật...' : 'Còn ' + vm.amount + ' sản phẩm'}}"
+                               type="text" disabled>
+                    </md-input-container>
                 </div>
-                <md-button ng-click="vm.add()" class="md-raised md-warn">Thêm vào giỏ</md-button>
-                <md-button ng-href="/order" class="md-raised md-warn">Thanh toán</md-button>
+                <div>
+
+                    <md-button ng-click="vm.add()" class="md-raised md-warn"
+                               ng-disabled="vm.amount == null || vm.amount == 0 || vm.cartItem.quantity > vm.amount">
+                        Thêm
+                        vào giỏ
+                    </md-button>
+                    <!--<md-button ng-href="/order" class="md-raised md-warn">Đi tới thanh toán</md-button>-->
+                </div>
+
 
             </div>
         </div>

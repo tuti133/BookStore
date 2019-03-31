@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ptit.htpt.bookstore.dto.ResponseDto;
 import ptit.htpt.bookstore.entity.BookQuantity;
-import ptit.htpt.bookstore.entity.BookStore;
 import ptit.htpt.bookstore.service.BookQuantityService;
 
 @RestController
@@ -17,6 +16,11 @@ public class BookQuantityResource {
     @GetMapping("getByStore")
     public ResponseDto getByStore(@RequestParam Long bookStoreId){
         return bookQuantityService.getByStore(bookStoreId);
+    }
+
+    @GetMapping("getOneByStore")
+    public ResponseDto getOneByStore(@RequestParam Long bookId, @RequestParam Long storeId){
+        return bookQuantityService.getOneByStore(bookId, storeId);
     }
 
     @PostMapping("update")

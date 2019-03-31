@@ -61,6 +61,6 @@ public class BuyService {
 
 
         }
-        return new ResponseDto("0", "success", null);
+        return new ResponseDto("0", "success", buy);
     }
 }

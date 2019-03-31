@@ -11,7 +11,7 @@
             </div>
             <div flex></div>
             <div class="input-group" flex="50">
-                <input id="search" type="text" class="form-control" name="search" placeholder="Nhập từ khóa...">
+                <input ng-model="vm.search" id="search" type="text" class="form-control" name="search" placeholder="Nhập từ khóa...">
                 <span class="input-group-addon" style="cursor: pointer">
                     <i class="material-icons" style="font-size: 18px;">
                         search
@@ -33,7 +33,7 @@
                         </md-menu-item>
                         <md-menu-item ng-repeat="i in vm.cartList track by i.bookId">
                             <md-button layout="row">
-                                <span>{{i.quantity}} x <img style="height: 40px; width: 30px; object-fit: cover; margin: 5px; border: 2px dashed #ddd" ng-src="{{i.book.imageUrl}}"> {{i.book.name}}</span>
+                                <span>{{i.quantity}} x <img style="height: 40px; width: 30px; object-fit: cover; margin: 5px; border: 2px dashed #ddd" ng-src="{{i.book.imageUrl != null ? i.book.imageUrl : '/images/no-image.png'}}"> {{i.book.name}}</span>
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
