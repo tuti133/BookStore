@@ -31,6 +31,9 @@
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <button ng-click="vm.remove(item)" class="btn">Xóa</button>
+                    </div>
                 </md-card>
             </div>
         </md-content>
@@ -81,6 +84,15 @@
                     vm.stores = stores.data;
                 })
 
+                vm.remove = remove;
+
+                function remove(item){
+                    let idx = vm.cartList.indexOf(item);
+                    vm.cartList.splice(idx, 1);
+                    console.log(vm.cartList)
+                    resetCart();
+                }
+
                 vm.createBuyDto = {
                     shipAddress: null,
                     note: null,
@@ -95,6 +107,11 @@
                     vm.cartList.forEach(item => {
                         vm.totalMoney += item.quantity * item.book.price;
                     })
+                    resetCart();
+                }
+
+                function resetCart(){
+                    localStorage.setItem("cartList", JSON.stringify(vm.cartList));
                 }
 
 
@@ -110,7 +127,7 @@
                     vm.createBuyDto.totalMoney = vm.totalMoney;
                     console.log(vm.createBuyDto);
                     if (vm.createBuyDto.shipAddress == null){
-                        AlertService.error("Bạn phải nhập địa chỉ nhận hàng", 2000);
+                        AlertService.error("Bạn phải nhập địa chỉ nhận hàng", 2000, "bottom right");
                         return;
                     }
                     $.ajax({
