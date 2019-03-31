@@ -19,12 +19,19 @@ public class BookQuantityService {
     @Autowired
     private BookRepository bookRepository;
 
-    public ResponseDto getByStore(BookStore bookStore) {
-        List<BookQuantity> list = bookQuantityRepository.findAllByBookStore(bookStore);
+    public ResponseDto getByStore(Long bookStoreId) {
+        BookStore bs = new BookStore();
+        bs.setId(bookStoreId);
+        List<BookQuantity> list = bookQuantityRepository.findAllByBookStore(bs);
         return new ResponseDto("0", "Success", list);
     }
 
     public ResponseDto update(BookQuantity bookQuantity) {
-        return new ResponseDto("0", "Success", bookQuantityRepository.save(bookQuantity));
+        try {
+            BookQuantity bq = bookQuantityRepository.save(bookQuantity);
+            return new ResponseDto("0", "Cập nhật thành công", bq);
+        } catch (Exception e) {
+            return new ResponseDto("1", "Cập nhật không thành công", null);
+        }
     }
 }

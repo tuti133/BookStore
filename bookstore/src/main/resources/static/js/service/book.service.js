@@ -11,7 +11,8 @@
             get: get,
             getAll: getAll,
             save: save,
-            addToCart: addToCart
+            addToCart: addToCart,
+            likeBook: likeBook
         }
 
         return service;
@@ -46,6 +47,13 @@
 
         function addToCart(book) {
             $rootScope.$broadcast('ADD_TO_CART', book);
+        }
+
+        function likeBook(id) {
+            return $.ajax({
+                url: "/api/book/like/" + id ,
+                type: "GET",
+            })
         }
     }
 })();

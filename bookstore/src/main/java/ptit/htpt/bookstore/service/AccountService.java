@@ -184,7 +184,8 @@ public class AccountService {
 
     public ResponseDto changePassword(ChangePasswordDto dto) {
         Account account = SecurityUtils.getCurrentUser();
-        if (account.getPassword().equals(passwordEncoder.encode(dto.getOldPassword()))) {
+
+        if (passwordEncoder.matches(dto.getOldPassword(), account.getPassword())) {
             account.setPassword(passwordEncoder.encode(dto.getNewPassword()));
             accountRepository.save(account);
             return new ResponseDto("0", MessageConstants.PASSWORD_CHANGED, null);

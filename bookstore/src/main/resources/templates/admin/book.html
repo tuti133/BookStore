@@ -10,10 +10,13 @@
 <div layout:fragment="admin-content" ng-controller="BookController as vm">
     <md-toolbar style="background-color: rgb(250,250,250);" class="md-table-toolbar md-default" layout="row"
                 layout-align="center center">
-        <div class="md-toolbar-tools">
+        <div class="md-toolbar-tools" flex>
             <span>Quản lý sách</span>
         </div>
-        <div>
+        <div flex="40">
+            <input ng-model="vm.search" type="text" class="form-control" placeholder="Tìm kiếm...">
+        </div>
+        <div flex layout="row" layout-align="end center">
             <md-button class="md-raised md-warn" ng-click="vm.saveBook(vm.newBook)" style="color: rgb(255,255,255);">
                 Tạo
             </md-button>
@@ -37,7 +40,7 @@
                     </tr>
                     </thead>
                     <tbody md-body>
-                    <tr md-row ng-repeat="dto in vm.books">
+                    <tr md-row ng-repeat="dto in vm.books | filter: vm.search">
                         <td md-cell>
                             {{dto.id}}
                         </td>

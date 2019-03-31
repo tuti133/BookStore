@@ -60,6 +60,7 @@
 <script src="/js/service/book-store.service.js"></script>
 <script src="/js/service/book.service.js"></script>
 <script src="/js/service/category.service.js"></script>
+<script src="/js/service/book-quantity.service.js"></script>
 
 <!--Controller-->
 <script src="/js/app.controller.js"></script>
@@ -80,7 +81,7 @@
 
 <script>
     let link = window.location.href;
-    if (link.indexOf("admin") != -1 || link.indexOf("employee") != -1 || link.indexOf("login") != -1 || link.indexOf("register") != -1) {
+    if (link.indexOf("admin") != -1 || link.indexOf("employee") != -1 || link.indexOf("login") != -1 || link.indexOf("register") != -1 || link.indexOf("password") != -1) {
         $("#navbar").remove();
     }
 </script>

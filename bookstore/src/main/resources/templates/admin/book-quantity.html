@@ -8,7 +8,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <div layout:fragment="admin-content" ng-controller="BookQuantityController as vm">
-    <p>BookQuantityController</p>
+    <md-toolbar style="background-color: rgb(250,250,250);" class="md-table-toolbar md-default" layout="row"
+                layout-align="center center">
+        <div class="md-toolbar-tools" flex>
+            <span>Quản lý lượng sách</span>
+        </div>
+        <div flex="40">
+            <input ng-model="vm.search" type="text" class="form-control" placeholder="Tìm kiếm...">
+        </div>
+        <div flex layout="row" layout-align="end center" style="padding-right: 10px">
+            <md-input-container>
+                <md-select ng-model="vm.site" ng-change="vm.changeSite()">
+                    <md-option value="Chọn khu vực" selected disabled>Chọn khu vực</md-option>
+                    <md-option ng-value="store.id" ng-repeat="store in vm.bookStores track by store.id">{{store.name}}</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </md-toolbar>
+    <md-content flex layout="column">
+        <md-card flex layout="column">
+            <md-table-container flex>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column><span>Id</span></th>
+                        <th md-column>Hình</th>
+                        <th md-column><span>Tên sách</span></th>
+                        <th md-column><span>Số lượng</span></th>
+                        <th md-column></th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row ng-repeat="item in vm.listBSQ | filter: vm.search">
+                        <td md-cell>
+                            {{item.id}}
+                        </td>
+                        <td md-cell>
+                            <img style="height: 60px; width: 50px; object-fit: cover; margin: 10px; border: 2px dashed #ddd" ng-src="{{item.book.imageUrl}}">
+                        </td>
+                        <td md-cell>
+                            {{item.book.name}}
+                        </td>
+                        <td md-cell>
+                            {{item.quantity}}
+                        </td>
+                        <td md-cell>
+                            <md-button class="md-raised" ng-click="vm.edit(item)">Sửa</md-button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </md-card>
+    </md-content>
 </div>
 
 <th:block layout:fragment="scripts">

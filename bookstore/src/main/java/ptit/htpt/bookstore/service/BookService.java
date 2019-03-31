@@ -80,11 +80,22 @@ public class BookService {
                 BookQuantity bq = new BookQuantity();
                 bq.setBook(result);
                 bq.setBookStore(bs);
-                bq.setQuantity(0L);
+                bq.setQuantity(1000L);
                 bookQuantityRepository.save(bq);
             }
         }
 
         return new ResponseDto("0", "Book saved successfully", result);
+    }
+
+    public ResponseDto likeBook(Long id) {
+        Book b = bookRepository.findById(id).get();
+        b.setFavorite(b.getFavorite() + 1);
+        try {
+            Book result = bookRepository.save(b);
+            return new ResponseDto("0", "Success", result);
+        } catch (Exception e){
+            return new ResponseDto("1", "Error", null);
+        }
     }
 }

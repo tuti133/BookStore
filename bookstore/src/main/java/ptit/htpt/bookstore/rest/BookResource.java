@@ -32,4 +32,9 @@ public class BookResource {
         return bookService.save(book, image);
     }
 
+    @GetMapping("/book/like/{id}")
+    public ResponseDto likeBook(@PathVariable Long id){
+        return bookService.likeBook(id);
+    }
+
 }

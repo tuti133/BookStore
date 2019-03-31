@@ -15,8 +15,8 @@ public class BookQuantityResource {
     private BookQuantityService bookQuantityService;
 
     @GetMapping("getByStore")
-    public ResponseDto getByStore(@RequestBody BookStore bookStore){
-        return bookQuantityService.getByStore(bookStore);
+    public ResponseDto getByStore(@RequestParam Long bookStoreId){
+        return bookQuantityService.getByStore(bookStoreId);
     }
 
     @PostMapping("update")

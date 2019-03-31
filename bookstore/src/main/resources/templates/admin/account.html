@@ -11,10 +11,13 @@
 
     <md-toolbar style="background-color: rgb(250,250,250);" class="md-table-toolbar md-default" layout="row"
                 layout-align="center center">
-        <div class="md-toolbar-tools">
+        <div class="md-toolbar-tools" flex>
             <span>Quản lý tài khoản</span>
         </div>
-        <div>
+        <div flex="40">
+            <input ng-model="vm.search" type="text" class="form-control" placeholder="Tìm kiếm...">
+        </div>
+        <div flex layout="row" layout-align="end center">
             <md-button class="md-raised md-warn" ng-click="vm.createAccount($event)" style="color: rgb(255,255,255);">
                 Tạo
             </md-button>
@@ -38,7 +41,7 @@
                     </tr>
                     </thead>
                     <tbody md-body>
-                    <tr md-row ng-repeat="dto in vm.accountDtos">
+                    <tr md-row ng-repeat="dto in vm.accountDtos | filter: vm.search">
                         <td md-cell>
                             {{dto.account.id}}
                         </td>

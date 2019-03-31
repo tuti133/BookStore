@@ -24,15 +24,16 @@
                 icon: "view_weeks"
             },
             {
-                name: "Quản lý hóa đơn",
-                url: "/admin/bill",
-                icon: "payment"
-            },
-            {
                 name: "Quản lý danh mục",
                 url: "/admin/category",
                 icon: "list_alt"
             },
+            {
+                name: "Quản lý hóa đơn",
+                url: "/admin/bill",
+                icon: "payment"
+            },
+
             {
                 name: "Đổi mật khẩu",
                 url: "/password",
@@ -46,6 +47,7 @@
         ]
 
         vm.initBook = initBook;
+
         function initBook() {
             let skill = [
                 {
