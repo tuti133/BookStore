@@ -8,8 +8,29 @@
     <title>Lịch sử</title>
 </head>
 <body>
-<div layout:fragment="content" class="container">
+<div layout:fragment="content" ng-controller="HistoryController as vm">
 
 </div>
+<th:block layout:fragment="scripts">
+    <script>
+        (function () {
+            'use strict'
+            angular.module("BookStoreApp")
+                .controller("HistoryController", HistoryController)
+            HistoryController.$inject = ["$scope", "$mdDialog", "AlertService", "AccountService"];
+
+            function HistoryController($scope, $mdDialog, AlertService, AccountService) {
+                let vm = this;
+                $.ajax({
+                    url: "/api/buy/getByCurrentUser",
+                    type: "GET",
+                    success: function (response) {
+                        console.log(response);
+                    }
+                })
+            }
+        })();
+    </script>
+</th:block>
 </body>
 </html>

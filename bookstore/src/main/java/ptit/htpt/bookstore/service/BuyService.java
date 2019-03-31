@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ptit.htpt.bookstore.dto.BuyBookDto;
 import ptit.htpt.bookstore.dto.CreateBuyDto;
+import ptit.htpt.bookstore.dto.OrderDto;
 import ptit.htpt.bookstore.dto.ResponseDto;
 import ptit.htpt.bookstore.entity.*;
 import ptit.htpt.bookstore.repository.BookQuantityRepository;
@@ -15,7 +16,9 @@ import ptit.htpt.bookstore.util.SecurityUtils;
 import javax.transaction.Transactional;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class BuyService {
@@ -63,4 +66,33 @@ public class BuyService {
         }
         return new ResponseDto("0", "success", buy);
     }
+
+    public ResponseDto getAll() {
+        List<OrderDto> result = new ArrayList<>();
+        List<Buy> buys = buyRepository.findAll();
+        for (Buy buy: buys) {
+            OrderDto dto = new OrderDto();
+            List<BuyBook> listBuyBook = buyBookRepository.findAllByBuy(buy);
+            dto.setBuy(buy);
+            dto.setListBuyBook(listBuyBook);
+            result.add(dto);
+        }
+        return new ResponseDto("0", "Success", result);
+    }
+
+    public ResponseDto getByCustomer(Long customerId) {
+        List<OrderDto> result = new ArrayList<>();
+        Customer customer = new Customer();
+        customer.setId(customerId);
+        List<Buy> buys = buyRepository.findAllByCustomer(customer);
+        for (Buy buy: buys) {
+            OrderDto dto = new OrderDto();
+            List<BuyBook> listBuyBook = buyBookRepository.findAllByBuy(buy);
+            dto.setBuy(buy);
+            dto.setListBuyBook(listBuyBook);
+            result.add(dto);
+        }
+        return new ResponseDto("0", "Success", result);
+    }
+
 }
