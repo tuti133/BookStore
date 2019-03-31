@@ -15,6 +15,10 @@
         <md-divider></md-divider>
         <div flex="60" layout="column" layout-padding>
             <div>
+                <h3><b>{{vm.book.name}}</b></h3>
+                <p>Tác giả: {{vm.book.author}}</p>
+            </div>
+            <div>
                 <label>Mô tả:</label>
                 <p class="well">
                     {{vm.book.description}}
@@ -23,7 +27,7 @@
             <md-divider></md-divider>
             <div flex layout="column">
                 <div>
-                    <h3><p>{{vm.book.price | currency: '' : 0}} ₫</p></h3>
+                    <h3 style="margin-top: 0px"><p>{{vm.book.price | currency: '' : 0}} ₫</p></h3>
                 </div>
                 <md-divider></md-divider>
                 <div layout="row" style="padding-top: 20px">
