@@ -8,7 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <div layout:fragment="content" ng-controller="BookDetailController as vm">
-    <div layout="row" flex>
+    <div layout="column" layout-align="center center" flex ng-if="vm.book == null">
+        <img src="/images/loading.gif">
+        <p style="color: #bbb">Đang tải...</p>
+    </div>
+    <div layout="row" flex ng-if="vm.book != null">
         <div flex layout="row" layout-align="center center">
             <img style="padding: 10px; border: 2px dashed #eee" ng-src="{{vm.book.imageUrl != null ? vm.book.imageUrl : '/images/no-image.png'}}">
         </div>

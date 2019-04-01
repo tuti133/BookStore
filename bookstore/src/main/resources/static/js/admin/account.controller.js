@@ -11,14 +11,18 @@
 
         function loadAccount() {
             AccountService.getAll().done(function (e) {
-                vm.accountDtos = e.data;
-                vm.accountDtos.forEach(dto => {
-                    dto.account.createdDate = new Date(dto.account.createdDate);
+                $scope.$apply(function () {
+                    vm.accountDtos = e.data;
+                    vm.accountDtos.forEach(dto => {
+                        dto.account.createdDate = new Date(dto.account.createdDate);
+                    })
                 })
             })
 
             BookStoreService.getAll().done(function (e) {
-                vm.bookStores = e.data;
+                $scope.$apply(function () {
+                    vm.bookStores = e.data;
+                })
             })
         }
 
@@ -124,7 +128,7 @@
             vm.isSelectedStore = isSelectedStore;
 
             vm.genders = ["MALE", "FEMALE", "OTHER"];
-            vm.authorities = ["ROLE_ADMIN", "ROLE_EMPLOYEE", "ROLE_CUSTOMER"];
+            vm.authorities = ["ROLE_ADMIN", "ROLE_EMPLOYEE",  "ROLE_CHECKER", "ROLE_CUSTOMER"];
 
             function isSelectedStore(bookStore) {
                 vm.bookStores.forEach(function (store) {

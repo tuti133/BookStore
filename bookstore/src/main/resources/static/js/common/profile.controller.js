@@ -18,10 +18,12 @@
                 url: "/api/account/current",
                 method: "GET",
                 success: function (response) {
-                    vm.role = response.data.role;
-                    vm.account = response.data.account;
-                    vm.customer = response.data.customer;
-                    vm.employee = response.data.employee;
+                    $scope.$apply(function () {
+                        vm.role = response.data.role;
+                        vm.account = response.data.account;
+                        vm.customer = response.data.customer;
+                        vm.employee = response.data.employee;
+                    })
                 }
             })
         }
@@ -41,9 +43,7 @@
                 success: function (response) {
                     if (response.errorCode == 0){
                         AlertService.success(response.message, 2000, "bottom right");
-                        setTimeout(function () {
-                            location.reload();
-                        }, 2000);
+                        getInfo();
                     }
                     else AlertService.error(response.message, 2000, "bottom right");
                 }

@@ -19,7 +19,7 @@
 
         function get(id) {
             return $.ajax({
-                url: "/api/books/" + id ,
+                url: "/api/books/" + id,
                 type: "GET",
             })
         }
@@ -30,7 +30,7 @@
                 type: "GET",
             })
         }
-        
+
         function save(dto) {
             console.log(dto)
             return $.ajax({
@@ -51,7 +51,7 @@
 
         function likeBook(id) {
             return $.ajax({
-                url: "/api/book/like/" + id ,
+                url: "/api/book/like/" + id,
                 type: "GET",
             })
         }

@@ -38,13 +38,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/employee/**").hasRole("EMPLOYEE")
                 .antMatchers("/order").hasRole("CUSTOMER")
+                .antMatchers("/checker").hasRole("CHECKER")
                 .antMatchers("/profile", "/history", "/password").authenticated()
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/").failureUrl("/login?error=true")
                 .permitAll().and()
 
                 .logout().logoutSuccessUrl("/").invalidateHttpSession(true).permitAll().and()
-                .exceptionHandling().accessDeniedPage("/403").and().csrf().disable();
+                .exceptionHandling().accessDeniedPage("/403")
+                .and().csrf().disable();
     }
 
     @Override

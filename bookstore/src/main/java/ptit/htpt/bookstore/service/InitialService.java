@@ -74,6 +74,7 @@ public class InitialService {
         Authority adminAuth = authorityRepository.save(new Authority(AuthoritiesConstants.ADMIN));
         Authority employeeAuth = authorityRepository.save(new Authority(AuthoritiesConstants.EMPLOYEE));
         Authority customerAuth = authorityRepository.save(new Authority(AuthoritiesConstants.CUSTOMER));
+        Authority checkerAuth = authorityRepository.save(new Authority(AuthoritiesConstants.CHECKER));
 
         Account admin = new Account();
         admin.setUsername("admin");
@@ -87,9 +88,24 @@ public class InitialService {
         auth1.add(customerAuth);
         admin.setAuthorities(auth1);
         admin.setEmail("admin@localhost");
-        admin.setPhone("123");
+        admin.setPhone("11111111111");
         admin.setActivated(true);
         accountRepository.save(admin);
+
+        Account checker = new Account();
+        checker.setUsername("checker");
+        checker.setPassword(passwordEncoder.encode("checker"));
+        checker.setFirstName("Checker");
+        checker.setLastName("Checker");
+        checker.setGender(GenderConstants.FEMALE);
+        HashSet<Authority> auth0 = new HashSet<>();
+        auth0.add(checkerAuth);
+        auth0.add(customerAuth);
+        checker.setAuthorities(auth0);
+        checker.setEmail("checker@localhost");
+        checker.setPhone("2222222222");
+        checker.setActivated(true);
+        accountRepository.save(checker);
 
         Account employee = new Account();
         employee.setUsername("employee");
@@ -102,7 +118,7 @@ public class InitialService {
         auth2.add(employeeAuth);
         employee.setAuthorities(auth2);
         employee.setEmail("employee@localhost");
-        employee.setPhone("456");
+        employee.setPhone("3333333333");
 
         Employee em = new Employee();
         em.setAccount(accountRepository.save(employee));
@@ -122,7 +138,7 @@ public class InitialService {
         auth3.add(customerAuth);
         customer.setAuthorities(auth3);
         customer.setEmail("customer@localhost");
-        customer.setPhone("789");
+        customer.setPhone("4444444444");
 
         Customer cus = new Customer();
         cus.setAccount(accountRepository.save(customer));

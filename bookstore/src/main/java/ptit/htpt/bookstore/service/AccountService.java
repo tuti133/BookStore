@@ -54,7 +54,7 @@ public class AccountService {
 
     private boolean isAccountInRole(String role, Account account) {
         for (Authority authority : account.getAuthorities()) {
-            if (role.equals(authority.getName())){
+            if (role.equals(authority.getName())) {
                 return true;
             }
         }
@@ -70,8 +70,13 @@ public class AccountService {
         if (isAccountInRole(AuthoritiesConstants.ADMIN, account)) {
             result.setRole(AuthoritiesConstants.ADMIN);
         } else {
-            if (isAccountInRole(AuthoritiesConstants.EMPLOYEE, account)) result.setRole(AuthoritiesConstants.EMPLOYEE);
-            else result.setRole(AuthoritiesConstants.CUSTOMER);
+            if (isAccountInRole(AuthoritiesConstants.EMPLOYEE, account)) {
+                result.setRole(AuthoritiesConstants.EMPLOYEE);
+            } else {
+                if (isAccountInRole(AuthoritiesConstants.CHECKER, account))
+                    result.setRole(AuthoritiesConstants.CHECKER);
+                else result.setRole(AuthoritiesConstants.CUSTOMER);
+            }
         }
         result.setAccount(account);
         result.setEmployee(employee);
@@ -93,6 +98,7 @@ public class AccountService {
         Authority authAdmin = authorityRepository.findByName(AuthoritiesConstants.ADMIN);
         Authority authEmployee = authorityRepository.findByName(AuthoritiesConstants.EMPLOYEE);
         Authority authCustomer = authorityRepository.findByName(AuthoritiesConstants.CUSTOMER);
+        Authority authChecker = authorityRepository.findByName(AuthoritiesConstants.CHECKER);
 
         Account account = dto.getAccount();
         account.setPassword(passwordEncoder.encode(account.getPassword()));
@@ -111,6 +117,7 @@ public class AccountService {
                 listAuthorities.add(authAdmin);
                 listAuthorities.add(authEmployee);
                 listAuthorities.add(authCustomer);
+                listAuthorities.add(authChecker);
                 account.setAuthorities(listAuthorities);
                 savedAccount = accountRepository.save(account);
                 break;
@@ -131,6 +138,13 @@ public class AccountService {
                 savedAccount = accountRepository.save(account);
                 customer.setAccount(savedAccount);
                 savedCustomer = customerRepository.save(customer);
+                break;
+            }
+            case AuthoritiesConstants.CHECKER: {
+                listAuthorities.add(authChecker);
+                listAuthorities.add(authCustomer);
+                account.setAuthorities(listAuthorities);
+                savedAccount = accountRepository.save(account);
                 break;
             }
             default: {
@@ -159,9 +173,6 @@ public class AccountService {
 
 
         switch (dto.getRole()) {
-            case AuthoritiesConstants.ADMIN: {
-                break;
-            }
             case AuthoritiesConstants.EMPLOYEE: {
                 savedEmployee = employeeRepository.save(dto.getEmployee());
                 break;
@@ -196,19 +207,22 @@ public class AccountService {
     public ResponseDto getAllAccount() {
         List<Account> list = accountRepository.findAll();
         List<AccountDto> results = new ArrayList<>();
-        for (Account account: list){
+        for (Account account : list) {
             AccountDto dto = new AccountDto();
             dto.setAccount(account);
             if (isAccountInRole(AuthoritiesConstants.ADMIN, account)) {
                 dto.setRole(AuthoritiesConstants.ADMIN);
             } else {
-                if (isAccountInRole(AuthoritiesConstants.EMPLOYEE, account)){
+                if (isAccountInRole(AuthoritiesConstants.EMPLOYEE, account)) {
                     dto.setRole(AuthoritiesConstants.EMPLOYEE);
                     dto.setEmployee(employeeRepository.findByAccount(account));
-                }
-                else {
-                    dto.setRole(AuthoritiesConstants.CUSTOMER);
-                    dto.setCustomer(customerRepository.findByAccount(account));
+                } else {
+                    if (isAccountInRole(AuthoritiesConstants.CHECKER, account)) {
+                        dto.setRole(AuthoritiesConstants.CHECKER);
+                    } else {
+                        dto.setRole(AuthoritiesConstants.CUSTOMER);
+                        dto.setCustomer(customerRepository.findByAccount(account));
+                    }
                 }
             }
             results.add(dto);

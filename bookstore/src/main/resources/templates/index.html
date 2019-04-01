@@ -23,7 +23,11 @@
 <body ng-app="BookStoreApp" ng-controller="AppController as vm" layout="column" ng-cloak>
 <div th:replace="layout/navbar :: navbar"></div>
 <div layout:fragment="content" layout="column" flex>
-    <md-content layout="row" flex layout-wrap>
+    <div layout="column" layout-align="center center" flex ng-if="vm.books == null">
+        <img src="/images/loading.gif">
+        <p style="color: #bbb">Đang tải...</p>
+    </div>
+    <md-content layout="row" flex layout-wrap ng-if="vm.books != null">
         <div flex="10"></div>
         <div flex layout="row" layout-wrap>
             <div id="home" ng-repeat="book in vm.books | filter: vm.search" flex="20">
@@ -61,6 +65,7 @@
 <script src="/js/service/book.service.js"></script>
 <script src="/js/service/category.service.js"></script>
 <script src="/js/service/book-quantity.service.js"></script>
+<script src="/js/service/bill.service.js"></script>
 
 <!--Controller-->
 <script src="/js/app.controller.js"></script>
@@ -71,17 +76,20 @@
 <script src="/js/admin/category.controller.js"></script>
 <script src="/js/admin/book-quantity.controller.js"></script>
 
+
 <script src="/js/book/book-detail.controller.js"></script>
 
 
 <script src="/js/customer/register.controller.js"></script>
+<script src="/js/customer/order.controller.js"></script>
 
-
+<script src="/js/customer/history.controller.js"></script>
 <script src="/js/common/profile.controller.js"></script>
+<script src="/js/common/password.controller.js"></script>
 
 <script>
     let link = window.location.href;
-    if (link.indexOf("admin") != -1 || link.indexOf("employee") != -1 || link.indexOf("login") != -1 || link.indexOf("register") != -1 || link.indexOf("password") != -1) {
+    if (link.indexOf("admin") != -1 || link.indexOf("employee") != -1 || link.indexOf("login") != -1 || link.indexOf("register") != -1 || link.indexOf("password") != -1 || link.indexOf("history") != -1 || link.indexOf("profile") != -1) {
         $("#navbar").remove();
     }
 </script>

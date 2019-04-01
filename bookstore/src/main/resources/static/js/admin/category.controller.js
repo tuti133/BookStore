@@ -11,8 +11,10 @@
 
         function loadData() {
             CategoryService.getAll().done(function (response) {
-                console.log(response);
-                vm.categories = response.data;
+                $scope.$apply(function () {
+                    console.log(response);
+                    vm.categories = response.data;
+                })
             })
         }
 
@@ -34,11 +36,10 @@
                 let category = {};
                 category.name = result;
                 CategoryService.create(category).done(function (response) {
-                    if (response.errorCode == 0){
+                    if (response.errorCode == 0) {
                         AlertService.success(response.message, 2000);
                         loadData();
-                    }
-                    else AlertService.error(response.message, 2000);
+                    } else AlertService.error(response.message, 2000);
                 }).fail(err => {
                     AlertService.error(err.message, 2000);
                 })
@@ -62,11 +63,10 @@
                 let update = JSON.parse(JSON.stringify(category));
                 update.name = result;
                 CategoryService.update(update).done(function (response) {
-                    if (response.errorCode == 0){
+                    if (response.errorCode == 0) {
                         AlertService.success(response.message, 2000);
                         loadData();
-                    }
-                    else AlertService.error(response.message, 2000);
+                    } else AlertService.error(response.message, 2000);
 
                 }).fail(err => {
                     AlertService.error(err.message, 2000);
@@ -88,11 +88,10 @@
 
             $mdDialog.show(confirm).then(function () {
                 CategoryService.deleteCategory(category).done(function (response) {
-                    if (response.errorCode == 0){
+                    if (response.errorCode == 0) {
                         AlertService.success(response.message, 2000);
                         loadData();
-                    }
-                    else AlertService.error(response.message, 2000);
+                    } else AlertService.error(response.message, 2000);
                 });
             }, function () {
                 $scope.status = 'You decided to keep your debt.';

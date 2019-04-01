@@ -37,7 +37,7 @@ public class BuyService {
         Buy buy = new Buy();
         buy.setNote(dto.getNote());
         buy.setShipAddress(dto.getShipAddress());
-        buy.setCreatedDate(DatetimeUtils.convert(new Date()));
+        buy.setCreatedDate((new Date()).getTime());
         buy.setTotalMoney(dto.getTotalMoney());
         buy.setStatus(StatusBuyConstants.ORDERED);
         Customer customer = customerRepository.findByAccount(SecurityUtils.getCurrentUser());
@@ -86,13 +86,14 @@ public class BuyService {
         return result;
     }
 
-
     public ResponseDto updateStatus(Long id, String status) {
         Buy buy = buyRepository.findById(id).orElse(null);
-        if (buy == null) return new ResponseDto("1", "error", null);
+        if (buy == null) return new ResponseDto("1", "Error", null);
+        if (!buy.getStatus().equals(StatusBuyConstants.ORDERED)) return new ResponseDto("1", "Không thể hủy đơn hàng", null);
         buy.setStatus(status);
         buy = buyRepository.save(buy);
-        return new ResponseDto("0", "Success", buy);
+        if (buy.getStatus().equals(StatusBuyConstants.CANCEL)) return new ResponseDto("0", "Hủy đơn hàng thành công!", buy);
+        return new ResponseDto("0", "Cập nhật thành công", buy);
     }
 
     public ResponseDto getByCustomer(Long customerId) {

@@ -25,7 +25,9 @@
 
         function loadData() {
             BookService.getAll().done(function (response) {
-                vm.books = response;
+                $scope.$apply(function () {
+                    vm.books = response;
+                })
             })
         }
 
@@ -55,14 +57,15 @@
             });
         }
 
-        function BookDialogController($mdDialog, bookDto) {
+        function BookDialogController($scope, $mdDialog, bookDto) {
             let vm = this;
             vm.bookDto = bookDto;
             vm.save = save;
             vm.cancel = cancel;
             CategoryService.getAll().done(function (response) {
-                vm.categories = response.data
-                console.log(response)
+                $scope.$apply(function () {
+                    vm.categories = response.data
+                })
             })
 
             function save() {

@@ -10,8 +10,10 @@
         vm.bookStores = [];
         vm.listBSQ = [];
         BookStoreService.getAll().done(function (response) {
-            vm.bookStores = response.data;
-            console.log(response)
+            $scope.$apply(function () {
+                vm.bookStores = response.data;
+                console.log(response)
+            })
         })
 
         vm.changeSite = changeSite;
@@ -19,8 +21,10 @@
         function changeSite() {
             if (vm.site != "" && vm.site != "Chọn khu vực")
                 BookQuantityService.getByStore(vm.site).done(function (response) {
-                    if (response.errorCode == 0)
-                        vm.listBSQ = response.data;
+                    $scope.$apply(function () {
+                        if (response.errorCode == 0)
+                            vm.listBSQ = response.data;
+                    })
                 })
         }
 
@@ -40,7 +44,7 @@
 
             $mdDialog.show(prompt).then(function (result) {
 
-                if (isNaN(result)){
+                if (isNaN(result)) {
                     AlertService.error("Số lượng phải là một số", 2000);
                     return;
                 }
@@ -48,11 +52,10 @@
                 let update = JSON.parse(JSON.stringify(item));
                 update.quantity = result;
                 BookQuantityService.update(update).done(function (response) {
-                    if (response.errorCode == 0){
+                    if (response.errorCode == 0) {
                         AlertService.success(response.message, 2000);
                         changeSite();
-                    }
-                    else AlertService.error(response.message, 2000);
+                    } else AlertService.error(response.message, 2000);
 
                 }).fail(err => {
                     AlertService.error("Có lỗi xảy ra!", 2000);

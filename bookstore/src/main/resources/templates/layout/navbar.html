@@ -75,18 +75,23 @@
                                     <span>Bảng điều khiển</span>
                                 </md-button>
                             </md-menu-item>
-                            <md-menu-item sec:authorize="!hasAnyRole('ADMIN', 'CUSTOMER')">
+                            <md-menu-item sec:authorize="!hasAnyRole('ADMIN', 'CUSTOMER', 'CHECKER')">
                                 <md-button href="/employee/sale">
                                     <span>Bán hàng</span>
                                 </md-button>
                             </md-menu-item>
-                            <md-menu-item sec:authorize="!hasAnyRole('EMPLOYEE', 'ADMIN')">
+                            <md-menu-item sec:authorize="!hasAnyRole('EMPLOYEE', 'ADMIN', 'CHECKER')">
                                 <md-button href="/profile">
                                     <span>Cá nhân</span>
                                 </md-button>
                             </md-menu-item>
-                            <md-menu-item sec:authorize="!hasAnyRole('EMPLOYEE', 'ADMIN')">
+                            <md-menu-item sec:authorize="!hasAnyRole('EMPLOYEE', 'ADMIN', 'CHECKER')">
                                 <md-button href="/history">
+                                    <span>Lịch sử</span>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item sec:authorize="!hasAnyRole('EMPLOYEE', 'ADMIN', 'CUSTOMER')">
+                                <md-button href="/checker">
                                     <span>Lịch sử</span>
                                 </md-button>
                             </md-menu-item>

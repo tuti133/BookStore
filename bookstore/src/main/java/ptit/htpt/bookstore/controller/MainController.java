@@ -38,7 +38,10 @@ public class MainController {
             if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.EMPLOYEE)) {
                 return "redirect:/employee/sale";
             } else {
-                return "index";
+                if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CHECKER)) {
+                    return "redirect:/checker";
+                } else
+                    return "index";
             }
         }
     }
@@ -110,14 +113,19 @@ public class MainController {
     }
 
 
-    @GetMapping("history")
+    @GetMapping("/history")
     public String history() {
         return "customer/history";
     }
 
+    @GetMapping("/checker")
+    public String checker() {
+        return "/checker/checker";
+    }
+
     @GetMapping("/order/success/{id}")
     public String orderSuccess(@PathVariable Long id) {
-        if(buyRepository.findById(id).isPresent() == false){
+        if (buyRepository.findById(id).isPresent() == false) {
             return "/common/404";
         }
         return "common/order-success";

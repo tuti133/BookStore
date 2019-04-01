@@ -6,4 +6,6 @@ public interface AuthoritiesConstants {
     String EMPLOYEE = "ROLE_EMPLOYEE";
 
     String CUSTOMER = "ROLE_CUSTOMER";
+
+    String CHECKER = "ROLE_CHECKER";
 }
