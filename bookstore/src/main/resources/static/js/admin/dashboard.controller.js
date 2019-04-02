@@ -135,45 +135,45 @@
 
 
         function renderChart() {
-            Highcharts.chart('type_chart', {
-                chart: {
-                    type: 'pie',
-                },
-                title: {
-                    text: 'Thống kê loại hóa đơn'
-                },
-                series: [{
-                    name: 'Số lượng',
-                    colorByPoint: true,
-                    data: [{
-                        name: 'Online',
-                        y: vm.onlineBill.length,
-                    }, {
-                        name: 'Offline',
-                        y: vm.offlineBill.length
-                    }]
-                }]
-            });
-
-            Highcharts.chart('book_chart', {
-                chart: {
-                    type: 'pie',
-                },
-                title: {
-                    text: 'Thống kê bán sách'
-                },
-                series: [{
-                    name: 'Số lượng',
-                    colorByPoint: true,
-                    data: [{
-                        name: 'Online',
-                        y: vm.statistic.totalBookOnline,
-                    }, {
-                        name: 'Offline',
-                        y: vm.statistic.totalBookOffline,
-                    }]
-                }]
-            });
+            // Highcharts.chart('type_chart', {
+            //     chart: {
+            //         type: 'pie',
+            //     },
+            //     title: {
+            //         text: 'Thống kê loại hóa đơn'
+            //     },
+            //     series: [{
+            //         name: 'Số lượng',
+            //         colorByPoint: true,
+            //         data: [{
+            //             name: 'Online',
+            //             y: vm.onlineBill.length,
+            //         }, {
+            //             name: 'Offline',
+            //             y: vm.offlineBill.length
+            //         }]
+            //     }]
+            // });
+            //
+            // Highcharts.chart('book_chart', {
+            //     chart: {
+            //         type: 'pie',
+            //     },
+            //     title: {
+            //         text: 'Thống kê bán sách'
+            //     },
+            //     series: [{
+            //         name: 'Số lượng',
+            //         colorByPoint: true,
+            //         data: [{
+            //             name: 'Online',
+            //             y: vm.statistic.totalBookOnline,
+            //         }, {
+            //             name: 'Offline',
+            //             y: vm.statistic.totalBookOffline,
+            //         }]
+            //     }]
+            // });
 
             Highcharts.chart('status_chart', {
                 chart: {
@@ -194,6 +194,42 @@
                     showInLegend: false,
                     name: 'Số lượng',
                     data: [vm.proccessing.length, vm.shipping.length, vm.completed.length, vm.canceled.length]
+                }]
+            });
+
+
+
+            Highcharts.chart('common_chart', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Thống kê theo hình thức bán hàng'
+                },
+                xAxis: {
+                    categories: ['Doanh thu', 'Sách', 'Hóa đơn']
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Phần trăm'
+                    }
+                },
+                tooltip: {
+                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+                    shared: true
+                },
+                plotOptions: {
+                    bar: {
+                        stacking: 'percent'
+                    }
+                },
+                series: [{
+                    name: 'Online',
+                    data: [vm.statistic.totalOnline, vm.statistic.totalBookOnline, vm.onlineBill.length]
+                }, {
+                    name: 'Offline',
+                    data: [vm.statistic.totalOffline, vm.statistic.totalBookOffline, vm.offlineBill.length]
                 }]
             });
         }

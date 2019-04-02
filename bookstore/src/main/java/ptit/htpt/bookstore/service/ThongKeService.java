@@ -37,6 +37,8 @@ public class ThongKeService {
         List<BillDto> billDtoList = new ArrayList<>();
         Long totalBookOnline = 0L;
         Long totalBookOffline = 0L;
+        Long totalOnline = 0L;
+        Long totalOffline = 0L;
         response.setBillDtoList(billDtoList);
         if (type == TypeOrderConstant.GET_ALL || type == TypeOrderConstant.BILL) {
             List<Bill> billList = billRepository.getByCreatedDateGreaterThanEqualAndCreatedDateLessThan(from, to);
@@ -52,6 +54,7 @@ public class ThongKeService {
                 billDto.setCustomerName(bill.getCustomerName());
                 billDto.setPhone(bill.getCustomerPhone());
                 response.setTotal(response.getTotal() + bill.getTotalMoney());
+                totalOffline += bill.getTotalMoney();
                 billDtoList.add(billDto);
             }
         }
@@ -75,11 +78,14 @@ public class ThongKeService {
                 billDto.setCustomerName(buy.getCustomer().getAccount().getEmail());
                 billDto.setPhone(buy.getCustomer().getAccount().getPhone());
                 response.setTotal(response.getTotal() + buy.getTotalMoney());
+                totalOnline += buy.getTotalMoney();
                 billDtoList.add(billDto);
             }
         }
         response.setTotalBookOffline(totalBookOffline);
         response.setTotalBookOnline(totalBookOnline);
+        response.setTotalOnline(totalOnline);
+        response.setTotalOffline(totalOffline);
         return response;
     }
 }
