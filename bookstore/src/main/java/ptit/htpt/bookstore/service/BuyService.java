@@ -73,7 +73,7 @@ public class BuyService {
         return new ResponseDto("0", "Success", mapFromBuyList(buys));
     }
 
-    private List<OrderDto> mapFromBuyList(List<Buy> buys){
+    private List<OrderDto> mapFromBuyList(List<Buy> buys) {
         List<OrderDto> result = new ArrayList<>();
         for (Buy buy : buys) {
             OrderDto dto = new OrderDto();
@@ -85,13 +85,23 @@ public class BuyService {
         return result;
     }
 
+    @Transactional
     public ResponseDto updateStatus(Long id, String status) {
         Buy buy = buyRepository.findById(id).orElse(null);
         if (buy == null) return new ResponseDto("1", "Error", null);
-        if (buy.getStatus().equals(StatusBuyConstants.CANCEL)) return new ResponseDto("1", "Không thể hủy đơn hàng", null);
+        if (buy.getStatus().equals(StatusBuyConstants.CANCEL))
+            return new ResponseDto("1", "Không thể hủy đơn hàng", null);
         buy.setStatus(status);
         buy = buyRepository.save(buy);
-        if (buy.getStatus().equals(StatusBuyConstants.CANCEL)) return new ResponseDto("0", "Hủy đơn hàng thành công!", buy);
+        if (buy.getStatus().equals(StatusBuyConstants.CANCEL)) {
+            List<BuyBook> buyBookList = buyBookRepository.findAllByBuy(buy);
+            for (BuyBook buyBook : buyBookList) {
+                BookQuantity bq = buyBook.getBookQuantity();
+                bq.setQuantity(bq.getQuantity() + buyBook.getQuantity());
+                bookQuantityRepository.save(bq);
+            }
+            return new ResponseDto("0", "Hủy đơn hàng thành công!", buy);
+        }
         return new ResponseDto("0", "Cập nhật thành công", buy);
     }
 

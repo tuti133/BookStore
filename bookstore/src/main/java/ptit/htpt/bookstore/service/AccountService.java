@@ -251,7 +251,9 @@ public class AccountService {
     public EmployeeAccountDto getCurrentEmployee() {
         Account account = SecurityUtils.getCurrentUser();
         Employee employee = employeeRepository.findByAccount(account);
+
         EmployeeAccountDto result = new EmployeeAccountDto();
+        result.setStore(employee.getBookStore().getName());
         result.setAccountId(account.getId());
         result.setEmployeeId(employee.getId());
         result.setUsername(account.getUsername());

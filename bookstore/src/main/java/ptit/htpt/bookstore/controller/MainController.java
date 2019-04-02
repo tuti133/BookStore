@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import ptit.htpt.bookstore.constant.AuthoritiesConstants;
 import ptit.htpt.bookstore.dto.EmployeeAccountDto;
 import ptit.htpt.bookstore.entity.Account;
+import ptit.htpt.bookstore.entity.BookStore;
 import ptit.htpt.bookstore.repository.BuyRepository;
 import ptit.htpt.bookstore.service.AccountService;
 import ptit.htpt.bookstore.service.BookService;
+import ptit.htpt.bookstore.service.BookStoreService;
 import ptit.htpt.bookstore.service.InitialService;
 import ptit.htpt.bookstore.util.SecurityUtils;
 
@@ -98,6 +100,8 @@ public class MainController {
         return "/admin/book-quantity";
     }
 
+
+
     @GetMapping("/admin/bill")
     public String manageBill() {
         return "/admin/bill";
@@ -108,7 +112,10 @@ public class MainController {
     public String sale(Model model) {
         EmployeeAccountDto dto = accountService.getCurrentEmployee();
         model.addAttribute("user", dto.getFirstName() + " " + dto.getLastName());
-        model.addAttribute("sachList", bookService.getAll());
+        BookStore bookStore = new BookStore();
+        bookStore.setId(dto.getBookStoreId());
+        model.addAttribute("sachList", bookService.getByBookStore(bookStore));
+        model.addAttribute("store", dto.getStore());
         return "/employee/sale";
     }
 

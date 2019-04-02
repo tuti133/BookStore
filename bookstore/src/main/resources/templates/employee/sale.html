@@ -80,19 +80,27 @@
                                 </div>
                                 <div class="nhapsach row">
 
-                                    <div class="col-md-3 form-group">
+                                    <div class="col-md-4 form-group">
                                         <label>Tên sách</label>
                                         <select class="form-control select2">
-                                            <th:block th:onchange="change(this)" th:each="sach : ${sachList}">
-                                                <option th:data-gia="${sach.price}" th:value="${sach.id}"
-                                                        th:text="${sach.name}+':  '+${sach.price}+' VND'"></option>
+                                            <th:block th:each="bq : ${sachList}">
+                                                <option th:data-gia="${bq.book.price}" th:value="${bq.book.id}"
+                                                        th:text="${bq.book.name}" th:data-sl="${bq.quantity}"></option>
                                             </th:block>
                                         </select>
                                     </div>
-                                    <div class="col-md-3 form-group" style="padding-right: 0">
+                                    <div class="slcon col-md-3 form-group" style="padding-right: 0">
+                                        <label>Còn lại</label>
+                                        <input disabled="disabled" class="form-control">
+                                    </div>
+                                    <div class="col-md-2 form-group" style="padding-right: 0">
                                         <label>Số lượng</label>
                                         <input oninput="tinhtien()" class="soluong form-control" min="1" value="1"
                                                type="number">
+                                    </div>
+                                    <div class="dongia col-md-3 form-group" style="padding-right: 0">
+                                        <label>Đơn giá</label>
+                                        <input disabled="disabled" class="form-control">
                                     </div>
                                 </div>
                                 <input type="button" onclick="addSach(this)" value="Thêm sách">
@@ -148,6 +156,7 @@
     $(document).ready(function () {
         form = $('.nhapsach').clone();
         $('.select2').select2();
+        listen()
         tinhtien();
     })
 
@@ -156,6 +165,7 @@
         let frm = form.clone()
         frm.insertBefore($(_this));
         $('.select2').select2();
+        listen()
         tinhtien();
     }
 
@@ -168,10 +178,11 @@
         $(".nhapsach").each(function () {
 
             let masach = $(this).find(".select2").first().children('option:selected').val();
+            let tensach = $(this).find(".select2").first().children('option:selected').text();
             let soluong = $(this).find('.soluong').last().val();
             if (masach && soluong && soluong > 0) {
                 listSach.push({bookId: masach, quantity: soluong});
-                str += `Mã sách: ${masach} ; Số lượng: ${soluong}\n`
+                str += `Tên sách: ${tensach} ; Số lượng: ${soluong}\n`
             }
         })
 
@@ -196,6 +207,9 @@
                     if (data.errorCode == 0) {
                         alert("Thành công!");
                         location.reload();
+                    }else if(data.errorCode == 3){
+                        alert("Số lượng hàng còn lại không đủ");
+
                     }
                 },
                 error: function (err) {
@@ -205,21 +219,28 @@
         }
     }
 
-    $('.select2').on('select2:select', function (e) {
-        tinhtien();
-    });
+    function listen() {
+        $('.select2').on('select2:select', function (e) {
+            tinhtien();
+        });
+    }
+
 
     function tinhtien() {
         let tongtien = 0;
         $(".nhapsach").each(function () {
             let gia = $(this).find(".select2").first().children('option:selected').attr("data-gia");
             let soluong = $(this).find('.soluong').last().val();
+            let slcon = $(this).find(".select2").first().children('option:selected').attr("data-sl");
+            $(this).children('.dongia').find('input').first().val(formatNumber(gia) +' VND')
+            $(this).children('.slcon').find('input').first().val(formatNumber(slcon))
             if (!soluong) soluong = 0;
             tongtien += parseInt(gia) * parseInt(soluong);
         });
-        $('#tongtien').val(formatNumber(tongtien)+' VND');
+        $('#tongtien').val(formatNumber(tongtien) + ' VND');
         return tongtien;
     }
+
     function formatNumber(num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }

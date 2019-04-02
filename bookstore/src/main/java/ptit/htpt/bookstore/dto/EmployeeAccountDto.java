@@ -11,6 +11,7 @@ import ptit.htpt.bookstore.entity.Employee;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeAccountDto {
+    private String store;
     private Long accountId;
     private Long employeeId;
     private String username;

@@ -49,6 +49,7 @@ public class BillService {
             book.setId(bookBillDto.getBookId());
            BookQuantity bookQuantity = bookQuantityRepository.findByBookStoreAndBook(bookStore, book);
             bookQuantity.setQuantity(bookQuantity.getQuantity() - bookBillDto.getQuantity());
+            if(bookQuantity.getQuantity() - bookBillDto.getQuantity() < 0) throw new IllegalArgumentException("exception");
             billBookRepository.save(billBook);
         }
         return new ResponseDto("0", "success", null);

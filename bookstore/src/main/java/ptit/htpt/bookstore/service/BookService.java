@@ -35,6 +35,10 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    public List<BookQuantity> getByBookStore(BookStore bookStore) {
+        return bookQuantityRepository.findAllByBookStore(bookStore);
+    }
+
     public Book findById(long id) {
         return bookRepository.findById(id).orElse(null);
     }
