@@ -5,7 +5,7 @@
     BillController.$inject = ["$scope", "$mdDialog", "AccountService", "BillService"];
 
     function BillController($scope, $mdDialog, AccountService, BillService) {
-        BillService.getByType(0).done(function (response) {
+        BillService.statistic(0, new Date("2019-04-01").getTime(), new Date("2019-04-02").getTime()).done(function (response) {
             console.log(response);
         })
     }

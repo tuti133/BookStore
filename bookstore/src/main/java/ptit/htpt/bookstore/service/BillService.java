@@ -33,8 +33,7 @@ public class BillService {
     @Transactional
     public ResponseDto createBill(CreateBillDto dto) {
         Bill bill = new Bill();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        bill.setCreatedDate(Long.parseLong(sdf.format(new Date())));
+        bill.setCreatedDate((new Date()).getTime());
         bill.setCustomerName(dto.getCustomerName());
         bill.setCustomerPhone(dto.getCustomerPhone());
         bill.setEmployeeId(dto.getEmployeeId());

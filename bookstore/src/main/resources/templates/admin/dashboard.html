@@ -37,14 +37,88 @@
             </md-content>
         </md-sidenav>
 
-        <div layout:fragment="admin-content" layout="column" flex>
-            <md-button ng-click="vm.initBook()">Init Books</md-button>
+        <div layout:fragment="admin-content" layout="column" flex ng-cloak style="background-color: #ddd">
+            <md-toolbar style="background-color: rgb(250,250,250);" class="md-table-toolbar md-default" layout="row"
+                        layout-align="center center">
+                <div class="md-toolbar-tools" flex>
+                    <span>Thống kê</span>
+                </div>
+            </md-toolbar>
+            <md-card style="padding-top: 5px;">
+                <form>
+                    <div layout-gt-xs="row" layout-align="space-around">
+                        <md-input-container class="md-block" style="min-width: 200px; margin-bottom: 0">
+                            <label>Loại hóa đơn</label>
+                            <md-select ng-model="vm.type" ng-change="vm.loadData()">
+                                <md-option ng-value="type.id" ng-repeat="type in vm.allType track by type.id">
+                                    {{type.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" style="min-width: 200px; margin-bottom: 0">
+                            <label>Tình trạng hóa đơn</label>
+                            <md-select ng-model="vm.buyStatus" ng-change="vm.loadData()">
+                                <md-option ng-value="status.id"
+                                           ng-repeat="status in vm.allBuyStatus track by status.id">
+                                    {{status.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-input-container style="margin-bottom: 0">
+                            <label>Ngày bắt đầu</label>
+                            <md-datepicker ng-model="vm.from" md-max-date="vm.to" ng-change="vm.loadData()"></md-datepicker>
+                        </md-input-container>
+                        <md-input-container style="margin-bottom: 0">
+                            <label>Ngày kết thúc</label>
+                            <md-datepicker ng-model="vm.to" md-min-date="vm.from" ng-change="vm.loadData()"></md-datepicker>
+                        </md-input-container>
+                    </div>
+                </form>
+            </md-card>
+            <md-content flex layout="column" style="background-color: #ddd">
+                <md-card layout="column">
+                    <md-table-container flex>
+                        <table md-table>
+                            <thead md-head>
+                            <tr md-row>
+                                <th md-column><span>Doanh thu</span></th>
+                                <th md-column><span>Số sách bán được</span></th>
+                                <th md-column><span>Số hóa đơn</span></th>
+                            </tr>
+                            </thead>
+                            <tbody md-body>
+                            <tr md-row>
+                                <td md-cell>
+                                    {{vm.statistic.total}}
+                                </td>
+                                <td md-cell>
+                                    {{vm.statistic.totalBook}}
+                                </td>
+                                <td md-cell>
+                                    {{vm.statistic.billDtoList.length}}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-card>
+                <div flex layout="row">
+                    <md-card flex layout="column">
+                        <div id="type_chart" flex></div>
+                    </md-card>
+                    <md-card flex layout="column">
+                        <div id="status_chart" flex></div>
+                    </md-card>
+                </div>
+            </md-content>
+
         </div>
     </div>
 </div>
 
 <th:block layout:fragment="scripts">
-
 </th:block>
 </body>
 </html>

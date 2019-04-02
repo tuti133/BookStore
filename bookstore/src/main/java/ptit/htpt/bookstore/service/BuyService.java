@@ -12,7 +12,6 @@ import ptit.htpt.bookstore.repository.BookQuantityRepository;
 import ptit.htpt.bookstore.repository.BuyBookRepository;
 import ptit.htpt.bookstore.repository.BuyRepository;
 import ptit.htpt.bookstore.repository.CustomerRepository;
-import ptit.htpt.bookstore.util.DatetimeUtils;
 import ptit.htpt.bookstore.util.SecurityUtils;
 
 import javax.transaction.Transactional;

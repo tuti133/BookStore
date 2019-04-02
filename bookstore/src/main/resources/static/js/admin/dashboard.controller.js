@@ -2,9 +2,9 @@
     'use strict'
     angular.module("BookStoreApp")
         .controller("DashboardController", DashboardController)
-    DashboardController.$inject = ["$scope", "$mdDialog", "AccountService", "AlertService", "BookService"];
+    DashboardController.$inject = ["$scope", "$mdDialog", "AccountService", "AlertService", "BookService", "BillService"];
 
-    function DashboardController($scope, $mdDialog, AccountService, AlertService, BookService) {
+    function DashboardController($scope, $mdDialog, AccountService, AlertService, BookService, BillService) {
         let vm = this;
 
         vm.adminFunctions = [
@@ -28,11 +28,6 @@
                 url: "/admin/category",
                 icon: "list_alt"
             },
-            {
-                name: "Quản lý hóa đơn",
-                url: "/admin/bill",
-                icon: "payment"
-            },
 
             {
                 name: "Đổi mật khẩu",
@@ -45,6 +40,102 @@
                 icon: "exit_to_app"
             },
         ]
+
+        vm.allType = [
+            {id: 0, name: "Tất cả"},
+            {id: 1, name: "Offline"},
+            {id: 2, name: "Online"},
+        ]
+
+        vm.allBuyStatus = [
+            {id: 0, name: "Tất cả"},
+            {id: 1, name: "Đang xử lý"},
+            {id: 2, name: "Đang giao hàng"},
+            {id: 3, name: "Đã giao hàng"},
+            {id: 4, name: "Đã hủy"},
+        ]
+
+        vm.from = new Date((new Date()).getTime() - 3600 * 24 * 1000);
+        vm.to = new Date();
+
+        vm.type = 0;
+        vm.buyStatus = 0;
+
+        vm.statistic = null;
+
+        vm.loadData = loadData;
+        loadData();
+
+        function loadData() {
+            let from = new Date(vm.from).getTime();
+            let to = new Date(vm.to).getTime();
+            if (from == to) to += 3600 * 24 * 1000
+            if (isNaN(vm.type)) vm.type = 0;
+            if (isNaN(vm.buyStatus)) vm.buyStatus = 0;
+            BillService.statistic(vm.type, from, to, vm.buyStatus).done(function (response) {
+                $scope.$apply(function () {
+                    vm.statistic = response;
+                    console.log(response);
+                    vm.offlineBill = [];
+                    vm.onlineBill = [];
+                    vm.proccessing = [];
+                    vm.shipping = [];
+                    vm.completed = [];
+                    vm.canceled = [];
+                    response.billDtoList.forEach(function (e) {
+                        if (e.type == 1) vm.offlineBill.push(e);
+                        else vm.onlineBill.push(e);
+                    })
+                    setTimeout(renderChart, 200);
+                })
+            })
+        }
+
+
+        function renderChart() {
+            Highcharts.chart('type_chart', {
+                chart: {
+                    type: 'pie',
+                },
+                title: {
+                    text: 'Thống kê loại hóa đơn'
+                },
+                series: [{
+                    name: 'Số lượng',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Online',
+                        y: vm.onlineBill.length,
+                    }, {
+                        name: 'Offline',
+                        y: vm.offlineBill.length
+                    }]
+                }]
+            });
+
+            Highcharts.chart('status_chart', {
+                chart: {
+                    type: 'column',
+                },
+                title: {
+                    text: 'Thống kê tình trạng hóa đơn'
+                },
+                xAxis: {
+                    categories: ['Đang xử lý', 'Đang ship', 'Đã giao', 'Đã hủy']
+                },
+                yAxis: {
+                    title: {
+                        text: 'Số lượng'
+                    }
+                },
+                series: [{
+                    showInLegend: false,
+                    name: 'Số lượng',
+                    data: [1, 5, 4, 1]
+                }]
+            });
+        }
+
 
         vm.initBook = initBook;
 
@@ -364,6 +455,7 @@
                 });
             })
         }
+
 
     }
 })();

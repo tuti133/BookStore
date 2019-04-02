@@ -18,7 +18,7 @@ public class ThongKeResource {
     @GetMapping("/api/thongke")
     //type = 0 getall, type =1 get bill, type =2 get online
     public ThongKeDto thongke(@RequestParam("type") int type,
-                              @RequestParam("from") @DateTimeFormat(pattern = "yyyy-MM-dd") Date from, @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam("to") Date to) {
-        return thongKeService.thongKeFromDateToDate(from, to, type);
+                              @RequestParam("from") Long from, @RequestParam("to") Long to, @RequestParam("buyStatus") String buyStatus) {
+        return thongKeService.thongKeFromDateToDate(from, to, type, buyStatus);
     }
 }

@@ -8,12 +8,26 @@
 
     function BillService() {
         let service = {
-            getByType: getByType,
+            getByStatusType: getByStatusType,
             getByCurrentUser: getByCurrentUser,
-            update: update
+            update: update,
+            statistic: statistic
+        }
+
+        function statistic(type, from, to, buyStatus) {
+            return $.ajax({
+                url: "/api/thongke",
+                type: "GET",
+                data: {
+                    type: type,
+                    from: from,
+                    to: to,
+                    buyStatus: buyStatus,
+                }
+            })
         }
         
-        function getByType(type) {
+        function getByStatusType(type) {
             return $.ajax({
                 url: "/api/buy/getByType",
                 type: "GET",

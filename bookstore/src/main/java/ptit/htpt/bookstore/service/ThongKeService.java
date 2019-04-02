@@ -10,10 +10,8 @@ import ptit.htpt.bookstore.entity.Bill;
 import ptit.htpt.bookstore.entity.Buy;
 import ptit.htpt.bookstore.repository.BillRepository;
 import ptit.htpt.bookstore.repository.BuyRepository;
-import ptit.htpt.bookstore.util.DatetimeUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -24,15 +22,12 @@ public class ThongKeService {
     @Autowired
     private BuyRepository buyRepository;
 
-    public ThongKeDto thongKeFromDateToDate(Date from, Date to, int type) {
-        Long fromTime = DatetimeUtils.convert(from);
-        Long toTime = DatetimeUtils.convert(to);
+    public ThongKeDto thongKeFromDateToDate(Long from, Long to, int type, String buyStatus) {
         ThongKeDto response = new ThongKeDto();
         List<BillDto> billDtoList = new ArrayList<>();
         response.setBillDtoList(billDtoList);
         if (type == TypeOrderConstant.GET_ALL || type == TypeOrderConstant.BILL) {
-            List<Bill> billList = billRepository.getByCreatedDateGreaterThanEqualAndCreatedDateLessThan(fromTime, toTime);
-
+            List<Bill> billList = billRepository.getByCreatedDateGreaterThanEqualAndCreatedDateLessThan(from, to);
             for (Bill bill : billList) {
                 BillDto billDto = new BillDto();
                 billDto.setId(bill.getId());
@@ -45,7 +40,7 @@ public class ThongKeService {
             }
         }
         if (type == TypeOrderConstant.GET_ALL || type == TypeOrderConstant.ONLINE) {
-            List<Buy> buyList = buyRepository.getByCreatedDateGreaterThanEqualAndCreatedDateLessThanAndStatus(fromTime, toTime, StatusBuyConstants.SUCCESS);
+            List<Buy> buyList = buyRepository.getByCreatedDateGreaterThanEqualAndCreatedDateLessThanAndStatus(from, to, buyStatus);
 
             for (Buy buy : buyList) {
                 BillDto billDto = new BillDto();
