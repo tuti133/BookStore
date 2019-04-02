@@ -57,25 +57,34 @@
 
         vm.from = new Date((new Date()).getTime() - 3600 * 24 * 1000);
         vm.to = new Date();
-
         vm.type = 0;
         vm.buyStatus = 0;
 
         vm.statistic = null;
+        vm.listBills = null;
 
-        vm.loadData = loadData;
-        loadData();
+        vm.changeDate = changeDate;
+        function changeDate() {
+            loadCommonData();
+            loadBillData();
+        }
+        
+        vm.changeBillType = changeBillType;
+        function changeBillType() {
+            loadBillData();
+        }
 
-        function loadData() {
+        loadBillData();
+        loadCommonData();
+
+        function loadCommonData() {
             let from = new Date(vm.from).getTime();
             let to = new Date(vm.to).getTime();
             if (from == to) to += 3600 * 24 * 1000
-            if (isNaN(vm.type)) vm.type = 0;
-            if (isNaN(vm.buyStatus)) vm.buyStatus = 0;
-            BillService.statistic(vm.type, from, to, vm.buyStatus).done(function (response) {
+            BillService.statistic(0, from, to, 0).done(function (response) {
                 $scope.$apply(function () {
                     vm.statistic = response;
-                    console.log(response);
+                    console.log(vm.statistic)
                     vm.offlineBill = [];
                     vm.onlineBill = [];
                     vm.proccessing = [];
@@ -84,9 +93,42 @@
                     vm.canceled = [];
                     response.billDtoList.forEach(function (e) {
                         if (e.type == 1) vm.offlineBill.push(e);
-                        else vm.onlineBill.push(e);
+                        else {
+                            vm.onlineBill.push(e);
+                            switch (e.status) {
+                                case '1': {
+                                    vm.proccessing.push(e);
+                                    break;
+                                }
+                                case '2': {
+                                    vm.shipping.push(e);
+                                    break;
+                                }
+                                case '3': {
+                                    vm.completed.push(e);
+                                    break;
+                                }
+                                case '4': {
+                                    vm.canceled.push(e);
+                                    break;
+                                }
+                            }
+                        }
                     })
                     setTimeout(renderChart, 200);
+                })
+            })
+        }
+
+        function loadBillData() {
+            let from = new Date(vm.from).getTime();
+            let to = new Date(vm.to).getTime();
+            if (from == to) to += 3600 * 24 * 1000
+            if (isNaN(vm.type)) vm.type = 0;
+            if (isNaN(vm.buyStatus)) vm.buyStatus = 0;
+            BillService.statistic(vm.type, from, to, vm.buyStatus).done(function (response) {
+                $scope.$apply(function () {
+                    vm.listBills = response.billDtoList;
                 })
             })
         }
@@ -113,15 +155,35 @@
                 }]
             });
 
+            Highcharts.chart('book_chart', {
+                chart: {
+                    type: 'pie',
+                },
+                title: {
+                    text: 'Thống kê bán sách'
+                },
+                series: [{
+                    name: 'Số lượng',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Online',
+                        y: vm.statistic.totalBookOnline,
+                    }, {
+                        name: 'Offline',
+                        y: vm.statistic.totalBookOffline,
+                    }]
+                }]
+            });
+
             Highcharts.chart('status_chart', {
                 chart: {
                     type: 'column',
                 },
                 title: {
-                    text: 'Thống kê tình trạng hóa đơn'
+                    text: 'Thống kê tình trạng hóa đơn online'
                 },
                 xAxis: {
-                    categories: ['Đang xử lý', 'Đang ship', 'Đã giao', 'Đã hủy']
+                    categories: ['Đang xử lý', 'Đang giao hàng', 'Đã giao hàng', 'Đã hủy']
                 },
                 yAxis: {
                     title: {
@@ -131,7 +193,7 @@
                 series: [{
                     showInLegend: false,
                     name: 'Số lượng',
-                    data: [1, 5, 4, 1]
+                    data: [vm.proccessing.length, vm.shipping.length, vm.completed.length, vm.canceled.length]
                 }]
             });
         }

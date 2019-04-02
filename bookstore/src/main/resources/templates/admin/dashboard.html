@@ -37,80 +37,145 @@
             </md-content>
         </md-sidenav>
 
-        <div layout:fragment="admin-content" layout="column" flex ng-cloak style="background-color: #ddd">
-            <md-toolbar style="background-color: rgb(250,250,250);" class="md-table-toolbar md-default" layout="row"
-                        layout-align="center center">
-                <div class="md-toolbar-tools" flex>
-                    <span>Thống kê</span>
-                </div>
-            </md-toolbar>
-            <md-card style="padding-top: 5px;">
-                <form>
-                    <div layout-gt-xs="row" layout-align="space-around">
-                        <md-input-container class="md-block" style="min-width: 200px; margin-bottom: 0">
-                            <label>Loại hóa đơn</label>
-                            <md-select ng-model="vm.type" ng-change="vm.loadData()">
-                                <md-option ng-value="type.id" ng-repeat="type in vm.allType track by type.id">
-                                    {{type.name}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-
-                        <md-input-container class="md-block" style="min-width: 200px; margin-bottom: 0">
-                            <label>Tình trạng hóa đơn</label>
-                            <md-select ng-model="vm.buyStatus" ng-change="vm.loadData()">
-                                <md-option ng-value="status.id"
-                                           ng-repeat="status in vm.allBuyStatus track by status.id">
-                                    {{status.name}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-
-                        <md-input-container style="margin-bottom: 0">
-                            <label>Ngày bắt đầu</label>
-                            <md-datepicker ng-model="vm.from" md-max-date="vm.to" ng-change="vm.loadData()"></md-datepicker>
-                        </md-input-container>
-                        <md-input-container style="margin-bottom: 0">
-                            <label>Ngày kết thúc</label>
-                            <md-datepicker ng-model="vm.to" md-min-date="vm.from" ng-change="vm.loadData()"></md-datepicker>
-                        </md-input-container>
+        <div layout:fragment="admin-content" layout="column" flex ng-cloak>
+            <form style="padding-top: 5px">
+                <div layout-gt-xs="row" layout-align="space-around">
+                    <div flex="50" layout="row" layout-align="start center">
+                        <md-button><strong>Thống kê</strong></md-button>
                     </div>
-                </form>
-            </md-card>
+                    <md-input-container style="margin-bottom: 0">
+                        <label>Ngày bắt đầu</label>
+                        <md-datepicker ng-model="vm.from" md-max-date="vm.to"
+                                       ng-change="vm.changeDate()"></md-datepicker>
+                    </md-input-container>
+                    <md-input-container style="margin-bottom: 0">
+                        <label>Ngày kết thúc</label>
+                        <md-datepicker ng-model="vm.to" md-min-date="vm.from"
+                                       ng-change="vm.changeDate()"></md-datepicker>
+                    </md-input-container>
+                </div>
+            </form>
+            <md-divider></md-divider>
             <md-content flex layout="column" style="background-color: #ddd">
-                <md-card layout="column">
-                    <md-table-container flex>
-                        <table md-table>
-                            <thead md-head>
-                            <tr md-row>
-                                <th md-column><span>Doanh thu</span></th>
-                                <th md-column><span>Số sách bán được</span></th>
-                                <th md-column><span>Số hóa đơn</span></th>
-                            </tr>
-                            </thead>
-                            <tbody md-body>
-                            <tr md-row>
-                                <td md-cell>
-                                    {{vm.statistic.total}}
-                                </td>
-                                <td md-cell>
-                                    {{vm.statistic.totalBook}}
-                                </td>
-                                <td md-cell>
-                                    {{vm.statistic.billDtoList.length}}
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </md-table-container>
-                </md-card>
-                <div flex layout="row">
-                    <md-card flex layout="column">
-                        <div id="type_chart" flex></div>
-                    </md-card>
-                    <md-card flex layout="column">
-                        <div id="status_chart" flex></div>
-                    </md-card>
+                <div>
+                    <div>
+                        <md-card layout="column">
+                            <md-table-container flex>
+                                <table md-table>
+                                    <thead md-head>
+                                    <tr md-row>
+                                        <th md-column><span>Doanh thu</span></th>
+                                        <th md-column><span>Số sách bán được</span></th>
+                                        <th md-column><span>Số hóa đơn</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody md-body>
+                                    <tr md-row>
+                                        <td md-cell>
+                                            {{vm.statistic.total | currency: '' : 0}} ₫
+                                        </td>
+                                        <td md-cell>
+                                            {{vm.statistic.totalBookOffline + vm.statistic.totalBookOnline}}
+                                        </td>
+                                        <td md-cell>
+                                            {{vm.statistic.billDtoList.length}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </md-table-container>
+                        </md-card>
+                    </div>
+                    <div flex layout="column">
+                        <div layout="row">
+                            <md-card flex layout="column">
+                                <div id="type_chart" flex></div>
+                            </md-card>
+                            <md-card flex layout="column">
+                                <div id="book_chart" flex></div>
+                            </md-card>
+                        </div>
+                        <div>
+                            <md-card flex layout="column">
+                                <div id="status_chart" flex></div>
+                            </md-card>
+                        </div>
+                    </div>
+                    <div>
+                        <md-card style="padding-top: 5px;">
+                            <form>
+                                <div layout-gt-xs="row" layout-align="space-around">
+                                    <div flex="50" layout="row" layout-align="start center">
+                                        <md-button><strong>Danh sách hóa đơn</strong></md-button>
+                                    </div>
+                                    <div flex="50" layout="row" layout-align="start center">
+                                        <md-checkbox style="margin-bottom: 0;" ng-model="vm.showList">Hiện danh sách
+                                        </md-checkbox>
+                                    </div>
+                                    <md-input-container class="md-block" style="min-width: 200px;">
+                                        <label>Loại hóa đơn</label>
+                                        <md-select ng-model="vm.type" ng-change="vm.changeBillType()">
+                                            <md-option ng-value="type.id"
+                                                       ng-repeat="type in vm.allType track by type.id">
+                                                {{type.name}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block" style="min-width: 200px;">
+                                        <label>Tình trạng hóa đơn</label>
+                                        <md-select ng-disabled="vm.type == 0 || vm.type == 1" ng-model="vm.buyStatus" ng-change="vm.changeBillType()">
+                                            <md-option ng-value="status.id"
+                                                       ng-repeat="status in vm.allBuyStatus track by status.id">
+                                                {{status.name}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                            </form>
+                        </md-card>
+                    </div>
+                    <div layout="row" layout-wrap ng-show="vm.showList">
+                        <div ng-repeat="bill in vm.listBills" flex="25">
+                            <md-card style="padding: 5px; min-height: 150px">
+                                <table>
+                                    <tr>
+                                        <td width="30%"><strong>Mã đơn</strong></td>
+                                        <td>#{{bill.id}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%"><strong>Tên</strong></td>
+                                        <td>{{bill.customerName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%"><strong>SDT</strong></td>
+                                        <td>{{bill.phone}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%"><strong>Loại</strong></td>
+                                        <td>
+                                            <label class="label label-default" ng-show="bill.type == 1">Offline</label>
+                                            <label class="label label-primary" ng-show="bill.type == 2">Online</label>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="bill.type == 2">
+                                        <td width="30%"><strong>Trạng thái</strong></td>
+                                        <td>
+                                            <label class="label label-warning" ng-show="bill.status == 1">Đang xử lý</label>
+                                            <label class="label label-info" ng-show="bill.status == 2">Đang giao hàng</label>
+                                            <label class="label label-success" ng-show="bill.status == 3">Đã giao hàng</label>
+                                            <label class="label label-danger" ng-show="bill.status == 4">Đã hủy</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%"><strong>Tổng</strong></td>
+                                        <td><span style="color: brown">{{bill.total | currency: '' : 0}} ₫</span></td>
+                                    </tr>
+
+                                </table>
+                            </md-card>
+                        </div>
+                    </div>
                 </div>
             </md-content>
 

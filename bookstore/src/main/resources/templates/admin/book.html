@@ -54,7 +54,7 @@
                             {{dto.author}}
                         </td>
                         <td md-cell>
-                            {{dto.price}}
+                            {{dto.price | currency: '' : 0}} ₫
                         </td>
                         <td md-cell>
                             {{dto.publisher}}
