@@ -48,7 +48,7 @@ public class BookService {
         if (book.getId() != null) {
             entity = bookRepository.findById(book.getId()).get();
         }
-
+        if (book.getImageUrl() != null) entity.setImageUrl(book.getImageUrl());
         if (image != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmsszz");
             String fileName = sdf.format(new Date()) + getExtensionFile(image.getOriginalFilename());

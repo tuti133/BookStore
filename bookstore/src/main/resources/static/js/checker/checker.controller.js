@@ -23,6 +23,7 @@
         loadData();
 
         function loadData() {
+            vm.selected = [];
             BillService.getByStatusType(vm.buyStatus).done(function (response) {
                 $scope.$apply(function () {
                     vm.bills = response.data;
@@ -53,7 +54,6 @@
         vm.changeBillType = changeBillType;
 
         function changeBillType() {
-            vm.selected = [];
             loadData();
         }
 
@@ -84,13 +84,11 @@
                             if (res.errorCode == 1) AlertService.error(res.message, 2000);
                             if (index + 1 == vm.selected.length) {
                                 if (res.errorCode == 0) AlertService.success(res.message, 2000);
+                                loadData();
                             }
                         })
                     }
                 )
-                $(document).ajaxStop(function () {
-                    loadData();
-                });
             }, function () {
 
             })
@@ -124,6 +122,7 @@
             vm.data = data;
             console.log(data);
             vm.cancel = cancel;
+
             function cancel() {
                 $mdDialog.cancel();
             }

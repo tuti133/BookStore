@@ -17,6 +17,10 @@
             <input ng-model="vm.search" type="text" class="form-control" placeholder="Tìm kiếm...">
         </div>
         <div flex layout="row" layout-align="end center">
+            <md-button ng-show="vm.books.length==0" class="md-raised md-warn" ng-click="vm.initBook()"
+                       style="color: rgb(255,255,255);">
+                Khởi tạo
+            </md-button>
             <md-button class="md-raised md-warn" ng-click="vm.saveBook(vm.newBook)" style="color: rgb(255,255,255);">
                 Tạo
             </md-button>
@@ -45,7 +49,8 @@
                             {{dto.id}}
                         </td>
                         <td md-cell>
-                            <img style="height: 60px; width: 50px; object-fit: cover; margin: 10px; border: 2px dashed #ddd" ng-src="{{dto.imageUrl != null ? dto.imageUrl : '/images/no-image.png'}}">
+                            <img style="height: 60px; width: 50px; object-fit: cover; margin: 10px; border: 2px dashed #ddd"
+                                 ng-src="{{dto.imageUrl != null ? dto.imageUrl : '/images/no-image.png'}}">
                         </td>
                         <td md-cell>
                             {{dto.name}}

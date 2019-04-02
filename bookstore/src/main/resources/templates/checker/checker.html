@@ -32,9 +32,13 @@
                 <md-button ng-show="vm.buyStatus == 1" class="md-raised md-warn" ng-click="vm.change(2)"
                            ng-disabled="vm.selected.length == 0">Giao hàng
                 </md-button>
+                <md-button ng-show="vm.buyStatus == 1" class="md-raised md-warn" ng-click="vm.change(4)"
+                           ng-disabled="vm.selected.length == 0">Hủy đơn
+                </md-button>
                 <md-button ng-show="vm.buyStatus == 2" class="md-raised md-warn" ng-click="vm.change(3)"
                            ng-disabled="vm.selected.length == 0">Hoàn tất
                 </md-button>
+
             </div>
             <md-menu layout="row" layout-align="end center" flex>
                 <md-button ng-click="$mdMenu.open($event)" style="outline: 1px dashed">

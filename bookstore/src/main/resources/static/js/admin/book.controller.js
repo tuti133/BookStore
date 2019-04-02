@@ -90,5 +90,15 @@
         }
 
 
+        vm.initBook = initBook;
+        function initBook() {
+            BookService.initData();
+
+            setTimeout(function () {
+                loadData();
+            }, 1000)
+        }
+
+
     }
 })();
