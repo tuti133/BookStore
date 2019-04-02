@@ -144,28 +144,28 @@
                     <div layout="row" layout-wrap ng-show="vm.showList">
                         <div ng-repeat="bill in vm.listBills" flex="25">
                             <md-card style="padding: 5px; min-height: 150px">
-                                <table>
+                                <table class="table">
                                     <tr>
-                                        <td width="30%"><strong>Mã đơn</strong></td>
+                                        <td width="40%"><strong>Mã đơn</strong></td>
                                         <td>#{{bill.id}}</td>
                                     </tr>
                                     <tr>
-                                        <td width="30%"><strong>Tên</strong></td>
+                                        <td width="40%"><strong>Tên</strong></td>
                                         <td>{{bill.customerName}}</td>
                                     </tr>
                                     <tr>
-                                        <td width="30%"><strong>SDT</strong></td>
+                                        <td width="40%"><strong>SDT</strong></td>
                                         <td>{{bill.phone}}</td>
                                     </tr>
                                     <tr>
-                                        <td width="30%"><strong>Loại</strong></td>
+                                        <td width="40%"><strong>Loại</strong></td>
                                         <td>
                                             <label class="label label-default" ng-show="bill.type == 1">Offline</label>
                                             <label class="label label-primary" ng-show="bill.type == 2">Online</label>
                                         </td>
                                     </tr>
                                     <tr ng-show="bill.type == 2">
-                                        <td width="30%"><strong>Trạng thái</strong></td>
+                                        <td width="40%"><strong>Trạng thái</strong></td>
                                         <td>
                                             <label class="label label-warning" ng-show="bill.status == 1">Đang xử lý</label>
                                             <label class="label label-info" ng-show="bill.status == 2">Đang giao hàng</label>
@@ -174,7 +174,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="30%"><strong>Tổng</strong></td>
+                                        <td width="40%"><strong>Tổng</strong></td>
                                         <td><span style="color: brown">{{bill.total | currency: '' : 0}} ₫</span></td>
                                     </tr>
 

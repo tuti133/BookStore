@@ -212,7 +212,7 @@
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Phần trăm'
+                        text: 'Tỉ lệ'
                     }
                 },
                 tooltip: {

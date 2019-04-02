@@ -80,17 +80,19 @@
 
 <script src="/js/book/book-detail.controller.js"></script>
 
+<script src="/js/checker/checker.controller.js"></script>
+
 
 <script src="/js/customer/register.controller.js"></script>
 <script src="/js/customer/order.controller.js"></script>
-
 <script src="/js/customer/history.controller.js"></script>
+
 <script src="/js/common/profile.controller.js"></script>
 <script src="/js/common/password.controller.js"></script>
 
 <script>
     let link = window.location.href;
-    if (link.indexOf("admin") != -1 || link.indexOf("employee") != -1 || link.indexOf("login") != -1 || link.indexOf("register") != -1 || link.indexOf("password") != -1 || link.indexOf("history") != -1 || link.indexOf("profile") != -1) {
+    if (link.indexOf("admin") != -1 || link.indexOf("employee") != -1 || link.indexOf("login") != -1 || link.indexOf("register") != -1 || link.indexOf("password") != -1 || link.indexOf("history") != -1 || link.indexOf("profile") != -1 || link.indexOf("checker") != -1) {
         $("#navbar").remove();
     }
 </script>

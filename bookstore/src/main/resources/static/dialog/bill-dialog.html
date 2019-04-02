@@ -1,0 +1,45 @@
+<md-dialog aria-label="UserDialog">
+    <form ng-cloak name="createUserForm">
+        <md-toolbar class="md-warn">
+            <div class="md-toolbar-tools">
+                <h2>Chi tiết hóa đơn</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.cancel()">
+                    <md-icon class="material-icons" aria-label="Close dialog">clear</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content layout-padding>
+            <md-content md-no-momentum>
+                <table class="table">
+                    <tr>
+                        <td><span>Mã đơn</span></td>
+                        <td><span>{{vm.data.buy.id}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>Sản phẩm</span></td>
+                        <td>
+                            <div ng-repeat="book in vm.data.listBuyBook">
+                                <img style="height: 60px; width: 50px; object-fit: cover; margin: 3px; border: 2px dashed #ddd"
+                                     ng-src="{{book.bookQuantity.book.imageUrl}}" alt="">
+                                <span class="label label-info">{{book.quantity}}</span> -
+
+                                <span>{{book.bookQuantity.book.name}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span>Tổng cộng</span></td>
+                        <td><span><strong>{{vm.data.buy.totalMoney | currency: '' : 0}} ₫</strong></span></td>
+                    </tr>
+                </table>
+            </md-content>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button ng-click="vm.cancel()">
+                Đóng
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

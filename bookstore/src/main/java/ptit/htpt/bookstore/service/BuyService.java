@@ -88,7 +88,7 @@ public class BuyService {
     public ResponseDto updateStatus(Long id, String status) {
         Buy buy = buyRepository.findById(id).orElse(null);
         if (buy == null) return new ResponseDto("1", "Error", null);
-        if (!buy.getStatus().equals(StatusBuyConstants.ORDERED)) return new ResponseDto("1", "Không thể hủy đơn hàng", null);
+        if (buy.getStatus().equals(StatusBuyConstants.CANCEL)) return new ResponseDto("1", "Không thể hủy đơn hàng", null);
         buy.setStatus(status);
         buy = buyRepository.save(buy);
         if (buy.getStatus().equals(StatusBuyConstants.CANCEL)) return new ResponseDto("0", "Hủy đơn hàng thành công!", buy);

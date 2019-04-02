@@ -1,10 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}"
+      xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Nothing</title>
+    <title>Duyệt đơn hàng</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
+<div layout:fragment="content" ng-controller="CheckerController as vm">
+    <div style="background-color: rgb(250,250,250);" class="md-table-toolbar md-default" layout="row"
+         layout-align="center center">
+        <div flex layout="row" layout-align="space-around center" style="padding-top: 5px">
+            <div>
+                <h3>Duyệt đơn hàng</h3>
+            </div>
+            <md-input-container style="min-width: 150px;">
+                <label>Lọc hóa đơn</label>
+                <md-select ng-model="vm.buyStatus" ng-change="vm.changeBillType()">
+                    <md-option ng-value="status.id"
+                               ng-repeat="status in vm.allBuyStatus track by status.id">
+                        {{status.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div flex="35">
+            <input ng-model="vm.search" type="text" class="form-control" placeholder="Tìm kiếm...">
+        </div>
+        <div flex layout="row" layout-align="space-around">
+            <div flex layout="row" layout-align="center">
+                <md-button ng-show="vm.buyStatus == 1" class="md-raised md-warn" ng-click="vm.change(2)"
+                           ng-disabled="vm.selected.length == 0">Giao hàng
+                </md-button>
+                <md-button ng-show="vm.buyStatus == 2" class="md-raised md-warn" ng-click="vm.change(3)"
+                           ng-disabled="vm.selected.length == 0">Hoàn tất
+                </md-button>
+            </div>
+            <md-menu layout="row" layout-align="end center" flex>
+                <md-button ng-click="$mdMenu.open($event)" style="outline: 1px dashed">
+                    <md-icon class="material-icons">menu</md-icon>
+                    <span>Tài khoản</span>
+                </md-button>
+                <md-menu-content>
+                    <md-menu-item>
+                        <md-button href="/password">
+                            <span>Đổi mật khẩu</span>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button href="/logout">
+                            <span>Đăng xuất</span>
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </div>
 
-</body>
+
+    </div>
+    <md-divider></md-divider>
+    <md-content flex layout="column" ng-show="vm.bills.length != 0">
+        <md-table-container flex>
+            <table md-table md-row-select="vm.buyStatus == 1 || vm.buyStatus == 2" multiple ng-model="vm.selected">
+                <thead md-head>
+                <tr md-row>
+                    <th md-column><span>Mã đơn</span></th>
+                    <th md-column><span>Tên khách hàng</span></th>
+                    <th md-column>SĐT</th>
+                    <th md-column>Địa chỉ giao hàng</th>
+                    <th md-column>Ngày tạo</th>
+                    <th md-column>Trạng thái</th>
+                    <th md-column></th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row md-select="bill.buy.id" md-select-id="bill.buy.id"
+                    ng-repeat="bill in vm.bills | filter: vm.search">
+                    <td md-cell>
+                        {{bill.buy.id}}
+                    </td>
+                    <td md-cell>
+                        {{bill.buy.customer.account.firstName}} {{bill.buy.customer.account.lastName}}
+                    </td>
+                    <td md-cell>
+                        {{bill.buy.customer.account.phone}}
+                    </td>
+                    <td md-cell>
+                        {{bill.buy.shipAddress}}
+                    </td>
+                    <td md-cell>
+                        {{bill.buy.createdDate | date: 'dd/MM/yyyy'}}
+                    </td>
+                    <td md-cell>
+                        {{bill.status}}
+                    </td>
+
+                    <td md-cell>
+                        <md-button class="md-raised" ng-click="vm.detail($event, bill)">Xem</md-button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="column" flex layout-align="center center" ng-show="vm.bills.length == 0">
+        <div class="alert alert-warning">
+            <strong>Danh sách hóa đơn trống</strong>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+</th:block>
+
 </html>
