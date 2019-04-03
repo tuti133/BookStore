@@ -19,12 +19,20 @@
                     <tr>
                         <td><span>Sản phẩm</span></td>
                         <td>
-                            <div ng-repeat="book in vm.data.listBuyBook">
-                                <img style="height: 60px; width: 50px; object-fit: cover; margin: 3px; border: 2px dashed #ddd"
-                                     ng-src="{{book.bookQuantity.book.imageUrl}}" alt="">
-                                <span class="label label-info">{{book.quantity}}</span> -
+                            <div ng-repeat="book in vm.data.listBuyBook" layout="row">
+                                <div>
+                                    <img style="height: 60px; width: 50px; object-fit: cover; margin: 3px; border: 2px dashed #ddd"
+                                         ng-src="{{book.bookQuantity.book.imageUrl}}" alt="">
+                                </div>
+                                <div layout="column" layout-align="center center" style="padding: 0 5px">
+                                    <span class="label label-info">{{book.quantity}}</span>
+                                </div>
+                                <div layout="column">
 
-                                <span>{{book.bookQuantity.book.name}}</span>
+                                    <span><strong><a href="/book/{{book.bookQuantity.book.id}}">{{book.bookQuantity.book.name}}</a></strong></span>
+                                    <span>{{book.bookQuantity.book.price | currency: '' : 0}} ₫</span>
+                                    <span>Kho: {{book.bookQuantity.bookStore.name}}</span>
+                                </div>
                             </div>
                         </td>
                     </tr>

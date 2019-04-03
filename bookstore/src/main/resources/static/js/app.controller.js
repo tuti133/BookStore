@@ -31,7 +31,7 @@
             let result = [];
             let idx = null;
             for (let i = 0; i < arr.length; i++) {
-                if (arr[i].bookId == item.bookId) {
+                if (arr[i].bookId == item.bookId && arr[i].storeId == item.storeId) {
                     idx = i;
                     break;
                 }
