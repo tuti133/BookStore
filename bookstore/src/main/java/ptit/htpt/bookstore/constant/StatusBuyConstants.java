@@ -6,4 +6,5 @@ public interface StatusBuyConstants {
     String SHIPPING = "2";
     String SUCCESS = "3";
     String CANCEL = "4";
+    String OFFLINE = "5";
 }

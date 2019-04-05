@@ -14,8 +14,12 @@ import java.io.Serializable;
 public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String phone;
+
+    @Column(columnDefinition = "nvarchar(50)")
+    private String name;
+
+    private String gender;
 
     @Column(columnDefinition = "nvarchar(500)")
     private String address;
@@ -23,7 +27,6 @@ public class Customer implements Serializable {
     @Column(name = "credit_number")
     private String creditNumber;
 
-    @NotNull
     @OneToOne
     @JoinColumn(name = "account_id")
     private Account account;

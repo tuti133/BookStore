@@ -49,13 +49,12 @@
                 }
             })
                 .then(function (response) {
-                    if (response.errorCode == 0){
+                    if (response.errorCode == 0) {
                         AlertService.success(response.message, 2000);
                         loadAccount();
-                    }
-                    else AlertService.error(response.message, 2000);
+                    } else AlertService.error(response.message, 2000);
                 }, function (err) {
-                    
+
                 });
 
         }
@@ -77,8 +76,6 @@
                                 id: null,
                                 username: null,
                                 password: null,
-                                firstName: null,
-                                lastName: null,
                                 phone: null,
                                 email: null,
                                 gender: null,
@@ -100,17 +97,15 @@
                         return vm.bookStores
                     }
                 }
-            })
-                .then(function (response) {
-                    if (response.errorCode == 0){
-                        AlertService.success(response.message, 2000);
-                        vm.accountDtos.push(response.data);
-                    }
-                    else AlertService.error(response.message, 2000);
+            }).then(function (response) {
+                if (response.errorCode == 0) {
+                    AlertService.success(response.message, 2000);
+                    vm.accountDtos.push(response.data);
+                } else AlertService.error(response.message, 2000);
 
-                }, function (err) {
-                    
-                });
+            }, function (err) {
+
+            });
         };
 
         function DialogController($scope, $mdDialog, accountDto, bookStores) {
@@ -128,7 +123,7 @@
             vm.isSelectedStore = isSelectedStore;
 
             vm.genders = ["MALE", "FEMALE", "OTHER"];
-            vm.authorities = ["ROLE_ADMIN", "ROLE_EMPLOYEE",  "ROLE_CHECKER", "ROLE_CUSTOMER"];
+            vm.authorities = ["ROLE_ADMIN", "ROLE_EMPLOYEE", "ROLE_CHECKER", "ROLE_CUSTOMER"];
 
             function isSelectedStore(bookStore) {
                 vm.bookStores.forEach(function (store) {

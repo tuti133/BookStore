@@ -19,6 +19,12 @@ public class Employee implements Serializable {
 
     private Long salary;
 
+    private String name;
+
+    private String phone;
+
+    private String gender;
+
     @Column(name = "work_shift")
     private Long workShift;
 

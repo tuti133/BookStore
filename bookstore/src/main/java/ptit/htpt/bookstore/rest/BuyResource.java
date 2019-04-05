@@ -44,14 +44,14 @@ public class BuyResource {
     }
 
     @GetMapping("buy/getByCustomer")
-    public ResponseDto getByCustomer(@RequestParam Long customerId) {
-        return buyService.getByCustomer(customerId);
+    public ResponseDto getByCustomer(@RequestParam String phone) {
+        return buyService.getByCustomer(phone);
     }
 
     @GetMapping("buy/getByCurrentUser")
     public ResponseDto getByCurrentUser() {
         Account account = SecurityUtils.getCurrentUser();
         Customer customer = customerRepository.findByAccount(account);
-        return getByCustomer(customer.getId());
+        return getByCustomer(customer.getPhone());
     }
 }

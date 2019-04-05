@@ -6,9 +6,9 @@ import ptit.htpt.bookstore.entity.Account;
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Account findByUsername(String username);
+
     Account findByUsernameAndPassword(String username, String password);
 
     Account findByEmail(String email);
 
-    Account findByPhone(String phone);
 }

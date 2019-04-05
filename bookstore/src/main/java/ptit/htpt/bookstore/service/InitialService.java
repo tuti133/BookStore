@@ -78,49 +78,40 @@ public class InitialService {
 
         Account admin = new Account();
         admin.setUsername("admin");
-        admin.setFirstName("Admin");
-        admin.setLastName("Admin");
         admin.setPassword(passwordEncoder.encode("admin"));
-        admin.setGender(GenderConstants.MALE);
         HashSet<Authority> auth1 = new HashSet<>();
         auth1.add(adminAuth);
         auth1.add(employeeAuth);
         auth1.add(customerAuth);
         admin.setAuthorities(auth1);
         admin.setEmail("admin@localhost");
-        admin.setPhone("11111111111");
         admin.setActivated(true);
         accountRepository.save(admin);
 
         Account checker = new Account();
         checker.setUsername("checker");
         checker.setPassword(passwordEncoder.encode("checker"));
-        checker.setFirstName("Checker");
-        checker.setLastName("Checker");
-        checker.setGender(GenderConstants.FEMALE);
         HashSet<Authority> auth0 = new HashSet<>();
         auth0.add(checkerAuth);
         auth0.add(customerAuth);
         checker.setAuthorities(auth0);
         checker.setEmail("checker@localhost");
-        checker.setPhone("2222222222");
         checker.setActivated(true);
         accountRepository.save(checker);
 
         Account employee = new Account();
         employee.setUsername("employee");
-        employee.setFirstName("Employee");
-        employee.setLastName("Employee");
         employee.setPassword(passwordEncoder.encode("employee"));
-        employee.setGender(GenderConstants.FEMALE);
         employee.setActivated(true);
         HashSet<Authority> auth2 = new HashSet<>();
         auth2.add(employeeAuth);
         employee.setAuthorities(auth2);
         employee.setEmail("employee@localhost");
-        employee.setPhone("3333333333");
 
         Employee em = new Employee();
+        em.setPhone("3333333333");
+        em.setGender(GenderConstants.FEMALE);
+        em.setName("Employee");
         em.setAccount(accountRepository.save(employee));
         em.setWorkShift(1L);
         em.setBookStore(bookStoreRepository.findByArea(AreaConstants.HANOI));
@@ -129,18 +120,17 @@ public class InitialService {
 
         Account customer = new Account();
         customer.setUsername("customer");
-        customer.setFirstName("Customer");
-        customer.setLastName("Customer");
         customer.setActivated(true);
         customer.setPassword(passwordEncoder.encode("customer"));
-        customer.setGender(GenderConstants.OTHER);
         HashSet<Authority> auth3 = new HashSet<>();
         auth3.add(customerAuth);
         customer.setAuthorities(auth3);
         customer.setEmail("customer@localhost");
-        customer.setPhone("4444444444");
 
         Customer cus = new Customer();
+        cus.setName("Customer");
+        cus.setPhone("4444444444");
+        cus.setGender(GenderConstants.MALE);
         cus.setAccount(accountRepository.save(customer));
         customerRepository.save(cus);
     }

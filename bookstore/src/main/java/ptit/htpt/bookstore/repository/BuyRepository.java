@@ -15,5 +15,5 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
 
     List<Buy> findByStatus(String status);
 
-    List<Buy> getByCreatedDateGreaterThanEqualAndCreatedDateLessThan(Long from, Long to);
+    List<Buy> getByCreatedDateGreaterThanEqualAndCreatedDateLessThanAndStatusIn(Long from, Long to, List<String> statusList);
 }

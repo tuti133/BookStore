@@ -105,9 +105,9 @@ public class BuyService {
         return new ResponseDto("0", "Cập nhật thành công", buy);
     }
 
-    public ResponseDto getByCustomer(Long customerId) {
+    public ResponseDto getByCustomer(String phone) {
         Customer customer = new Customer();
-        customer.setId(customerId);
+        customer.setPhone(phone);
         List<Buy> buys = buyRepository.findAllByCustomer(customer);
         return new ResponseDto("0", "Success", mapFromBuyList(buys));
     }

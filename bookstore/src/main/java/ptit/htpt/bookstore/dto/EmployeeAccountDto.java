@@ -17,8 +17,7 @@ public class EmployeeAccountDto {
     private String username;
     private String password;
     private Boolean activated;
-    private String firstName;
-    private String lastName;
+    private String name;
     private String email;
     private String phone;
     private Long salary;

@@ -18,6 +18,8 @@ import ptit.htpt.bookstore.service.BookStoreService;
 import ptit.htpt.bookstore.service.InitialService;
 import ptit.htpt.bookstore.util.SecurityUtils;
 
+import java.util.Date;
+
 @Controller
 public class MainController {
     @Autowired
@@ -111,10 +113,12 @@ public class MainController {
     @GetMapping("/employee/sale")
     public String sale(Model model) {
         EmployeeAccountDto dto = accountService.getCurrentEmployee();
-        model.addAttribute("user", dto.getFirstName() + " " + dto.getLastName());
+        model.addAttribute("user", dto.getName());
         BookStore bookStore = new BookStore();
         bookStore.setId(dto.getBookStoreId());
+        System.err.println(new Date());
         model.addAttribute("sachList", bookService.getByBookStore(bookStore));
+        System.err.println(new Date());
         model.addAttribute("store", dto.getStore());
         return "/employee/sale";
     }

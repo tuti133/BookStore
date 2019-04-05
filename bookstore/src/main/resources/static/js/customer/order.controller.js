@@ -28,7 +28,7 @@
             shipAddress: null,
             note: null,
             totalMoney: null,
-            customerId: null,
+            phone: null,
             buyBookDtoList: null
         }
 

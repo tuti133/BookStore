@@ -9,7 +9,7 @@ public class CreateBuyDto {
     private String shipAddress;
     private String note;
     private Long totalMoney;
-    private Long customerId;
+    private String phone;
     private List<BuyBookDto> buyBookDtoList;
 
 }

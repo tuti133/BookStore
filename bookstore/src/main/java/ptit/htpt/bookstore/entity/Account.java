@@ -33,19 +33,8 @@ public class Account implements Serializable {
     @NotNull
     private Boolean activated;
 
-    @Column(name = "first_name", columnDefinition = "nvarchar(50)")
-    private String firstName;
-
-    @Column(name = "last_name", columnDefinition = "nvarchar(50)")
-    private String lastName;
-
-    private String gender;
-
     @Column(unique = true)
     private String email;
-
-    @Column(unique = true)
-    private String phone;
 
     @ManyToMany
     @JoinTable(

@@ -38,8 +38,6 @@ public class AccountService {
         if (check != null) return MessageConstants.ACCOUNT_EXIST;
         check = accountRepository.findByEmail(account.getEmail());
         if (check != null) return MessageConstants.EMAIL_EXIST;
-        check = accountRepository.findByPhone(account.getPhone());
-        if (check != null) return MessageConstants.PHONE_EXIST;
         return null;
     }
 
@@ -47,8 +45,6 @@ public class AccountService {
         Account check;
         check = accountRepository.findByEmail(account.getEmail());
         if (check != null && check.getId() != account.getId()) return MessageConstants.EMAIL_EXIST;
-        check = accountRepository.findByPhone(account.getPhone());
-        if (check != null && check.getId() != account.getId()) return MessageConstants.PHONE_EXIST;
         return null;
     }
 
@@ -234,14 +230,14 @@ public class AccountService {
         Account account = accountRepository.findById(id).get();
         Employee employee = employeeRepository.findByAccount(account);
         EmployeeAccountDto result = new EmployeeAccountDto();
+        result.setStore(employee.getBookStore().getName());
         result.setAccountId(account.getId());
         result.setEmployeeId(employee.getId());
         result.setUsername(account.getUsername());
         result.setActivated(account.getActivated());
-        result.setFirstName(account.getFirstName());
-        result.setLastName(account.getLastName());
+        result.setName(employee.getName());
         result.setEmail(account.getEmail());
-        result.setPhone(account.getPhone());
+        result.setPhone(employee.getPhone());
         result.setSalary(employee.getSalary());
         result.setWorkShift(employee.getWorkShift());
         result.setBookStoreId(employee.getBookStore().getId());
@@ -258,10 +254,9 @@ public class AccountService {
         result.setEmployeeId(employee.getId());
         result.setUsername(account.getUsername());
         result.setActivated(account.getActivated());
-        result.setFirstName(account.getFirstName());
-        result.setLastName(account.getLastName());
+        result.setName(employee.getName());
         result.setEmail(account.getEmail());
-        result.setPhone(account.getPhone());
+        result.setPhone(employee.getPhone());
         result.setSalary(employee.getSalary());
         result.setWorkShift(employee.getWorkShift());
         result.setBookStoreId(employee.getBookStore().getId());
@@ -273,11 +268,9 @@ public class AccountService {
         Customer customer = customerRepository.findByAccount(account);
         CustomerAccountDto result = new CustomerAccountDto();
         result.setAccountId(account.getId());
-        result.setCustomerId(customer.getId());
-        result.setFirstName(account.getFirstName());
-        result.setLastName(account.getLastName());
+        result.setName(customer.getName());
         result.setEmail(account.getEmail());
-        result.setPhone(account.getPhone());
+        result.setPhone(customer.getPhone());
         result.setAddress(customer.getAddress());
         result.setCreditNumber(customer.getCreditNumber());
         result.setActivated(account.getActivated());
