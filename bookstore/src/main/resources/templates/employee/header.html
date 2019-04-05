@@ -56,10 +56,16 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            <li  class="active">
-                <a href="#">
+            <li th:class="${page == 'sale' ? 'active':''}">
+                <a th:href="${page == 'sale' ? '#':'/employee/sale'}">
                     <i class="fa fa-th"></i> <span>Bán hàng</span>
                 </a>
+            </li>
+            <li th:class="${page == 'history' ? 'active':''}">
+                <a th:href="${page == 'history' ? '#':'/employee/history'}">
+                    <i class="fa fa-files-o"></i> <span>Lịch sử</span>
+                </a>
+
             </li>
         </ul>
     </section>

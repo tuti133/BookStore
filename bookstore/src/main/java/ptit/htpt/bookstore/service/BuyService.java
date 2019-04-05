@@ -3,10 +3,7 @@ package ptit.htpt.bookstore.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ptit.htpt.bookstore.constant.StatusBuyConstants;
-import ptit.htpt.bookstore.dto.BuyBookDto;
-import ptit.htpt.bookstore.dto.CreateBuyDto;
-import ptit.htpt.bookstore.dto.OrderDto;
-import ptit.htpt.bookstore.dto.ResponseDto;
+import ptit.htpt.bookstore.dto.*;
 import ptit.htpt.bookstore.entity.*;
 import ptit.htpt.bookstore.repository.BookQuantityRepository;
 import ptit.htpt.bookstore.repository.BuyBookRepository;
@@ -110,6 +107,23 @@ public class BuyService {
         customer.setPhone(phone);
         List<Buy> buys = buyRepository.findAllByCustomer(customer);
         return new ResponseDto("0", "Success", mapFromBuyList(buys));
+    }
+
+    public List<GetBuyBookDto> getDetailBuy(Long buyId) {
+        List<GetBuyBookDto> result = new ArrayList<>();
+        Buy buy = new Buy();
+        buy.setId(buyId);
+        List<BuyBook> buyBookList = buyBookRepository.findAllByBuy(buy);
+        for (BuyBook buyBook : buyBookList) {
+            GetBuyBookDto getBuyBookDto = new GetBuyBookDto();
+            getBuyBookDto.setQuantity(buyBook.getQuantity());
+            getBuyBookDto.setStoreName(buyBook.getBookQuantity().getBookStore().getName());
+            getBuyBookDto.setBookName(buyBook.getBookQuantity().getBook().getName());
+            getBuyBookDto.setBookImage(buyBook.getBookQuantity().getBook().getImageUrl());
+            getBuyBookDto.setPrice(buyBook.getBookQuantity().getBook().getPrice());
+            result.add(getBuyBookDto);
+        }
+        return result;
     }
 
 }

@@ -35,7 +35,7 @@
 
 <div class="wrapper">
     <header th:replace="/employee/header.html :: header"></header>
-    <aside th:replace="/employee/header.html :: slide-bar"></aside>
+    <aside th:replace="/employee/header.html :: slide-bar(page='sale')"></aside>
     <!-- Left side column. contains the logo and sidebar -->
 
 
@@ -61,18 +61,24 @@
                         <form role="form">
                             <div class="box-body">
                                 <div class="form-group">
+                                    <label>SĐT khách hàng</label><br>
+                                    <select id="sdt" style="width: 50%" class="form-control select2">
+                                        <th:block th:each="cus : ${customerList}">
+                                            <option th:data-ten="${cus.name}" th:value="${cus.phone}"
+                                                    th:text="${cus.phone}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label for="tenkh">Tên khách hàng</label>
                                     <input type="text" class="form-control" id="tenkh">
                                 </div>
-                                <div class="form-group">
-                                    <label for="sdt">SĐT khách hàng</label>
-                                    <input type="text" class="form-control" id="sdt">
-                                </div>
+
                                 <div class="nhapsach row">
 
                                     <div class="col-md-4 form-group">
                                         <label>Tên sách</label>
-                                        <select class="form-control select2">
+                                        <select class="sach form-control select2">
                                             <th:block th:each="bq : ${sachList}">
                                                 <option th:data-gia="${bq.book.price}" th:value="${bq.id}"
                                                         th:text="${bq.book.name}" th:data-sl="${bq.quantity}"></option>
@@ -143,16 +149,33 @@
     let form;
     $(document).ready(function () {
         form = $('.nhapsach').clone();
-        $('.select2').select2();
-        listen()
+        $('.sach').select2();
+        $('#sdt').select2({
+            tags: true
+        });
+        console.log('ádasdasd')
+        $('#sdt.select2').on('select2:select', function () {
+            getCustomerName();
+        });
+        getCustomerName();
+        listen();
         tinhtien();
     })
 
-    function addSach(_this) {
+    function getCustomerName() {
+        $('#tenkh').val('');
+        let ten = $('#sdt.select2').children('option:selected').attr('data-ten');
+        console.log(ten);
+        if (ten) {
+            $('#tenkh').val(ten);
+        }
+    }
 
+
+    function addSach(_this) {
         let frm = form.clone()
         frm.insertBefore($(_this));
-        $('.select2').select2();
+        $('.sach').select2();
         listen()
         tinhtien();
     }
@@ -195,7 +218,7 @@
                     if (data.errorCode == 0) {
                         alert("Thành công!");
                         location.reload();
-                    }else if(data.errorCode == 3){
+                    } else if (data.errorCode == 3) {
                         alert("Số lượng hàng còn lại không đủ");
 
                     }
@@ -207,8 +230,9 @@
         }
     }
 
+
     function listen() {
-        $('.select2').on('select2:select', function (e) {
+        $('.sach').on('select2:select', function (e) {
             tinhtien();
         });
     }
@@ -220,7 +244,7 @@
             let gia = $(this).find(".select2").first().children('option:selected').attr("data-gia");
             let soluong = $(this).find('.soluong').last().val();
             let slcon = $(this).find(".select2").first().children('option:selected').attr("data-sl");
-            $(this).children('.dongia').find('input').first().val(formatNumber(gia) +' VND')
+            $(this).children('.dongia').find('input').first().val(formatNumber(gia) + ' VND')
             $(this).children('.slcon').find('input').first().val(formatNumber(slcon))
             if (!soluong) soluong = 0;
             tongtien += parseInt(gia) * parseInt(soluong);

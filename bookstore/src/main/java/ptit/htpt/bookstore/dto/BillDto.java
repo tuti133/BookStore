@@ -6,6 +6,7 @@ import lombok.Data;
 public class BillDto {
     private Long id;
     private int type;
+    private String createDate;
     private String status;
     private String customerName;
     private String phone;

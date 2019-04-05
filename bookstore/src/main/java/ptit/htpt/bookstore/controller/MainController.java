@@ -1,30 +1,25 @@
 package ptit.htpt.bookstore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import ptit.htpt.bookstore.constant.AuthoritiesConstants;
 import ptit.htpt.bookstore.dto.EmployeeAccountDto;
-import ptit.htpt.bookstore.entity.Account;
 import ptit.htpt.bookstore.entity.BookStore;
 import ptit.htpt.bookstore.repository.BuyRepository;
-import ptit.htpt.bookstore.service.AccountService;
-import ptit.htpt.bookstore.service.BookService;
-import ptit.htpt.bookstore.service.BookStoreService;
-import ptit.htpt.bookstore.service.InitialService;
+import ptit.htpt.bookstore.service.*;
 import ptit.htpt.bookstore.util.SecurityUtils;
-
-import java.util.Date;
 
 @Controller
 public class MainController {
     @Autowired
     private InitialService initialService;
 
+    @Autowired
+    private EmployeeService employeeService;
     @Autowired
     private AccountService accountService;
 
@@ -102,7 +97,8 @@ public class MainController {
         return "/admin/book-quantity";
     }
 
-
+    @Autowired
+    private CustomerService customerService;
 
     @GetMapping("/admin/bill")
     public String manageBill() {
@@ -116,13 +112,16 @@ public class MainController {
         model.addAttribute("user", dto.getName());
         BookStore bookStore = new BookStore();
         bookStore.setId(dto.getBookStoreId());
-        System.err.println(new Date());
         model.addAttribute("sachList", bookService.getByBookStore(bookStore));
-        System.err.println(new Date());
+        model.addAttribute("customerList", customerService.getAllCustomer());
         model.addAttribute("store", dto.getStore());
         return "/employee/sale";
     }
 
+    @GetMapping("/employee/history")
+    public String historyEmployee(Model model) {
+        return "/employee/history";
+    }
 
     @GetMapping("/history")
     public String history() {

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CustomerAccountDto {
     private Long accountId;
-    private Long customerId;
     private String username;
     private String password;
     private Boolean activated;

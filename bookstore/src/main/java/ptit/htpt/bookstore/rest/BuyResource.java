@@ -3,6 +3,7 @@ package ptit.htpt.bookstore.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ptit.htpt.bookstore.dto.CreateBuyDto;
+import ptit.htpt.bookstore.dto.GetBuyBookDto;
 import ptit.htpt.bookstore.dto.ResponseDto;
 import ptit.htpt.bookstore.entity.Account;
 import ptit.htpt.bookstore.entity.Customer;
@@ -25,6 +26,11 @@ public class BuyResource {
     @PostMapping(value = "buy")
     public ResponseDto buy(@RequestBody CreateBuyDto dto) {
         return buyService.buy(dto);
+    }
+
+    @GetMapping("buy/{id}")
+    public List<GetBuyBookDto> getDetail(@PathVariable("id") Long id) {
+        return buyService.getDetailBuy(id);
     }
 
     @GetMapping("buy/getAll")
