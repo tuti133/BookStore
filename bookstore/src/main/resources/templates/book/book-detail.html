@@ -43,8 +43,7 @@
                     </md-input-container>
                     <md-input-container>
                         <label>Khu vực</label>
-                        <md-select ng-model="vm.cartItem.storeId" ng-change="vm.changeStore()" Còn {{vm.amount}} sản
-                                   phẩm>
+                        <md-select ng-model="vm.cartItem.storeId" ng-change="vm.changeStore()">
                             <md-option ng-value="store.id" ng-repeat="store in vm.stores" ng-selected="$index == 0">
                                 {{store.name}}
                             </md-option>

@@ -58,27 +58,56 @@
             <md-divider></md-divider>
             <md-content flex layout="column" style="background-color: #ddd">
                 <div>
-                    <div>
-                        <md-card layout="column">
+                    <div layout="row">
+                        <md-card layout="column" flex>
                             <md-table-container flex>
                                 <table md-table>
                                     <thead md-head>
-                                    <tr md-row>
-                                        <th md-column><span>Doanh thu</span></th>
-                                        <th md-column><span>Số sách bán được</span></th>
-                                        <th md-column><span>Số hóa đơn</span></th>
+                                    <tr md-row
+                                        style="background: linear-gradient(to right, #fe9365, #feb798);">
+                                        <th md-column><span style="color:white;">Doanh thu</span></th>
                                     </tr>
                                     </thead>
                                     <tbody md-body>
                                     <tr md-row>
                                         <td md-cell>
-                                            {{vm.statistic.total | currency: '' : 0}} ₫
+                                            <strong style="font-size: 18pt;">{{vm.statistic.total | currency: '' : 0}} ₫</strong>
                                         </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </md-table-container>
+                        </md-card>
+                        <md-card layout="column" flex>
+                            <md-table-container flex>
+                                <table md-table>
+                                    <thead md-head>
+                                    <tr md-row style="background: linear-gradient(to right, #0ac282, #0df3a3);">
+                                        <th md-column><span style="color: #fff;">Số sách bán được</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody md-body>
+                                    <tr md-row>
                                         <td md-cell>
-                                            {{vm.statistic.totalBookOffline + vm.statistic.totalBookOnline}}
+                                            <strong style="font-size: 18pt;">{{vm.statistic.totalBookOffline + vm.statistic.totalBookOnline}}</strong>
                                         </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </md-table-container>
+                        </md-card>
+                        <md-card layout="column" flex>
+                            <md-table-container flex>
+                                <table md-table>
+                                    <thead md-head>
+                                    <tr md-row style="background: linear-gradient(to right, #fe5d70, #fe909d)">
+                                        <th md-column><span style="color: #fff;">Số hóa đơn</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody md-body>
+                                    <tr md-row>
                                         <td md-cell>
-                                            {{vm.statistic.billDtoList.length}}
+                                            <strong style="font-size: 18pt;">{{vm.statistic.billDtoList.length}}</strong>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -88,12 +117,12 @@
                     </div>
                     <div flex layout="column">
                         <!--<div layout="row">-->
-                            <!--<md-card flex layout="column">-->
-                                <!--<div id="type_chart" flex></div>-->
-                            <!--</md-card>-->
-                            <!--<md-card flex layout="column">-->
-                                <!--<div id="book_chart" flex></div>-->
-                            <!--</md-card>-->
+                        <!--<md-card flex layout="column">-->
+                        <!--<div id="type_chart" flex></div>-->
+                        <!--</md-card>-->
+                        <!--<md-card flex layout="column">-->
+                        <!--<div id="book_chart" flex></div>-->
+                        <!--</md-card>-->
                         <!--</div>-->
                         <div>
                             <md-card flex layout="column">
@@ -130,7 +159,8 @@
 
                                     <md-input-container class="md-block" style="min-width: 200px;">
                                         <label>Tình trạng hóa đơn</label>
-                                        <md-select ng-disabled="vm.type == 0 || vm.type == 1" ng-model="vm.buyStatus" ng-change="vm.changeBillType()">
+                                        <md-select ng-disabled="vm.type == 0 || vm.type == 1" ng-model="vm.buyStatus"
+                                                   ng-change="vm.changeBillType()">
                                             <md-option ng-value="status.id"
                                                        ng-repeat="status in vm.allBuyStatus track by status.id">
                                                 {{status.name}}
@@ -167,9 +197,12 @@
                                     <tr ng-show="bill.type == 2">
                                         <td width="40%"><strong>Trạng thái</strong></td>
                                         <td>
-                                            <label class="label label-warning" ng-show="bill.status == 1">Đang xử lý</label>
-                                            <label class="label label-info" ng-show="bill.status == 2">Đang giao hàng</label>
-                                            <label class="label label-success" ng-show="bill.status == 3">Đã giao hàng</label>
+                                            <label class="label label-warning" ng-show="bill.status == 1">Đang xử
+                                                lý</label>
+                                            <label class="label label-info" ng-show="bill.status == 2">Đang giao
+                                                hàng</label>
+                                            <label class="label label-success" ng-show="bill.status == 3">Đã giao
+                                                hàng</label>
                                             <label class="label label-danger" ng-show="bill.status == 4">Đã hủy</label>
                                         </td>
                                     </tr>

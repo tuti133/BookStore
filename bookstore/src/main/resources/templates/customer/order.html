@@ -15,21 +15,29 @@
                 <md-card layout="row" style="height: auto; width: 100%" layout-padding>
                     <img style="width: 100px; height: 120px; object-fit: cover" ng-src="{{item.book.imageUrl != null ? item.book.imageUrl : '/images/no-image.png'}}">
                     <div>
-                        <h4>{{item.book.name}}</h4>
+                        <h4><a href="/book/{{item.book.id}}">{{item.book.name}}</a></h4>
                         <p><b>{{item.book.price | currency: '' : 0}} ₫</b></p>
                         <p>Tác giả: {{item.book.author}}</p>
                     </div>
                     <div layout="row" flex layout-align="end">
-                        <div class="form-inline">
-                            <div class="form-group">
-                                <input ng-change="vm.calculate()" min="1"  style="width: 70px" class="form-control" type="number" ng-model="item.quantity">
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control" ng-model="item.storeId">
-                                    <option ng-repeat="store in vm.stores" ng-value="store.id">{{store.name}}</option>
-                                </select>
-                            </div>
-                        </div>
+                        <md-input-container style="width:100px">
+                            <label>Số lượng</label>
+                            <input ng-change="vm.calculate()" ng-model="item.quantity" min="1" type="number"
+                                   required>
+                        </md-input-container>
+                        <md-input-container style="width:100px">
+                            <label>Khu vực</label>
+                            <md-select ng-model="item.storeId" ng-change="vm.changeStore(item)">
+                                <md-option ng-value="store.id" ng-repeat="store in vm.stores">
+                                    {{store.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container style="width:150px">
+                            <input placeholder="{{item.amount == null ? 'Đang cập nhật...' : 'Còn ' + item.amount + ' sản phẩm'}}"
+                                   type="text" disabled>
+                        </md-input-container>
+
                     </div>
                     <div>
                         <button ng-click="vm.remove(item)" class="btn">Xóa</button>

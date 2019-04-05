@@ -13,7 +13,8 @@
         <img src="/images/loading.gif">
         <p style="color: #bbb">Đang tải...</p>
     </div>
-    <md-toolbar ng-show="vm.bills != null" style="background-color: rgb(250,250,250);" class="md-table-toolbar md-default" layout="row"
+    <md-toolbar ng-show="vm.bills != null" style="background-color: rgb(250,250,250);"
+                class="md-table-toolbar md-default" layout="row"
                 layout-align="center center">
         <div class="md-toolbar-tools" flex>
             <span>Lịch sử đặt hàng</span>
@@ -44,6 +45,8 @@
                             <a href="/book/{{book.bookQuantity.book.id}}">{{book.bookQuantity.book.name}} -
                                 {{book.bookQuantity.book.author}}</a>
                             <span>{{book.bookQuantity.book.price | currency: '' : 0}} ₫</span>
+                            <span>Kho: {{book.bookQuantity.bookStore.name}}</span>
+
                         </div>
                         <div>Số lượng: {{book.quantity}}</div>
                     </md-list-item>
@@ -53,7 +56,8 @@
                     <md-button>Tổng: <span style="font-size: 14pt">{{bill.buy.totalMoney | currency: '' : 0}} ₫</span>
                     </md-button>
                     <div>
-                        <md-button ng-click="vm.cancelBuy(bill.buy.id)" ng-show="bill.buy.status == 1" class="md-warn">Hủy
+                        <md-button ng-click="vm.cancelBuy(bill.buy.id)" ng-show="bill.buy.status == 1" class="md-warn">
+                            Hủy
                             đơn
                         </md-button>
                     </div>
