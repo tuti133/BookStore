@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import ptit.htpt.bookstore.constant.AuthoritiesConstants;
 import ptit.htpt.bookstore.dto.EmployeeAccountDto;
 import ptit.htpt.bookstore.entity.BookStore;
@@ -15,11 +14,10 @@ import ptit.htpt.bookstore.util.SecurityUtils;
 
 @Controller
 public class MainController {
+
     @Autowired
     private InitialService initialService;
 
-    @Autowired
-    private EmployeeService employeeService;
     @Autowired
     private AccountService accountService;
 
@@ -135,7 +133,7 @@ public class MainController {
 
     @GetMapping("/order/success/{id}")
     public String orderSuccess(@PathVariable Long id) {
-        if (buyRepository.findById(id).isPresent() == false) {
+        if (!buyRepository.findById(id).isPresent()) {
             return "/common/404";
         }
         return "common/order-success";
