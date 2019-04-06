@@ -26,20 +26,17 @@
         <div flex style="padding-top: 30px;">
             <div class="col-md-4 col-md-offset-4">
                 <div class="form-group">
-                    <label for="firstName">First Name</label>
-                    <input type="text" class="form-control" id="firstName" ng-model="vm.account.firstName">
+                    <label for="firstName">Họ tên</label>
+                    <input type="text" class="form-control" id="firstName" ng-model="vm.customer.name">
                 </div>
+
                 <div class="form-group">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" ng-model="vm.account.lastName">
-                </div>
-                <div class="form-group">
-                    <label for="address">Address</label>
+                    <label for="address">Địa chỉ</label>
                     <input type="text" class="form-control" id="address" ng-model="vm.customer.address">
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone</label>
-                    <input type="text" class="form-control" id="phone" ng-model="vm.account.phone">
+                    <label for="phone">Số điện thoại</label>
+                    <input disabled type="text" class="form-control" id="phone" ng-model="vm.customer.phone">
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
