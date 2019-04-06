@@ -17,8 +17,6 @@ public class Employee implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long salary;
-
     private String name;
 
     private String phone;
@@ -28,7 +26,6 @@ public class Employee implements Serializable {
     @Column(name = "work_shift")
     private Long workShift;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "book_store_id")
     private BookStore bookStore;

@@ -40,6 +40,7 @@
                 resolve: {
                     accountDto: function () {
                         let update = JSON.parse(JSON.stringify(dto));
+                        console.log(dto);
                         update.account.createdDate = new Date(update.account.createdDate).getTime();
                         return update;
                     },
@@ -76,20 +77,23 @@
                                 id: null,
                                 username: null,
                                 password: null,
-                                phone: null,
                                 email: null,
-                                gender: null,
                                 activated: false,
                             },
                             employee: {
                                 id: null,
                                 workShift: null,
-                                salary: null
+                                gender: null,
+                                name: null,
+                                phone: null
                             },
                             customer: {
                                 id: null,
                                 address: null,
-                                creditNumber: null
+                                creditNumber: null,
+                                gender: null,
+                                name: null,
+                                phone: null
                             }
                         }
                     },
@@ -111,19 +115,62 @@
         function DialogController($scope, $mdDialog, accountDto, bookStores) {
             let vm = this;
             vm.accountDto = accountDto;
+            console.log(vm.accountDto);
             vm.bookStores = bookStores;
             vm.role = "";
             vm.account = {};
             vm.employee = {};
             vm.customer = {};
 
+            vm.name = null;
+            vm.gender = null;
+            vm.phone = null;
+
+            if (vm.accountDto.role != null){
+                switch (vm.accountDto.role) {
+                    case "ROLE_CUSTOMER":{
+                        vm.gender = vm.accountDto.customer.gender;
+                        vm.name = vm.accountDto.customer.name;
+                        vm.phone = vm.accountDto.customer.phone;
+                        break;
+                    }
+                    case "ROLE_EMPLOYEE":{
+                        vm.gender = vm.accountDto.employee.gender;
+                        vm.name = vm.accountDto.employee.name;
+                        vm.phone = vm.accountDto.employee.phone;
+                        break;
+                    }
+                    case "ROLE_CHECKER":{
+                        vm.gender = vm.accountDto.employee.gender;
+                        vm.name = vm.accountDto.employee.name;
+                        vm.phone = vm.accountDto.employee.phone;
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+            }
+
             vm.save = save;
             vm.cancel = cancel;
 
             vm.isSelectedStore = isSelectedStore;
 
-            vm.genders = ["MALE", "FEMALE", "OTHER"];
-            vm.authorities = ["ROLE_ADMIN", "ROLE_EMPLOYEE", "ROLE_CHECKER", "ROLE_CUSTOMER"];
+            vm.genders = [
+                {name: "Nam", value: "MALE"},
+                {name: "Nữ", value: "FEMALE"},
+                {name: "Khác", value: "OTHER"},
+            ];
+
+            vm.authorities = [
+                {name: "Quản trị viên", value: "ROLE_ADMIN"},
+                {name: "Kiểm duyệt diên", value: "ROLE_CHECKER"},
+                {name: "Nhân viên", value: "ROLE_EMPLOYEE"},
+                {name: "Khách hàng", value: "ROLE_CUSTOMER"},
+            ];
+
+
 
             function isSelectedStore(bookStore) {
                 vm.bookStores.forEach(function (store) {
@@ -136,15 +183,43 @@
 
             function save() {
                 vm.isSaving = true;
+                switch (vm.accountDto.role) {
+                    case "ROLE_CUSTOMER":{
+                        vm.accountDto.customer.gender = vm.gender;
+                        vm.accountDto.customer.name = vm.name;
+                        vm.accountDto.customer.phone = vm.phone;
+                        break;
+                    }
+                    case "ROLE_CHECKER":{
+                        vm.accountDto.employee.gender = vm.gender;
+                        vm.accountDto.employee.name = vm.name;
+                        vm.accountDto.employee.phone = vm.phone;
+                        break;
+                    }
+                    case "ROLE_EMPLOYEE":{
+                        vm.accountDto.employee.gender = vm.gender;
+                        vm.accountDto.employee.name = vm.name;
+                        vm.accountDto.employee.phone = vm.phone;
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+                console.log(vm.accountDto);
                 if (vm.accountDto.account.id == null) {
                     AccountService.create(vm.accountDto).done(function (response) {
-                        $mdDialog.hide(response);
-                        vm.isSaving = true;
+                        if (response.errorCode == 0) {
+                            $mdDialog.hide(response);
+                        } else AlertService.error(response.message, 2000);
+                        vm.isSaving = false;
                     })
                 } else {
                     AccountService.update(vm.accountDto).done(function (response) {
-                        $mdDialog.hide(response);
-                        vm.isSaving = true;
+                        if (response.errorCode == 0) {
+                            $mdDialog.hide(response);
+                        } else AlertService.error(response.message, 2000);
+                        vm.isSaving = false;
                     })
                 }
             }

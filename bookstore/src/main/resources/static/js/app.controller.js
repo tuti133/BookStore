@@ -86,15 +86,26 @@
             url: "/api/account/current",
             type: "GET",
             success: function (res) {
-                $scope.$apply(function () {
-                    if (res.data != null)
-                        vm.account = res.data.account;
-                    if (vm.account.firstName != null) {
-                        vm.username = vm.account.firstName;
-                    } else {
+                if (res.data != null){
+                    $scope.$apply(function () {
+                        if (res.data != null)
+                            vm.account = res.data.account;
                         vm.username = vm.account.username;
-                    }
-                })
+                        switch (res.data.role) {
+                            case "ROLE_CUSTOMER":{
+                                vm.username = res.data.customer.name;
+                                break;
+                            }
+                            case "ROLE_EMPLOYEE":{
+                                vm.username = res.data.employee.name;
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    })
+                }
             }
         })
     }

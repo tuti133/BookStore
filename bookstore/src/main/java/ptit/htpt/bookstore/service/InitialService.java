@@ -97,7 +97,13 @@ public class InitialService {
         checker.setAuthorities(auth0);
         checker.setEmail("checker@localhost");
         checker.setActivated(true);
-        accountRepository.save(checker);
+
+        Employee check = new Employee();
+        check.setPhone("3333333333");
+        check.setGender(GenderConstants.OTHER);
+        check.setName("Checker");
+        check.setAccount(accountRepository.save(checker));
+        employeeRepository.save(check);
 
         Account employee = new Account();
         employee.setUsername("employee");
@@ -115,7 +121,6 @@ public class InitialService {
         em.setAccount(accountRepository.save(employee));
         em.setWorkShift(1L);
         em.setBookStore(bookStoreRepository.findByArea(AreaConstants.HANOI));
-        em.setSalary(10000000L);
         employeeRepository.save(em);
 
         Account customer = new Account();

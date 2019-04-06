@@ -22,34 +22,30 @@
                 <form name="registerForm">
                     <div layout-gt-xs="row">
                         <md-input-container flex class="md-icon-float md-block" flex-gt-xs>
-                            <label>Username</label>
+                            <label>Tên đăng nhập</label>
                             <input ng-model="vm.accountDto.account.username" md-autofocus  name="username" type="text" required md-maxlength="50">
                         </md-input-container>
                         <md-input-container class="md-icon-float md-block" flex-gt-xs>
-                            <label>Gender</label>
-                            <md-select ng-model="vm.accountDto.account.gender" name="gender" required>
-                                <md-option ng-value="gender" ng-repeat="gender in vm.genders">{{gender}}</md-option>
+                            <label>Giới tính</label>
+                            <md-select ng-model="vm.accountDto.customer.gender" name="gender" required>
+                                <md-option ng-value="gender.value" ng-repeat="gender in vm.genders">{{gender.name}}</md-option>
                             </md-select>
                         </md-input-container>
                     </div>
                     <div layout-gt-xs="row">
                         <md-input-container class="md-icon-float md-block" flex-gt-xs>
-                            <label>Password</label>
+                            <label>Mật khẩu</label>
                             <input ng-model="vm.accountDto.account.password" type="password" name="password"  maxlength="50" required>
                         </md-input-container>
                         <md-input-container class="md-icon-float md-block" flex-gt-xs>
-                            <label>Confirm</label>
+                            <label>Xác nhận</label>
                             <input ng-model="vm.confirm" type="password" name="password"  maxlength="50" required>
                         </md-input-container>
                     </div>
                     <div layout-gt-xs="row">
                         <md-input-container class="md-icon-float md-block" flex-gt-xs>
-                            <label>First Name</label>
-                            <input ng-model="vm.accountDto.account.firstName" type="text" name="firstName" maxlength="50" required>
-                        </md-input-container>
-                        <md-input-container class="md-icon-float md-block" flex-gt-xs>
-                            <label>Last Name</label>
-                            <input ng-model="vm.accountDto.account.lastName" name="lastName" type="text" md-maxlength="50" required>
+                            <label>Họ tên</label>
+                            <input ng-model="vm.accountDto.customer.name" type="text" name="name" maxlength="50" required>
                         </md-input-container>
                     </div>
                     <div layout-gt-xs="row">
@@ -59,8 +55,8 @@
                         </md-input-container>
 
                         <md-input-container class="md-icon-float md-block" flex-gt-xs>
-                            <label>Phone</label>
-                            <input ng-model="vm.accountDto.account.phone" name="phone" type="text" md-maxlength="50" required>
+                            <label>Số điện thoại</label>
+                            <input ng-model="vm.accountDto.customer.phone" name="phone" type="text" md-maxlength="50" required>
                         </md-input-container>
                     </div>
                     <div layout="row" style="padding-bottom: 20px">

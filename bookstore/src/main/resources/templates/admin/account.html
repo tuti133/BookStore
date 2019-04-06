@@ -49,13 +49,16 @@
                             {{dto.account.username}}
                         </td>
                         <td md-cell>
-                            {{dto.account.firstName}} {{dto.account.lastName}}
+                            <span ng-if="dto.role == 'ROLE_CHECKER' || dto.role == 'ROLE_EMPLOYEE'">{{dto.employee.name}}</span>
+                            <span ng-if="dto.role == 'ROLE_CUSTOMER'">{{dto.customer.name}}</span>
+                            <span ng-if="dto.role == 'ROLE_ADMIN'">{{dto.account.username}}</span>
                         </td>
                         <td md-cell>
                             {{dto.account.email}}
                         </td>
                         <td md-cell>
-                            {{dto.account.phone}}
+                            <span ng-if="dto.role == 'ROLE_CHECKER' || dto.role == 'ROLE_EMPLOYEE'">{{dto.employee.phone}}</span>
+                            <span ng-if="dto.role == 'ROLE_CUSTOMER'">{{dto.customer.phone}}</span>
                         </td>
                         <td md-cell>
                             {{dto.account.createdDate | date: "dd/MM/yy"}}

@@ -6,4 +6,6 @@ import ptit.htpt.bookstore.entity.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, String> {
     Customer findByAccount(Account account);
+
+    Customer findByPhone(String phone);
 }

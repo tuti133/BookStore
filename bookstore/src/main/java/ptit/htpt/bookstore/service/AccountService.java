@@ -80,12 +80,6 @@ public class AccountService {
         return new ResponseDto("0", "Success", result);
     }
 
-    public ResponseDto deactiveAccount(Long id) {
-        Account account = accountRepository.findById(id).get();
-        account.setActivated(!account.getActivated());
-        return new ResponseDto("0", "Success", accountRepository.save(account));
-    }
-
     public ResponseDto createAccount(AccountDto dto) {
         String msg = validateCreateAccount(dto.getAccount());
         if (msg != null) return new ResponseDto("1", msg, null);
@@ -125,14 +119,23 @@ public class AccountService {
                 savedAccount = accountRepository.save(account);
                 employee.setAccount(savedAccount);
                 employee.setBookStore(dto.getEmployee().getBookStore());
+                employee.setGender(dto.getEmployee().getGender());
+                employee.setName(dto.getEmployee().getName());
+                employee.setPhone(dto.getEmployee().getPhone());
+                employee.setWorkShift(dto.getEmployee().getWorkShift());
                 savedEmployee = employeeRepository.save(employee);
                 break;
             }
             case AuthoritiesConstants.CUSTOMER: {
+                Customer c = customerRepository.findByPhone(dto.getCustomer().getPhone());
+                if (c != null) return new ResponseDto("1", MessageConstants.PHONE_EXIST, null);
                 listAuthorities.add(authCustomer);
                 account.setAuthorities(listAuthorities);
                 savedAccount = accountRepository.save(account);
                 customer.setAccount(savedAccount);
+                customer.setPhone(dto.getCustomer().getPhone());
+                customer.setName(dto.getCustomer().getName());
+                customer.setGender(dto.getCustomer().getGender());
                 savedCustomer = customerRepository.save(customer);
                 break;
             }
@@ -141,6 +144,11 @@ public class AccountService {
                 listAuthorities.add(authCustomer);
                 account.setAuthorities(listAuthorities);
                 savedAccount = accountRepository.save(account);
+                employee.setAccount(savedAccount);
+                employee.setGender(dto.getEmployee().getGender());
+                employee.setName(dto.getEmployee().getName());
+                employee.setPhone(dto.getEmployee().getPhone());
+                savedEmployee = employeeRepository.save(employee);
                 break;
             }
             default: {
@@ -159,7 +167,6 @@ public class AccountService {
         if (msg != null) return new ResponseDto("1", msg, null);
 
         Account old = accountRepository.findById(dto.getAccount().getId()).get();
-
         Account update = dto.getAccount();
         update.setPassword(old.getPassword());
 
@@ -175,6 +182,10 @@ public class AccountService {
             }
             case AuthoritiesConstants.CUSTOMER: {
                 savedCustomer = customerRepository.save(dto.getCustomer());
+                break;
+            }
+            case AuthoritiesConstants.CHECKER: {
+                savedEmployee = employeeRepository.save(dto.getEmployee());
                 break;
             }
             default: {
@@ -215,6 +226,7 @@ public class AccountService {
                 } else {
                     if (isAccountInRole(AuthoritiesConstants.CHECKER, account)) {
                         dto.setRole(AuthoritiesConstants.CHECKER);
+                        dto.setEmployee(employeeRepository.findByAccount(account));
                     } else {
                         dto.setRole(AuthoritiesConstants.CUSTOMER);
                         dto.setCustomer(customerRepository.findByAccount(account));
@@ -238,7 +250,6 @@ public class AccountService {
         result.setName(employee.getName());
         result.setEmail(account.getEmail());
         result.setPhone(employee.getPhone());
-        result.setSalary(employee.getSalary());
         result.setWorkShift(employee.getWorkShift());
         result.setBookStoreId(employee.getBookStore().getId());
         return result;
@@ -257,7 +268,6 @@ public class AccountService {
         result.setName(employee.getName());
         result.setEmail(account.getEmail());
         result.setPhone(employee.getPhone());
-        result.setSalary(employee.getSalary());
         result.setWorkShift(employee.getWorkShift());
         result.setBookStoreId(employee.getBookStore().getId());
         return result;
