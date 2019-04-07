@@ -78,11 +78,27 @@
         loadCommonData();
 
         function loadCommonData() {
-            let from = new Date(vm.from).getTime();
-            let to = new Date(vm.to).getTime();
+            let fromTemp = new Date(vm.from);
+            let toTemp = new Date(vm.to);
+            fromTemp.setHours(0);
+            fromTemp.setMinutes(0);
+            fromTemp.setSeconds(0);
+            fromTemp.setMilliseconds(0);
+
+            toTemp.setHours(0);
+            toTemp.setMinutes(0);
+            toTemp.setSeconds(0);
+            toTemp.setMilliseconds(0);
+
+            let from = new Date(fromTemp).getTime();
+            let to = new Date(toTemp).getTime();
             if (from == to) to += 3600 * 24 * 1000
+            console.log(new Date(from));
+            console.log(new Date(to));
             BillService.statistic(0, from, to, 0).done(function (response) {
                 $scope.$apply(function () {
+                    console.log("Load statistic data: ")
+                    console.log(response);
                     vm.statistic = response;
                     console.log(vm.statistic)
                     vm.offlineBill = [];
@@ -128,6 +144,8 @@
             if (isNaN(vm.buyStatus)) vm.buyStatus = 0;
             BillService.statistic(vm.type, from, to, vm.buyStatus).done(function (response) {
                 $scope.$apply(function () {
+                    console.log("Load bill data: ")
+                    console.log(response);
                     vm.listBills = response.billDtoList;
                 })
             })
