@@ -23,6 +23,23 @@ public class BillJdbc {
     @Autowired
     private AccountService accountService;
 
+    public boolean updateBookQuantity(Long id, Long quantity){
+        JdbcTemplate jdbcTemplate = getConnection();
+        String sql = "UPDATE  book_quantity SET quantity=? WHERE id = ?";
+        int count = jdbcTemplate.update(
+                sql, new Object[] { quantity, id });
+        if(count > 0) return true;
+        return false;
+    }
+    public boolean ínertBuyBook(Long buyId, Long quantity, Long bookQuantityId){
+        JdbcTemplate jdbcTemplate = getConnection();
+        String sql = "INSERT INTO  buy_book(buy_id, quantity,book_quantity_id) VALUES(?,?,?)";
+        int count = jdbcTemplate.update(
+                sql, new Object[] { buyId,quantity, bookQuantityId });
+        if(count > 0) return true;
+        return false;
+    }
+
     public Long saveBill(Buy buy) {
         JdbcTemplate jdbcTemplate = getConnection();
         String insertSql = "insert into buy(created_date,status,ship_address,total_money,customer_id,employee_id) values(?,?,?,?,?,?)";

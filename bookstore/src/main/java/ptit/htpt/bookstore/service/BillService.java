@@ -57,16 +57,10 @@ public class BillService {
         Long buyId = billJdbc.saveBill(buy);
         buy.setId(buyId);
         for (BookBillDto bookBillDto : dto.getBookList()) {
-            BuyBook buyBook = new BuyBook();
-            buyBook.setQuantity(bookBillDto.getQuantity());
-            buyBook.setBuy(buy);
             BookQuantity bookQuantity = bookQuantityRepository.findById(bookBillDto.getBookQuantityId()).orElse(null);
-            bookQuantity.setQuantity(bookQuantity.getQuantity() - bookBillDto.getQuantity());
-            buyBook.setBookQuantity(bookQuantity);
-            if (bookQuantity.getQuantity() - bookBillDto.getQuantity() < 0)
-                throw new IllegalArgumentException("exception");
-            bookQuantityRepository.save(bookQuantity);
-            buyBookRepository.save(buyBook);
+            billJdbc.updateBookQuantity(bookQuantity.getId(), bookQuantity.getQuantity() - bookBillDto.getQuantity() );
+            billJdbc.ínertBuyBook(buyId, bookBillDto.getQuantity(), bookQuantity.getId());
+
         }
         return new ResponseDto("0", "success", null);
     }
