@@ -80,8 +80,8 @@
                                         <label>Tên sách</label>
                                         <select class="sach form-control select2">
                                             <th:block th:each="bq : ${sachList}">
-                                                <option th:data-gia="${bq.book.price}" th:value="${bq.id}"
-                                                        th:text="${bq.book.name}" th:data-sl="${bq.quantity}"></option>
+                                                <option th:data-gia="${bq.bookPrice}" th:value="${bq.id}"
+                                                        th:text="${bq.bookName}" th:data-sl="${bq.quantity}"></option>
                                             </th:block>
                                         </select>
                                     </div>

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.multipart.MultipartFile;
+import ptit.htpt.bookstore.dto.BookQuantityDto;
 import ptit.htpt.bookstore.dto.CreateBookDto;
 import ptit.htpt.bookstore.dto.ResponseDto;
 import ptit.htpt.bookstore.entity.Book;
@@ -19,6 +20,7 @@ import ptit.htpt.bookstore.entity.BookStore;
 import ptit.htpt.bookstore.repository.BookQuantityRepository;
 import ptit.htpt.bookstore.repository.BookRepository;
 import ptit.htpt.bookstore.repository.BookStoreRepository;
+import ptit.htpt.bookstore.repository.jdbc.BillJdbc;
 
 @Service
 public class BookService {
@@ -34,13 +36,18 @@ public class BookService {
     @Autowired
     private RateService rateService;
 
+    @Autowired
+    private BillJdbc billJdbc;
+
     public List<Book> getAll() {
         return bookRepository.findAll();
     }
 
-    public List<BookQuantity> getByBookStore(BookStore bookStore) {
-        return bookQuantityRepository.findAllByBookStore(bookStore);
+    public List<BookQuantityDto> getByBookStore(Long bookStoreId) {
+        List<BookQuantityDto> res =  billJdbc.getAllBookQuantityByStoreId(bookStoreId);
+        return res;
     }
+
 
     public Book findById(long id) {
         Book b = bookRepository.findById(id).orElse(null);

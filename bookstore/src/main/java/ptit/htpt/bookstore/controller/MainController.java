@@ -108,9 +108,7 @@ public class MainController {
     public String sale(Model model) {
         EmployeeAccountDto dto = accountService.getCurrentEmployee();
         model.addAttribute("user", dto.getName());
-        BookStore bookStore = new BookStore();
-        bookStore.setId(dto.getBookStoreId());
-        model.addAttribute("sachList", bookService.getByBookStore(bookStore));
+        model.addAttribute("sachList", bookService.getByBookStore(dto.getBookStoreId()));
         model.addAttribute("customerList", customerService.getAllCustomer());
         model.addAttribute("store", dto.getStore());
         return "/employee/sale";
