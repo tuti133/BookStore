@@ -139,7 +139,7 @@
         function loadBillData() {
             let from = new Date(vm.from).getTime();
             let to = new Date(vm.to).getTime();
-            if (from == to) to += 3600 * 24 * 1000
+            to += 3600 * 24 * 1000;
             if (isNaN(vm.type)) vm.type = 0;
             if (isNaN(vm.buyStatus)) vm.buyStatus = 0;
             BillService.statistic(vm.type, from, to, vm.buyStatus).done(function (response) {
