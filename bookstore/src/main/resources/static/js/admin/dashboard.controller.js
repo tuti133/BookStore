@@ -92,7 +92,7 @@
 
             let from = new Date(fromTemp).getTime();
             let to = new Date(toTemp).getTime();
-            if (from == to) to += 3600 * 24 * 1000
+            to += 3600 * 24 * 1000
             console.log(new Date(from));
             console.log(new Date(to));
             BillService.statistic(0, from, to, 0).done(function (response) {
