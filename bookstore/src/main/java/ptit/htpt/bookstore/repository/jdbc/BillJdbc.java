@@ -57,7 +57,7 @@ public class BillJdbc {
     public BookQuantityDto getAllBookQuantityByStoreIdAndBookId(Long storeId, Long bookId) {
         JdbcTemplate jdbcTemplate = getConnectionByStore(storeId);
         String sql = "SELECT book_quantity.id,  book.name, book.price, quantity FROM book_quantity JOIN book ON book.id = book_quantity.book_id WHERE book.id = ?";
-        List<BookQuantityDto> list =  jdbcTemplate.query(sql,new Object[]{storeId}, (rs, rowNum) -> {
+        List<BookQuantityDto> list =  jdbcTemplate.query(sql,new Object[]{bookId}, (rs, rowNum) -> {
             BookQuantityDto dto = new BookQuantityDto();
             dto.setId(rs.getLong(1));
             dto.setBookName(rs.getNString(2));
