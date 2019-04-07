@@ -143,6 +143,7 @@
 <script src="/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/dist/js/demo.js"></script>
+<script src="/bootbox.all.min.js"></script>
 
 <!-- page script -->
 <script>
@@ -187,47 +188,50 @@
         let listSach = [];
         let str = ''
         $(".nhapsach").each(function () {
-
             let masach = $(this).find(".select2").first().children('option:selected').val();
             let tensach = $(this).find(".select2").first().children('option:selected').text();
             let soluong = $(this).find('.soluong').last().val();
             if (masach && soluong && soluong > 0) {
                 listSach.push({bookQuantityId: masach, quantity: soluong});
-                str += `Tên sách: ${tensach} ; Số lượng: ${soluong}\n`
+                str += `<label>Tên sách:</label> ${tensach} ; <label>Số lượng:</label> ${soluong}<br>`
             }
         })
 
 
-        if (!tenKhach || !sdt || listSach.length == 0) {
-            alert("Vui long dien du thong tin!");
+        if (!tenKhach || !sdt || listSach.length === 0) {
+            bootbox.alert("Vui lòng điền đầy đủ thông tin!");
             return;
         }
 
-        if (confirm(`Tạo hoá đơn \n Khách hàng: ${tenKhach} \n Sđt: ${sdt} \n ${str}`)) {
-            $.ajax({
-                url: "/api/bill",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({
-                    customerName: tenKhach,
-                    customerPhone: sdt,
-                    bookList: listSach,
-                    total: tinhtien()
-                }),
-                success: function (data) {
-                    if (data.errorCode == 0) {
-                        alert("Thành công!");
-                        location.reload();
-                    } else if (data.errorCode == 3) {
-                        alert("Số lượng hàng còn lại không đủ");
+        bootbox.confirm(`<h4>Tạo hoá đơn</h4><br> <label>Khách hàng:</label> ${tenKhach} <br><label> Sđt:</label> ${sdt} <br> ${str}`, function (r) {
+            if (r) {
+                $.ajax({
+                    url: "/api/bill",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({
+                        customerName: tenKhach,
+                        customerPhone: sdt,
+                        bookList: listSach,
+                        total: tinhtien()
+                    }),
+                    success: function (data) {
+                        if (data.errorCode == 0) {
+                            bootbox.alert("Thành công!", function () {
+                                location.reload();
+                            });
 
+                        } else if (data.errorCode == 3) {
+                            bootbox.alert("Số lượng hàng còn lại không đủ");
+
+                        }
+                    },
+                    error: function (err) {
+                        bootbox.alert("Có lỗi xảy ra!")
                     }
-                },
-                error: function (err) {
-                    alert("Có lỗi xảy ra!")
-                }
-            })
-        }
+                })
+            }
+        })
     }
 
 

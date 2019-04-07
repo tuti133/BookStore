@@ -118,6 +118,10 @@ public class MainController {
 
     @GetMapping("/employee/history")
     public String historyEmployee(Model model) {
+        EmployeeAccountDto dto = accountService.getCurrentEmployee();
+        model.addAttribute("user", dto.getName());
+        model.addAttribute("store", dto.getStore());
+
         return "/employee/history";
     }
 

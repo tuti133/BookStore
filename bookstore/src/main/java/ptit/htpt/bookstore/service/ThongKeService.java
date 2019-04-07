@@ -41,6 +41,10 @@ public class ThongKeService {
         Long totalBookOffline = 0L;
         Long totalOnline = 0L;
         Long totalOffline = 0L;
+        Long totalBookHanoi = 0L;
+        Long totalBookHcm = 0L;
+        Long totalHanoi = 0L;
+        Long totalHcm = 0L;
         response.setBillDtoList(billDtoList);
         if (type == TypeOrderConstant.GET_ALL || type == TypeOrderConstant.BILL) {
             List<Buy> buyList = buyRepository.getByCreatedDateGreaterThanEqualAndCreatedDateLessThanAndStatus(from, to, StatusBuyConstants.OFFLINE);
@@ -48,12 +52,20 @@ public class ThongKeService {
                 List<BuyBook> list = buyBookRepository.findAllByBuy(buy);
                 for (BuyBook b : list) {
                     totalBookOffline += b.getQuantity();
+                    if (b.getBookQuantity().getBookStore().getId() == 1) {
+                        totalBookHanoi += b.getQuantity();
+                        totalHanoi += b.getQuantity() * b.getBookQuantity().getBook().getPrice();
+                    } else {
+                        totalBookHcm += b.getQuantity();
+                        totalHcm += b.getQuantity() * b.getBookQuantity().getBook().getPrice();
+                    }
                 }
                 BillDto billDto = mapFromBuy(buy);
                 billDto.setType(1);
                 response.setTotal(response.getTotal() + buy.getTotalMoney());
                 totalOffline += buy.getTotalMoney();
                 billDtoList.add(billDto);
+
             }
         }
         if (type == TypeOrderConstant.GET_ALL || type == TypeOrderConstant.ONLINE) {
@@ -67,10 +79,17 @@ public class ThongKeService {
 
                 BillDto billDto = mapFromBuy(buy);
                 billDto.setType(2);
-                if (StatusBuyConstants.SUCCESS.equals(buy.getStatus())){
+                if (StatusBuyConstants.SUCCESS.equals(buy.getStatus())) {
                     List<BuyBook> list = buyBookRepository.findAllByBuy(buy);
                     for (BuyBook b : list) {
                         totalBookOnline += b.getQuantity();
+                        if (b.getBookQuantity().getBookStore().getId() == 1) {
+                            totalBookHanoi += b.getQuantity();
+                            totalHanoi += b.getQuantity() * b.getBookQuantity().getBook().getPrice();
+                        } else {
+                            totalBookHcm += b.getQuantity();
+                            totalHcm += b.getQuantity() * b.getBookQuantity().getBook().getPrice();
+                        }
                     }
                     totalOnline += buy.getTotalMoney();
                     response.setTotal(response.getTotal() + buy.getTotalMoney());
@@ -82,6 +101,10 @@ public class ThongKeService {
         response.setTotalBookOnline(totalBookOnline);
         response.setTotalOnline(totalOnline);
         response.setTotalOffline(totalOffline);
+        response.setTotalBookHanoi(totalBookHanoi);
+        response.setTotalBookHcm(totalBookHcm);
+        response.setTotalHanoi(totalHanoi);
+        response.setTotalHcm(totalHcm);
         return response;
     }
 

@@ -26,6 +26,7 @@ public class BillResource {
     public ResponseDto postMethodName(@RequestBody CreateBillDto dto) {
         EmployeeAccountDto employee = accountService.getCurrentEmployee();
         dto.setEmployeeId(employee.getEmployeeId());
+        dto.setStoreId(employee.getBookStoreId());
         try{
             return billService.createBill(dto);
         }catch (IllegalArgumentException ex){

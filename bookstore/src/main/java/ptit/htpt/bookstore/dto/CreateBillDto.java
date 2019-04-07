@@ -10,5 +10,6 @@ public class CreateBillDto {
   private String customerPhone;
   private Long total;
   private Long employeeId;
+  private Long storeId;
   private List<BookBillDto> bookList;
 }
