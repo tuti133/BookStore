@@ -64,12 +64,14 @@
         vm.listBills = null;
 
         vm.changeDate = changeDate;
+
         function changeDate() {
             loadCommonData();
             loadBillData();
         }
-        
+
         vm.changeBillType = changeBillType;
+
         function changeBillType() {
             loadBillData();
         }
@@ -216,7 +218,6 @@
             });
 
 
-
             Highcharts.chart('common_chart', {
                 chart: {
                     type: 'bar'
@@ -250,6 +251,59 @@
                     data: [vm.statistic.totalOffline, vm.statistic.totalBookOffline, vm.offlineBill.length]
                 }]
             });
+        }
+
+        vm.detail = function(billId) {
+            $.ajax({
+                url: `/api/buy/${billId}`,
+                method: "GET",
+                success: function (data) {
+                    let html = '';
+                    let quantitySum = 0;
+                    let total = 0;
+                    data.forEach(d => {
+                        quantitySum += d.quantity;
+                        total += d.quantity * d.price;
+                        html += `<div class="row" style="margin-bottom: 5px;">
+                                <div class="col-md-2 vcenter">
+                                    <p>${d.bookName}</p>
+
+                                </div>
+                                 <div class="col-md-3 vcenter">
+                                    <img class="book-img" src="${d.bookImage}">
+                                </div>
+                                <div class="col-md-2 vcenter">
+                                    ${formatNumber(d.price)}
+                                </div>
+                                <div style="text-align: right;" class="col-md-1 vcenter">
+                                    x ${formatNumber(d.quantity)}
+                                </div>
+                                <div style="text-align: right;" class="col-md-2 vcenter">
+                                    ${formatNumber(d.price * d.quantity)}
+                                </div>
+                            </div>`
+                    })
+                    html += `<div class="total row">
+                            <div class="col-md-2 vcenter">
+                                Tổng
+                            </div>
+                             <div class="col-md-3 vcenter">
+                            </div>
+                            <div class="col-md-2 vcenter">
+                            </div>
+                            <div style="text-align: right;" class="col-md-1 vcenter">
+                                    ${formatNumber(quantitySum)}
+                            </div>
+                            <div style="text-align: right;" class="col-md-2 vcenter ">
+                                ${formatNumber(total)}
+                            </div>
+                        </div>`
+                    bootbox.alert(`${html}`);
+                }
+            })
+        }
+        function formatNumber(num) {
+            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         }
     }
 })();

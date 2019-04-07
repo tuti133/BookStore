@@ -4,14 +4,47 @@
         .module('BookStoreApp')
         .factory('BillService', BillService);
 
-    BillService.$inject = [];
+    BillService.$inject = ["$mdDialog"];
 
-    function BillService() {
+    function BillService($mdDialog) {
         let service = {
             getByStatusType: getByStatusType,
             getByCurrentUser: getByCurrentUser,
             update: update,
-            statistic: statistic
+            statistic: statistic,
+            detail: detail,
+        }
+
+
+        function detail(ev, data) {
+            $mdDialog.show({
+                controller: BillDialogController,
+                controllerAs: "vm",
+                templateUrl: '/dialog/bill-dialog.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                fullscreen: true,
+                resolve: {
+                    data: function () {
+                        return data;
+                    }
+                }
+            }).then(function (response) {
+
+            }, function (err) {
+
+            });
+        };
+
+        function BillDialogController($mdDialog, data) {
+            let vm = this;
+            vm.data = data;
+            vm.cancel = cancel;
+
+            function cancel() {
+                $mdDialog.cancel();
+            }
         }
 
         function statistic(type, from, to, buyStatus) {
@@ -26,7 +59,7 @@
                 }
             })
         }
-        
+
         function getByStatusType(type) {
             return $.ajax({
                 url: "/api/buy/getByType",

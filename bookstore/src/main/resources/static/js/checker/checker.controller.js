@@ -96,37 +96,8 @@
 
 
         vm.detail = function (ev, data) {
-            $mdDialog.show({
-                controller: BillDialogController,
-                controllerAs: "vm",
-                templateUrl: '/dialog/bill-dialog.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                fullscreen: true,
-                resolve: {
-                    data: function () {
-                        return data;
-                    }
-                }
-            }).then(function (response) {
-
-            }, function (err) {
-
-            });
+            BillService.detail(ev, data);
         };
-
-
-        function BillDialogController($scope, $mdDialog, data) {
-            let vm = this;
-            vm.data = data;
-            console.log(data);
-            vm.cancel = cancel;
-
-            function cancel() {
-                $mdDialog.cancel();
-            }
-        }
 
     }
 })();

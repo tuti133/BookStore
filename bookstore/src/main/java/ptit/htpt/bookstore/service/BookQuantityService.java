@@ -23,7 +23,13 @@ public class BookQuantityService {
     private BillJdbc billJdbc;
 
     public ResponseDto getOneByStore(Long bookId, Long storeId){
-        return new ResponseDto("0", "Success", billJdbc.getAllBookQuantityByStoreIdAndBookId(storeId, bookId));
+        BookStore bs = new BookStore();
+        bs.setId(storeId);
+        Book b = new Book();
+        b.setId(bookId);
+        BookQuantity bq = bookQuantityRepository.findByBookStoreAndBook(bs, b);
+        return new ResponseDto("0", "Success", bq);
+//        return new ResponseDto("0", "Success", billJdbc.getAllBookQuantityByStoreIdAndBookId(storeId, bookId));
     }
 
     public ResponseDto getByStore(Long bookStoreId) {

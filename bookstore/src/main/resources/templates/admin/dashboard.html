@@ -9,6 +9,33 @@
 </head>
 <body>
 <div layout:fragment="content" ng-controller="DashboardController as vm">
+    <style>
+        .wrapper {
+            position: inherit !important;
+        }
+
+        .form-group input {
+            width: 50%;
+        }
+
+        .book-img {
+            width: auto;
+            height: 150px;
+        }
+
+        .vcenter {
+            display: inline-block;
+            vertical-align: middle;
+            float: none;
+        }
+
+        .total {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid black;
+            font-weight: bold;
+        }
+    </style>
     <div layout="row" flex>
         <md-sidenav
                 style="width: 250px;"
@@ -210,6 +237,9 @@
                                         <td width="40%"><strong>Tổng</strong></td>
                                         <td><span style="color: brown">{{bill.total | currency: '' : 0}} ₫</span></td>
                                     </tr>
+                                    <tr>
+                                        <td><md-button ng-click="vm.detail(bill.id)">Chi tiết</md-button></td>
+                                    </tr>
 
                                 </table>
                             </md-card>
@@ -223,6 +253,7 @@
 </div>
 
 <th:block layout:fragment="scripts">
+    <script src="/bootbox.all.min.js"></script>
 </th:block>
 </body>
 </html>
