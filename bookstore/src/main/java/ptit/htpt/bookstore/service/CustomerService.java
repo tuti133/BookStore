@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ptit.htpt.bookstore.dto.CustomerAccountDto;
 import ptit.htpt.bookstore.entity.Customer;
 import ptit.htpt.bookstore.repository.CustomerRepository;
+import ptit.htpt.bookstore.repository.jdbc.BillJdbc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,17 +14,10 @@ import java.util.List;
 public class CustomerService {
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private BillJdbc billJdbc;
 
     public List<CustomerAccountDto> getAllCustomer() {
-        List<Customer> customerList = customerRepository.findAll();
-        List<CustomerAccountDto> result = new ArrayList<>();
-        for (Customer customer : customerList) {
-            CustomerAccountDto customerAccountDto = new CustomerAccountDto();
-            customerAccountDto.setName(customer.getName());
-            customerAccountDto.setPhone(customer.getPhone());
-            result.add(customerAccountDto);
-        }
-        return result;
+       return  billJdbc.getAllCustomer();
+
     }
 }

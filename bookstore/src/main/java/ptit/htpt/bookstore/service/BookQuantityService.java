@@ -10,6 +10,7 @@ import ptit.htpt.bookstore.entity.BookStore;
 import ptit.htpt.bookstore.repository.BookQuantityRepository;
 import ptit.htpt.bookstore.repository.BookRepository;
 import ptit.htpt.bookstore.repository.BookStoreRepository;
+import ptit.htpt.bookstore.repository.jdbc.BillJdbc;
 
 import java.util.List;
 
@@ -19,18 +20,10 @@ public class BookQuantityService {
     private BookQuantityRepository bookQuantityRepository;
 
     @Autowired
-    private BookStoreRepository bookStoreRepository;
-
-    @Autowired
-    private BookRepository bookRepository;
+    private BillJdbc billJdbc;
 
     public ResponseDto getOneByStore(Long bookId, Long storeId){
-        BookStore bs = new BookStore();
-        bs.setId(storeId);
-        Book b = new Book();
-        b.setId(bookId);
-        BookQuantity bq = bookQuantityRepository.findByBookStoreAndBook(bs, b);
-        return new ResponseDto("0", "Success", bq);
+        return new ResponseDto("0", "Success", billJdbc.getAllBookQuantityByStoreIdAndBookId(storeId, bookId));
     }
 
     public ResponseDto getByStore(Long bookStoreId) {
