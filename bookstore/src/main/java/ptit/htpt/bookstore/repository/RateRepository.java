@@ -8,6 +8,8 @@ import ptit.htpt.bookstore.entity.Book;
 import ptit.htpt.bookstore.entity.Customer;
 import ptit.htpt.bookstore.entity.Rate;
 
+import java.util.List;
+
 @Repository
 public interface RateRepository extends JpaRepository<Rate, Long> {
 
@@ -15,4 +17,8 @@ public interface RateRepository extends JpaRepository<Rate, Long> {
     Long getAvgRateByBook(@Param("book") Book book);
 
     Rate findByCustomerAndBook(Customer customer, Book book);
+
+    List<Rate> findAllByBook(Book b);
+
+    List<Rate> findAllByCustomer(Customer c);
 }

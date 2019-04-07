@@ -1,9 +1,7 @@
 package ptit.htpt.bookstore.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ptit.htpt.bookstore.dto.CreateRateDto;
 import ptit.htpt.bookstore.dto.ResponseDto;
 import ptit.htpt.bookstore.service.AccountService;
@@ -21,5 +19,21 @@ public class RateResource {
     public ResponseDto rating(@RequestBody CreateRateDto createRateDto) {
         createRateDto.setPhone(accountService.getCurrentCustomer().getPhone());
         return rateService.rating(createRateDto);
+    }
+
+    @GetMapping("/api/book/get-book-rating")
+    public ResponseDto getBookRating(@RequestParam Long bookId){
+        return rateService.getBookRating(bookId);
+    }
+
+    @GetMapping("/api/book/get-user-ratings")
+    public ResponseDto getUserRatings(){
+        return rateService.getUserRatings();
+    }
+
+
+    @GetMapping("/api/book/get-user-rating")
+    public ResponseDto getUserRating(@RequestParam Long bookId){
+        return rateService.getUserRating(bookId);
     }
 }

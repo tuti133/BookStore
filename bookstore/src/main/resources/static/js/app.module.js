@@ -3,6 +3,7 @@
     angular.module('BookStoreApp', [
         'ngMaterial',
         'ngMessages',
-        'md.data.table'
+        'md.data.table',
+        'star-rating'
     ]);
 })()

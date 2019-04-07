@@ -1,0 +1,34 @@
+<md-dialog aria-label="UserDialog" style="min-width: 640px">
+    <form ng-cloak name="createUserForm">
+        <md-toolbar class="md-warn">
+            <div class="md-toolbar-tools">
+                <h2>Đánh giá</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.cancel()">
+                    <md-icon class="material-icons" aria-label="Close dialog">clear</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content layout-padding>
+            <md-content md-no-momentum>
+                <md-list flex>
+                    <md-list-item class="md-3-line" ng-repeat="review in vm.listReview" ng-click="null">
+                        <div style="padding-right: 20px">
+                            <star-rating-comp rating="vm.getRating(review.rate)" size="'medium'" ></star-rating-comp>
+                        </div>
+                        <div class="md-list-item-text" layout="column">
+                            <b style="margin: 0">{{ review.customer.name }} - {{ review.displayDate | date: 'dd/MM/yyyy' }}</b>
+                            <p>{{ review.comment }}</p>
+                        </div>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button ng-click="vm.cancel()">
+                Đóng
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

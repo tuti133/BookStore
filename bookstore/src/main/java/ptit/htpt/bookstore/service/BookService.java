@@ -31,6 +31,9 @@ public class BookService {
     @Autowired
     private BookStoreRepository bookStoreRepository;
 
+    @Autowired
+    private RateService rateService;
+
     public List<Book> getAll() {
         return bookRepository.findAll();
     }
@@ -40,7 +43,9 @@ public class BookService {
     }
 
     public Book findById(long id) {
-        return bookRepository.findById(id).orElse(null);
+        Book b = bookRepository.findById(id).orElse(null);
+        b.setAvgRate(rateService.getRate(id));
+        return b;
     }
 
     private String getExtensionFile(String fileName) {

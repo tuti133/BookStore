@@ -49,4 +49,7 @@ public class Book implements Serializable {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @Transient
+    private Long avgRate = 0L;
 }

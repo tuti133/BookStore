@@ -31,4 +31,7 @@ public class Rate implements Serializable {
 
     @NotNull
     private Long rate;
+
+    @Column(columnDefinition = "nvarchar(500)")
+    private String comment;
 }

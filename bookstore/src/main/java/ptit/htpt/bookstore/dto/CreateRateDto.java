@@ -7,4 +7,5 @@ public class CreateRateDto {
     private String phone;
     private Long bookId;
     private Long rate;
+    private String comment;
 }

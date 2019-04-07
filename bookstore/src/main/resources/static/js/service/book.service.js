@@ -14,6 +14,10 @@
             addToCart: addToCart,
             likeBook: likeBook,
             initData: initData,
+            rating: rating,
+            getBookRating: getBookRating,
+            getUserRating: getUserRating,
+            getUserRatings: getUserRatings,
         }
 
         return service;
@@ -388,6 +392,42 @@
                 formData.append("image", "null");
                 save(formData).done(function (response) {
                 });
+            })
+        }
+
+        function rating(rateDto) {
+            return $.ajax({
+                url: "/api/book/rate",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(rateDto)
+            })
+        }
+
+        function getBookRating(bookId) {
+            return $.ajax({
+                url: "/api/book/get-book-rating",
+                type: "GET",
+                data: {
+                    bookId: bookId
+                }
+            })
+        }
+
+        function getUserRating(bookId) {
+            return $.ajax({
+                url: "/api/book/get-user-rating",
+                type: "GET",
+                data: {
+                    bookId: bookId
+                }
+            })
+        }
+
+        function getUserRatings() {
+            return $.ajax({
+                url: "/api/book/get-user-ratings",
+                type: "GET",
             })
         }
     }

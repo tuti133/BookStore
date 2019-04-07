@@ -1,0 +1,40 @@
+<md-dialog aria-label="UserDialog" style="min-width: 400px">
+    <style>
+        .label-value.large, .rating.large .label-value{
+            font-size: 16px !important;
+            line-height: 18px !important;
+        }
+    </style>
+    <form ng-cloak name="createUserForm">
+        <md-toolbar class="md-warn">
+            <div class="md-toolbar-tools">
+                <h2>Đánh giá</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.cancel()">
+                    <md-icon class="material-icons" aria-label="Close dialog">clear</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content layout-padding>
+            <md-content md-no-momentum>
+                <star-rating-comp label-position="'bottom'" rating="vm.getRating()" label-text="vm.label()" size="'large'"  on-rating-change="vm.changeRate($event)"></star-rating-comp>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-icon-float md-block" flex-gt-xs>
+                        <label>Nhận xét</label>
+                        <textarea ng-model="vm.rateDto.comment" md-maxlength="500" rows="3" cols="10"></textarea>
+                    </md-input-container>
+                </div>
+            </md-content>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button ng-click="vm.cancel()">
+                Hủy
+            </md-button>
+            <md-button ng-click="vm.save()" ng-disabled="createUserForm.$invalid || vm.isSaving"
+                       class="md-raised md-warn">
+                OK
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

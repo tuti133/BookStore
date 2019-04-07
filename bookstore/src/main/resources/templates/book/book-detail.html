@@ -14,13 +14,18 @@
     </div>
     <div layout="row" flex ng-if="vm.book != null">
         <div flex layout="row" layout-align="center center">
-            <img style="padding: 10px; border: 2px dashed #eee" ng-src="{{vm.book.imageUrl != null ? vm.book.imageUrl : '/images/no-image.png'}}">
+            <img style="padding: 10px; border: 2px dashed #eee"
+                 ng-src="{{vm.book.imageUrl != null ? vm.book.imageUrl : '/images/no-image.png'}}">
         </div>
         <md-divider></md-divider>
         <div flex="60" layout="column" layout-padding>
             <div>
                 <h3><b>{{vm.book.name}}</b></h3>
                 <p>Tác giả: {{vm.book.author}}</p>
+                <div layout="row">
+                    <span>Đánh giá:</span>
+                    <star-rating-comp read-only="true" rating="vm.getRating(vm.book.avgRate)" size="'medium'" ></star-rating-comp>
+                </div>
             </div>
             <div>
                 <label>Mô tả:</label>
@@ -61,11 +66,35 @@
                         Thêm
                         vào giỏ
                     </md-button>
-                    <!--<md-button ng-href="/order" class="md-raised md-warn">Đi tới thanh toán</md-button>-->
+                    <md-button ng-show="vm.isAuthenticated && !vm.isRated" ng-click="vm.createRating()" class="md-raised md-warn">
+                        Viết đánh giá
+                    </md-button>
+                    <md-button ng-show="vm.isAuthenticated && vm.isRated" ng-click="vm.editRating(vm.currentUserRating)" class="md-raised md-warn">
+                        Sửa đánh giá
+                    </md-button>
+                    <md-button ng-click="vm.seeReview()" class="md-raised md-warn">
+                        Xem đánh giá
+                    </md-button>
+                </div>
+                <md-divider ng-show="vm.isAuthenticated && vm.isRated"></md-divider>
+                <div flex layout="column" ng-show="vm.isAuthenticated && vm.isRated">
+                    <em>Đánh giá của bạn:</em>
+                    <md-list flex>
+                        <md-list-item class="md-3-line" ng-click="null">
+                            <div style="padding-right: 20px">
+                                <star-rating-comp rating="vm.getRating(vm.currentUserRating.rate)" size="'medium'" ></star-rating-comp>
+                            </div>
+                            <div class="md-list-item-text" layout="column">
+                                <b style="margin: 0">{{ vm.currentUserRating.customer.name }} - {{ vm.currentUserRating.displayDate | date: 'dd/MM/yyyy' }}</b>
+                                <p>{{ vm.currentUserRating.comment }}</p>
+                            </div>
+                        </md-list-item>
+                    </md-list>
                 </div>
 
 
             </div>
+
         </div>
     </div>
 </div>
