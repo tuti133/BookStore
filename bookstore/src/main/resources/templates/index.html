@@ -45,7 +45,9 @@
                             <span ng-if="book.name.length > 20">...</span>
                         </span>
                         </md-card-content>
-                        <md-card-actions layout="row" layout-align="end center">
+                        <md-card-actions layout="column" layout-align="end center">
+                            <star-rating-comp read-only="true" rating="vm.getRating(book.avgRate)"
+                                              size="'medium'"></star-rating-comp>
                             <md-button class="md-warn" aria-label="book" flex>
                                 <p><h4>{{book.price | currency:'':0 }} ₫</h4></p>
                             </md-button>

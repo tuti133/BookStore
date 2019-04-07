@@ -63,6 +63,7 @@
                                 <div class="form-group">
                                     <label>SĐT khách hàng</label><br>
                                     <select id="sdt" style="width: 50%" class="form-control select2">
+                                        <option selected></option>
                                         <th:block th:each="cus : ${customerList}">
                                             <option th:data-ten="${cus.name}" th:value="${cus.phone}"
                                                     th:text="${cus.phone}"></option>
@@ -79,6 +80,7 @@
                                     <div class="col-md-4 form-group">
                                         <label>Tên sách</label>
                                         <select class="sach form-control select2">
+                                            <option selected></option>
                                             <th:block th:each="bq : ${sachList}">
                                                 <option th:data-gia="${bq.book.price}" th:value="${bq.id}"
                                                         th:text="${bq.book.name}" th:data-sl="${bq.quantity}"></option>

@@ -69,6 +69,10 @@
             vm.cartList = [];
         }
 
+        vm.getRating = function (rate) {
+            return rate ? rate : 0;
+        }
+
         function loadData() {
             vm.books = null;
             BookService.getAll().done(function (response) {

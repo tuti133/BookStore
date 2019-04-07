@@ -60,7 +60,18 @@ public class MainController {
 
     @GetMapping("profile")
     public String profile() {
-        return "common/profile";
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            return "redirect:/admin/dashboard";
+        } else {
+            if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.EMPLOYEE)) {
+                return "redirect:/employee/sale";
+            } else {
+                if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CHECKER)) {
+                    return "redirect:/checker";
+                } else
+                    return "common/profile";
+            }
+        }
     }
 
     @GetMapping("/init-data")
@@ -127,7 +138,18 @@ public class MainController {
 
     @GetMapping("/history")
     public String history() {
-        return "customer/history";
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            return "redirect:/admin/dashboard";
+        } else {
+            if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.EMPLOYEE)) {
+                return "redirect:/employee/sale";
+            } else {
+                if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CHECKER)) {
+                    return "redirect:/checker";
+                } else
+                    return "customer/history";
+            }
+        }
     }
 
     @GetMapping("/checker")
@@ -145,7 +167,18 @@ public class MainController {
 
     @GetMapping("/order")
     public String order() {
-        return "customer/order";
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            return "redirect:/admin/dashboard";
+        } else {
+            if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.EMPLOYEE)) {
+                return "redirect:/employee/sale";
+            } else {
+                if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CHECKER)) {
+                    return "redirect:/checker";
+                } else
+                    return "customer/order";
+            }
+        }
     }
 
     @GetMapping("/register")

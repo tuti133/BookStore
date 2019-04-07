@@ -18,84 +18,97 @@
                  ng-src="{{vm.book.imageUrl != null ? vm.book.imageUrl : '/images/no-image.png'}}">
         </div>
         <md-divider></md-divider>
-        <div flex="60" layout="column" layout-padding>
+        <md-content flex="60" layout="column" layout-padding>
             <div>
-                <h3><b>{{vm.book.name}}</b></h3>
-                <p>Tác giả: {{vm.book.author}}</p>
-                <div layout="row">
-                    <span>Đánh giá:</span>
-                    <star-rating-comp read-only="true" rating="vm.getRating(vm.book.avgRate)" size="'medium'" ></star-rating-comp>
-                </div>
-            </div>
-            <div>
-                <label>Mô tả:</label>
-                <p class="well">
-                    {{vm.book.description}}
-                </p>
-            </div>
-            <md-divider></md-divider>
-            <div flex layout="column">
                 <div>
-                    <h3 style="margin-top: 0px"><p>{{vm.book.price | currency: '' : 0}} ₫</p></h3>
+                    <h3><b>{{vm.book.name}}</b></h3>
+                    <p>Tác giả: {{vm.book.author}}</p>
+                    <div layout="row">
+                        <span>Đánh giá:</span>
+                        <star-rating-comp read-only="true" rating="vm.getRating(vm.book.avgRate)"
+                                          size="'medium'"></star-rating-comp>
+                    </div>
                 </div>
-                <md-divider></md-divider>
-                <div layout="row" style="padding-top: 20px">
 
-                    <md-input-container>
-                        <label>Số lượng</label>
-                        <input ng-model="vm.cartItem.quantity" min="1" ng-init="vm.cartItem.quantity = 1" type="number"
-                               required>
-                    </md-input-container>
-                    <md-input-container>
-                        <label>Khu vực</label>
-                        <md-select ng-model="vm.cartItem.storeId" ng-change="vm.changeStore()">
-                            <md-option ng-value="store.id" ng-repeat="store in vm.stores" ng-selected="$index == 0">
-                                {{store.name}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container>
-                        <input placeholder="{{vm.amount == null ? 'Đang cập nhật...' : 'Còn ' + vm.amount + ' sản phẩm'}}"
-                               type="text" disabled>
-                    </md-input-container>
-                </div>
                 <div>
-
-                    <md-button ng-click="vm.add()" class="md-raised md-warn"
-                               ng-disabled="vm.amount == null || vm.amount == 0 || vm.cartItem.quantity > vm.amount">
-                        Thêm
-                        vào giỏ
-                    </md-button>
-                    <md-button ng-show="vm.isAuthenticated && !vm.isRated" ng-click="vm.createRating()" class="md-raised md-warn">
-                        Viết đánh giá
-                    </md-button>
-                    <md-button ng-show="vm.isAuthenticated && vm.isRated" ng-click="vm.editRating(vm.currentUserRating)" class="md-raised md-warn">
-                        Sửa đánh giá
-                    </md-button>
-                    <md-button ng-click="vm.seeReview()" class="md-raised md-warn">
-                        Xem đánh giá
-                    </md-button>
+                    <label>Mô tả:</label>
+                    <p class="well">
+                        {{vm.book.description}}
+                    </p>
                 </div>
-                <md-divider ng-show="vm.isAuthenticated && vm.isRated"></md-divider>
-                <div flex layout="column" ng-show="vm.isAuthenticated && vm.isRated">
-                    <em>Đánh giá của bạn:</em>
-                    <md-list flex>
-                        <md-list-item class="md-3-line" ng-click="null">
-                            <div style="padding-right: 20px">
-                                <star-rating-comp rating="vm.getRating(vm.currentUserRating.rate)" size="'medium'" ></star-rating-comp>
-                            </div>
-                            <div class="md-list-item-text" layout="column">
-                                <b style="margin: 0">{{ vm.currentUserRating.customer.name }} - {{ vm.currentUserRating.displayDate | date: 'dd/MM/yyyy' }}</b>
-                                <p>{{ vm.currentUserRating.comment }}</p>
-                            </div>
-                        </md-list-item>
-                    </md-list>
+                <div flex layout="column">
+                    <div>
+                        <h3 style="margin-top: 0px">Giá sách: <span>{{vm.book.price | currency: '' : 0}} ₫</span></h3>
+                    </div>
+                    <md-divider></md-divider>
+                    <div layout="row" style="padding-top: 20px">
+
+                        <md-input-container>
+                            <label>Số lượng</label>
+                            <input ng-model="vm.cartItem.quantity" min="1" ng-init="vm.cartItem.quantity = 1"
+                                   type="number"
+                                   required>
+                        </md-input-container>
+                        <md-input-container style="width: 150px">
+                            <label>Khu vực</label>
+                            <md-select ng-model="vm.cartItem.storeId" ng-change="vm.changeStore()">
+                                <md-option ng-value="store.id" ng-repeat="store in vm.stores" ng-selected="$index == 0">
+                                    {{store.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container>
+                            <input placeholder="{{vm.amount == null ? 'Đang cập nhật...' : 'Còn ' + vm.amount + ' sản phẩm'}}"
+                                   type="text" disabled>
+                        </md-input-container>
+                    </div>
+                    <div>
+
+                        <md-button ng-click="vm.add()" class="md-raised md-warn"
+                                   ng-disabled="vm.amount == null || vm.amount == 0 || vm.cartItem.quantity > vm.amount">
+                            Thêm
+                            vào giỏ
+                        </md-button>
+
+                        <md-button ng-show="vm.bookRatings.length > 0" ng-click="vm.seeReview()"
+                                   class="md-raised md-warn">
+                            Xem đánh giá
+                        </md-button>
+
+                        <md-button ng-show="vm.isAuthenticated && !vm.isRated" ng-click="vm.createRating()"
+                                   class="md-raised md-warn">
+                            Viết đánh giá
+                        </md-button>
+
+                        <md-button ng-show="vm.isAuthenticated && vm.isRated"
+                                   ng-click="vm.editRating(vm.currentUserRating)"
+                                   class="md-raised md-warn">
+                            Sửa đánh giá
+                        </md-button>
+                    </div>
+
                 </div>
+                <div layout="column" style="padding-top: 30px" ng-show="vm.isAuthenticated && vm.isRated">
+                    <div>
+                        <em>Đánh giá của bạn:</em>
 
-
+                        <md-list flex>
+                            <md-list-item class="md-3-line" ng-click="null">
+                                <div style="padding-right: 20px">
+                                    <star-rating-comp read-only="true" rating="vm.getRating(vm.currentUserRating.rate)"
+                                                      size="'medium'"></star-rating-comp>
+                                </div>
+                                <div class="md-list-item-text" layout="column">
+                                    <b style="margin: 0">{{ vm.currentUserRating.customer.name }} - {{
+                                        vm.currentUserRating.displayDate | date: 'dd/MM/yyyy HH:mm' }}</b>
+                                    <p>{{ vm.currentUserRating.comment }}</p>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </div>
+                </div>
             </div>
-
-        </div>
+        </md-content>
     </div>
 </div>
 

@@ -35,7 +35,11 @@ public class BookService {
     private RateService rateService;
 
     public List<Book> getAll() {
-        return bookRepository.findAll();
+        List<Book> list = bookRepository.findAll();
+        for (Book b: list) {
+            b.setAvgRate(rateService.getRate(b.getId()));
+        }
+        return list;
     }
 
     public List<BookQuantity> getByBookStore(BookStore bookStore) {
